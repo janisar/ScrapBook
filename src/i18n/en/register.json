@@ -1,0 +1,43 @@
+{
+  "pages": [
+    {
+      "title": "Register",
+      "type": "login"
+    },
+    {
+      "title": "What is your age?",
+      "type": "age",
+      "action": "Next"
+    },
+    {
+      "title": "What is your sex?",
+      "type": "sex",
+      "field": "sex",
+      "options": [
+        {
+          "label": "Male",
+          "value": "M"
+        },
+        {
+          "label": "Female",
+          "value": "F"
+        }
+      ]
+    },
+    {
+      "title": "Who do you date?",
+      "type": "dating",
+      "field": "dating",
+      "options": [
+        {
+          "label": "Male",
+          "value": "M"
+        },
+        {
+          "label": "Female",
+          "value": "F"
+        }
+      ]
+    }
+  ]
+}

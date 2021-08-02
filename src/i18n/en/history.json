@@ -1,0 +1,67 @@
+{
+  "title": "Your history looks empty",
+  "add": "Add",
+  "name": "Name...",
+  "pages": [
+    {
+      "title": "Who did you hit?",
+      "action": "Next",
+      "type": "name",
+      "placeholder": "Enter name.."
+    },
+    {
+      "title": "What type of relationship was that?",
+      "type": "relationship",
+      "field": "type",
+      "options": [
+        {
+          "label": "Relationship",
+          "value": "1"
+        },
+        {
+          "label": "Fling",
+          "value": "2"
+        },
+        {
+          "label": "One-night-stand",
+          "value": "3"
+        },
+        {
+          "label": "Friends with benefits",
+          "value": "4"
+        }
+      ],
+      "action": "Next"
+    },
+    {
+      "title": "When did it happen/start?",
+      "type": "startDate",
+      "field": "startDate",
+      "action": "Next"
+    },
+    {
+      "title": "How long did it go on?",
+      "type": "duration",
+      "field": "duration",
+      "options": [
+        {
+          "label": "Days",
+          "value": "1"
+        },
+        {
+          "label": "Weeks",
+          "value": "2"
+        },
+        {
+          "label": "Months",
+          "value": "3"
+        },
+        {
+          "label": "Years",
+          "value": "4"
+        }
+      ],
+      "action": "Done"
+    }
+  ]
+}
