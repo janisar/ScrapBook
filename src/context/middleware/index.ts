@@ -1,7 +1,7 @@
 import {Dispatch} from 'react';
 import {ContextType} from '../Context';
 
-type ActionType = 'ADD_PARTNER';
+type ActionType = 'ADD_PARTNER' | 'SAVE_PROFILE';
 
 export type Action = {
   type: ActionType;

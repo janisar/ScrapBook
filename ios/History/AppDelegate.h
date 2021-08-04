@@ -3,6 +3,8 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
 
-@property (nonatomic, strong) UIWindow *window;
+@property (strong, nonatomic) UIWindow *window;
+
+//@property (nonatomic, strong) UIWin dow *window;
 
 @end

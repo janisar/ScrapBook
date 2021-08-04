@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from "react";
+import React, {FunctionComponent} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {PartnerForm} from '../../../models';
 import {Header2} from '../../../components/atoms/Header2';
@@ -9,12 +9,10 @@ import {CheckboxComponent} from '../../../components/atoms/Checkbox';
 import {useTranslation} from 'react-i18next';
 import {ScrollView} from '../../../components/atoms/ScrollView';
 import {HistoryPage} from '../../../i18n/models';
-import {InputComponent} from '../../../components/molecules/AgeComponent';
 import {useScrollView} from '../../../hooks/useScrollView';
 import {ScrollViewPage} from '../../../components/molecules/ScrollViewPage';
 import Button from '../../../components/molecules/Button';
-import {Text} from '../../../components/atoms/Text';
-import { useNavigation } from "@react-navigation/native";
+import {useNavigation} from '@react-navigation/native';
 
 type Props = {
   setFormValue: (field: string) => (value: string | Date | boolean) => void;
@@ -36,6 +34,10 @@ const styles = StyleSheet.create({
   },
   headerStyle: {
     paddingBottom: 30,
+  },
+  header: {
+    display: 'flex',
+    flex: 2,
   },
   col: {
     display: 'flex',
@@ -65,10 +67,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   actionButton: {
-    alignSelf: 'flex-end',
+    justifyContent: 'center',
   },
   startDate: {
     display: 'flex',
+    width: '100%',
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -83,7 +86,11 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
   const {t} = useTranslation('history');
   const pages: HistoryPage[] = t('pages', {returnObjects: true});
   const history = useNavigation();
-  const [offset, toNextPage, , onBack] = useScrollView(pages.length, save, history);
+  const [offset, toNextPage, , onBack] = useScrollView(
+    pages.length,
+    save,
+    history,
+  );
   return (
     <ScrollViewPage
       extendedStyle={styles.safeArea}
@@ -95,19 +102,25 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
             return (
               <View style={styles.scrollViewContent}>
                 {page.type === 'name' && (
-                  <>
+                  <View style={styles.startDate}>
                     <Header2>{page.title}</Header2>
-                    <InputComponent
+                    <Input
                       onChange={setFormValue('name')}
-                      page={page}
-                      onNext={toNextPage}
-                      width={160}
+                      width={170}
                       placeholder={page.placeholder}
+                      editable={true}
                     />
-                  </>
+                    <Button
+                      inProgress={false}
+                      disabled={false}
+                      label={page.action!}
+                      onPress={() => toNextPage()}
+                      extendedStyle={styles.actionButton}
+                    />
+                  </View>
                 )}
                 {page.type === 'relationship' && (
-                  <>
+                  <View style={styles.startDate}>
                     <Header2>{page.title}</Header2>
                     <Select
                       onChange={setFormValue('type')}
@@ -120,9 +133,9 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                       disabled={false}
                       label={page.action!}
                       onPress={() => toNextPage()}
-                      extendedStyle={{}}
+                      extendedStyle={styles.actionButton}
                     />
-                  </>
+                  </View>
                 )}
                 {page.type === 'startDate' && (
                   <View style={styles.startDate}>
@@ -136,13 +149,15 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                       disabled={false}
                       label={page.action!}
                       onPress={() => toNextPage()}
-                      extendedStyle={{}}
+                      extendedStyle={styles.actionButton}
                     />
                   </View>
                 )}
                 {page.type === 'duration' && (
                   <View style={styles.startDate}>
-                    <Header2>{page.title}</Header2>
+                    <Header2 extendedStyle={styles.header}>
+                      {page.title}
+                    </Header2>
                     <View style={styles.col}>
                       <View style={{marginTop: 20}}>
                         <Input
@@ -160,7 +175,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                         />
                       </View>
                     </View>
-                    <View style={{flex: 4, width: 140}}>
+                    <View style={{flex: 5, width: 140}}>
                       <CheckboxComponent
                         title={'still in progress'}
                         checked={!!form.inProgress}

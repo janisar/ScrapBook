@@ -7,11 +7,12 @@ type Props = {
   partner: Partner;
 };
 
-const styles = (width: string = '40%') =>
+const styles = (width: string = '40%', colour: string) =>
   StyleSheet.create({
     wrapper: {
       marginTop: 30,
       backgroundColor: '#bababa',
+      marginBottom: 10,
       borderRadius: 50,
       maxHeight: 40,
       width: '100%',
@@ -28,7 +29,7 @@ const styles = (width: string = '40%') =>
       minWidth: 120,
     },
     progressBar: {
-      backgroundColor: 'purple',
+      backgroundColor: colour,
       width: width,
       height: 30,
       zIndex: -1,
@@ -40,13 +41,38 @@ const partnersSort = (p1: Partner, p2: Partner): number => {
   return p2.durationInDays! > p1.durationInDays! ? 1 : -1;
 };
 
+function getColour(type: string | undefined): string {
+  switch (type) {
+    case '0':
+      return 'black';
+    case '1':
+      return 'purple';
+    case '2':
+      return 'black';
+    case '3':
+      return 'black';
+    case '4':
+    default:
+      return 'black';
+  }
+}
+
+function getWidth(width: number, type?: string): number {
+  if (type === '1') {
+    return width;
+  } else {
+    return 100;
+  }
+}
+
 export const PartnerListCard: FunctionComponent<Props> = ({
   partner,
   allPartners,
 }) => {
   const longest = [...allPartners].sort(partnersSort)[0].durationInDays;
   const width = (partner.durationInDays! * 100) / longest!;
-  const style = styles(`${width}%`);
+  const colour = getColour(partner.type);
+  const style = styles(`${getWidth(width, partner.type)}%`, colour);
   return (
     <View style={style.wrapper}>
       <Text style={style.partnerLabel}>{partner.name}</Text>

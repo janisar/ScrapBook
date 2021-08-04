@@ -1,23 +1,23 @@
-import React, { useContext, useState } from "react";
+import React from 'react';
 import {
-  Alert,
-  Modal,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Partner, PartnerForm} from '../models';
-import {HistoryEntryForm} from '../containers/forms/HistoryEntryForm';
 import {useTranslation} from 'react-i18next';
 import {Header2} from '../components/atoms/Header2';
 import {PartnerListCard} from '../components/organisms/PartnerListCard';
 import {usePartners} from '../hooks/usePartners';
-import { useNavigation } from "@react-navigation/native";
-import { AppState } from "../context/Context";
+import {useNavigation} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
+  header: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
   wrapper: {
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   innerWrapper: {
-    paddingVertical: 40,
+    paddingVertical: 0,
+    display: 'flex',
   },
   add: {
     marginBottom: 200,
@@ -33,10 +34,15 @@ const styles = StyleSheet.create({
   },
   partnersList: {
     display: 'flex',
-    flex: 1,
-    marginVertical: 'auto',
+    flex: 9,
     flexDirection: 'column',
     paddingVertical: 10,
+    marginBottom: 20,
+  },
+  actionButton: {
+    display: 'flex',
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
   },
 });
 
@@ -45,15 +51,11 @@ export const HistoryPage = () => {
   const navigation = useNavigation();
   const {t} = useTranslation('history');
 
-  const {partners} = useContext(AppState);
-
-  console.log(partners);
-
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.innerWrapper}>
-        <Header2>{t('title')}</Header2>
-        <View style={styles.partnersList}>
+        <Header2 extendedStyle={styles.header}>{t('title')}</Header2>
+        <ScrollView style={styles.partnersList}>
           {p.map(partner => {
             return (
               <PartnerListCard
@@ -63,9 +65,9 @@ export const HistoryPage = () => {
               />
             );
           })}
-        </View>
+        </ScrollView>
       </View>
-      <View>
+      <View style={styles.actionButton}>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddPartner')}
           style={styles.add}>

@@ -1,6 +1,5 @@
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
-import {InputLabel} from '../InputLabel';
 
 type Props = {
   placeholder?: string;
@@ -23,8 +22,6 @@ const styles = (width: number) =>
       fontSize: 18
     },
     wrapper: {
-      flexDirection: 'column',
-      justifyContent: 'space-between',
     },
   });
 export const Input: FunctionComponent<Props> = ({
@@ -38,7 +35,6 @@ export const Input: FunctionComponent<Props> = ({
   const s = styles(width);
   return (
     <View style={s.wrapper}>
-      {label && <InputLabel>{label}: </InputLabel>}
       <TextInput
         style={s.input}
         editable={!!editable}

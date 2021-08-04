@@ -5,11 +5,11 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HistoryPage} from './src/pages/HistoryPage';
 import './src/i18n/config';
 import {ProfilePage} from './src/pages/ProfilePage';
-import {useLoginUser} from './src/hooks/useLoginUser';
 import {RegisterFlowScreen} from './src/pages/RegisterFlowScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AddPartnerPage} from './src/pages/AddPartnerPage';
 import {AppStateProvider} from './src/context/Context';
+import {useLoginUser} from './src/hooks/useLoginUser';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -23,15 +23,15 @@ const Home = () => {
   );
 };
 const App = () => {
-  const [user, saveField, complete] = useLoginUser();
+  const [profile] = useLoginUser();
 
   return (
     <AppStateProvider>
       <NavigationContainer>
-        {user?.complete ? (
+        {profile?.complete ? (
           <>
             <Stack.Navigator>
-              <Stack.Screen name={'Home'} component={Home} />
+              <Stack.Screen name={'History'} component={Home} />
               <Stack.Screen
                 name={'AddPartner'}
                 component={AddPartnerPage}
@@ -40,11 +40,7 @@ const App = () => {
             </Stack.Navigator>
           </>
         ) : (
-          <RegisterFlowScreen
-            saveField={saveField}
-            complete={complete}
-            user={user}
-          />
+          <RegisterFlowScreen />
         )}
       </NavigationContainer>
     </AppStateProvider>

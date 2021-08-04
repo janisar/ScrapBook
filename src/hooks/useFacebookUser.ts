@@ -12,7 +12,6 @@ export const useFacebookUser = (user?: User): [FBProfile | null] => {
           setProfile(currentProfile);
         }
       });
-      // Create a graph request asking for user information with a callback to handle the response.
     }
   }, [user?.fbUserData?.accessToken]);
 

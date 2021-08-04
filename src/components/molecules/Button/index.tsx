@@ -28,7 +28,6 @@ const Button: FunctionComponent<Props> = ({
       style={{
         ...styles.outerWrapper,
         ...extendedStyle,
-        ...extendedStyle.outerWrapper,
       }}>
       <TouchableOpacity
         disabled={disabled || inProgress}
@@ -59,7 +58,6 @@ const stylesheet = StyleSheet.create({
   outerWrapper: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center',
   },
 });
 

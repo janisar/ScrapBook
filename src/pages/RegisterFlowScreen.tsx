@@ -2,32 +2,24 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FunctionComponent} from 'react';
 import {ScrollViewPage} from '../components/molecules/ScrollViewPage';
-import {Text} from '../components/atoms/Text';
 import {useTranslation} from 'react-i18next';
 import {Select} from '../components/atoms/Select';
 import {LoginComponent} from './LoginPage';
-import {User, UserField, UserValue} from '../hooks/useLoginUser';
+import {useLoginUser} from '../hooks/useLoginUser';
 import {FBAccessToken} from 'react-native-fbsdk-next/types/FBAccessToken';
 import {storeData} from '../storage/AsyncStorage';
-import {useFacebookUser} from '../hooks/useFacebookUser';
 import {RegisterPage} from '../i18n/models';
-import {InputComponent} from '../components/molecules/AgeComponent';
 import {ScrollView} from '../components/atoms/ScrollView';
 import {useScrollView} from '../hooks/useScrollView';
+import {Header2} from '../components/atoms/Header2';
+import Button from '../components/molecules/Button';
+import {Input} from '../components/atoms/Input';
 
-type Props = {
-  saveField: (field: UserField) => (value: UserValue) => void;
-  complete: () => void;
-  user?: User;
-};
+type Props = {};
 
-export const RegisterFlowScreen: FunctionComponent<Props> = ({
-  saveField,
-  complete,
-  user,
-}) => {
+export const RegisterFlowScreen: FunctionComponent<Props> = () => {
+  const [, saveField, complete] = useLoginUser();
   const {t} = useTranslation('register');
-  const [profile] = useFacebookUser(user);
   const pages: RegisterPage[] = t('pages', {returnObjects: true});
   const [offset, toNextPage, , onBack] = useScrollView(pages.length, complete);
 
@@ -43,34 +35,48 @@ export const RegisterFlowScreen: FunctionComponent<Props> = ({
       extendedStyle={styles.safeArea}
       onBack={onBack}
       backLabel={'Back'}>
-      <View style={styles.header}>
-        {user && <Text>Hello, {profile?.name}</Text>}
-      </View>
       <View style={styles.scrollViewContainer}>
         <ScrollView pages={pages} offset={offset}>
           {pages.map(page => {
             return (
               <View style={styles.scrollViewContent}>
-                <Text>{page.title}</Text>
-                {page.type === 'login' && (
-                  <LoginComponent setUser={facebookLogin} onNext={toNextPage} />
-                )}
+                <Header2 extendedStyle={styles.header}>{page.title}</Header2>
+                <View style={styles.page}>
+                  {page.type === 'login' && (
+                    <LoginComponent
+                      setUser={facebookLogin}
+                      onNext={toNextPage}
+                    />
+                  )}
+                </View>
                 {page.options && (
-                  <Select
-                    onChange={value => {
-                      saveField(page.field!)(value);
-                    }}
-                    onNext={toNextPage}
-                    placeholder={'Please select'}
-                    items={page.options}
-                  />
+                  <View style={styles.page}>
+                    <Select
+                      onChange={value => {
+                        saveField(page.field!)(value);
+                      }}
+                      onNext={toNextPage}
+                      placeholder={'Please select'}
+                      items={page.options}
+                    />
+                  </View>
                 )}
                 {page.type === 'age' && (
-                  <InputComponent
-                    page={page}
-                    onChange={saveField('age')}
-                    onNext={toNextPage}
-                  />
+                  <View style={styles.page}>
+                    <Input
+                      onChange={saveField('age')}
+                      width={120}
+                      placeholder={'Enter your age'}
+                      editable={true}
+                    />
+                    <Button
+                      inProgress={false}
+                      disabled={false}
+                      label={page.action!}
+                      onPress={() => toNextPage()}
+                      extendedStyle={styles.actionButton}
+                    />
+                  </View>
                 )}
               </View>
             );
@@ -107,6 +113,17 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
     backgroundColor: 'white',
+    alignItems: 'center',
     borderRadius: 15,
+    paddingVertical: 20,
+  },
+  actionButton: {
+    justifyContent: 'center',
+  },
+  page: {
+    flex: 4,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
