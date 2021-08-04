@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Profile} from 'react-native-fbsdk-next';
-import {User} from './useLoginUser';
 import {FBProfile} from 'react-native-fbsdk-next/types/FBProfile';
+import {User} from '../models/user';
 
 export const useFacebookUser = (user?: User): [FBProfile | null] => {
   const [profile, setProfile] = useState<FBProfile | null>(null);

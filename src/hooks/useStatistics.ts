@@ -3,7 +3,7 @@ import {useLoginUser} from './useLoginUser';
 import {useEffect, useState} from 'react';
 import * as allTime from '../data/all-time/index.json';
 import * as lastYear from '../data/past-year/index.json';
-import {Mode} from '../pages/ProfilePage';
+import {Mode} from '../models';
 
 const getAgeGroup = (age: number): string => {
   if (age >= 70) {
@@ -67,12 +67,12 @@ function calc(array: number[], i1: number, i2: number) {
     result += element;
   });
 
-  return result;
+  return result.toFixed(2);
 }
 
-export const useStatistics = (mode: Mode): [number, number] => {
+export const useStatistics = (mode: Mode): [number, string] => {
   const [stats, setStats] = useState<number>(0);
-  const [pastYear, setPastYear] = useState<number>(0);
+  const [pastYear, setPastYear] = useState<string>('0');
   const [partners] = usePartners();
   const [profile] = useLoginUser();
 

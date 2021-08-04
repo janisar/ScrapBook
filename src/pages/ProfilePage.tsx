@@ -11,13 +11,9 @@ import {useLoginUser} from '../hooks/useLoginUser';
 import {useFacebookUser} from '../hooks/useFacebookUser';
 import Pie from 'react-native-pie';
 import {useStatistics} from '../hooks/useStatistics';
+import {Mode} from '../models';
 
 type Props = {};
-
-export enum Mode {
-  LAST_YEAR,
-  ALL_TIME,
-}
 
 export const ProfilePage: FunctionComponent<Props> = () => {
   const [userProfile] = useLoginUser();

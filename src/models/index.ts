@@ -61,3 +61,8 @@ export enum Sex {
   Male,
   Female,
 }
+
+export enum Mode {
+  LAST_YEAR,
+  ALL_TIME,
+}
