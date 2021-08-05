@@ -60,19 +60,19 @@ const getSex = (sex: string | undefined): string => {
   return 'female';
 };
 
-function calc(array: number[], i1: number, i2: number) {
+function calc(array: number[], i1: number, i2: number): number {
   let result = 0;
 
   array.slice(i1, i2 + 1).forEach(element => {
     result += element;
   });
 
-  return result.toFixed(2);
+  return Math.round(result * 100) / 100;
 }
 
-export const useStatistics = (mode: Mode): [number, string] => {
+export const useStatistics = (mode: Mode): [number, number] => {
   const [stats, setStats] = useState<number>(0);
-  const [pastYear, setPastYear] = useState<string>('0');
+  const [pastYear, setPastYear] = useState<number>(0);
   const [partners] = usePartners();
   const [profile] = useLoginUser();
 

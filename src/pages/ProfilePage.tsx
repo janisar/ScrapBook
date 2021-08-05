@@ -9,6 +9,7 @@ import {
 import {Text} from '../components/atoms/Text';
 import {useLoginUser} from '../hooks/useLoginUser';
 import {useFacebookUser} from '../hooks/useFacebookUser';
+// @ts-ignore
 import Pie from 'react-native-pie';
 import {useStatistics} from '../hooks/useStatistics';
 import {Mode} from '../models';

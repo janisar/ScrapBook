@@ -1,34 +1,35 @@
 import {useContext, useEffect, useState} from 'react';
 import {Partner} from '../models';
 import {retrieveData} from '../storage/AsyncStorage';
-import {AppState} from '../context/Context';
 import {partnersAsyncStorageKey} from '../context/reducers/partnerReducer';
+import {PartnerContext} from '../context/Context';
 
 export const usePartners = (): [Partner[]] => {
-  const {partners} = useContext(AppState);
-  const [p, setPartners] = useState<Partner[]>(partners);
+  const {partners, setPartners} = useContext(PartnerContext);
   const [asyncData, setAsyncData] = useState<Partner[]>([]);
 
   useEffect(() => {
     setPartners(partners);
-  }, [partners]);
+  }, [partners, setPartners]);
 
   useEffect(() => {
     fetchPartnersFromAsyncStorage();
   }, []);
 
   useEffect(() => {
-    if (!p || p.length === 0) {
+    if (!partners || partners.length === 0) {
       setPartners(asyncData);
     }
-  }, [asyncData, p]);
+  }, [asyncData, partners]);
 
   const fetchPartnersFromAsyncStorage = async () => {
     const data = await retrieveData<Partner[]>(partnersAsyncStorageKey);
+    console.log(data);
     if (data) {
       setAsyncData(data);
+      setPartners(data)
     }
   };
 
-  return [p];
+  return [partners];
 };

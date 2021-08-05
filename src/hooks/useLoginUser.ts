@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from 'react';
 import {retrieveData} from '../storage/AsyncStorage';
 import {FBAccessToken} from 'react-native-fbsdk-next/types/FBAccessToken';
-import {AppDispatch, AppState} from '../context/Context';
+import {ProfileContext} from '../context/Context';
 import {User} from '../models/user';
 
 export const fbUserKey = 'fbUser';
@@ -16,9 +16,8 @@ export const useLoginUser = (): [
   () => void,
   () => Promise<string | null | undefined>,
 ] => {
-  const {profile} = useContext(AppState);
+  const {profile, setProfile} = useContext(ProfileContext);
   const [user, setUser] = useState<User>();
-  const dispatch = useContext(AppDispatch);
   const [asyncData, setAsyncData] = useState<User>();
 
   useEffect(() => {
@@ -33,6 +32,7 @@ export const useLoginUser = (): [
     const data = await retrieveData<User>(userKey);
     if (data) {
       setAsyncData(data);
+      setProfile(data);
     }
   };
 
@@ -53,7 +53,7 @@ export const useLoginUser = (): [
   const complete = () => {
     const result = {...user, complete: true};
     setUser(result);
-    dispatch({type: 'SAVE_PROFILE', value: result});
+    setProfile(result);
   };
 
   const saveField =

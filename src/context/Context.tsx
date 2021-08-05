@@ -2,44 +2,58 @@ import React, {
   createContext,
   FunctionComponent,
   useEffect,
-  useReducer,
+  useState,
 } from 'react';
 import {Partner} from '../models';
-import {AppReducer} from './Reducer';
-import {Action, makeMiddleware} from './middleware';
-import {User} from '../hooks/useLoginUser';
-import {immerable} from 'immer';
+import {userKey} from '../hooks/useLoginUser';
+import {storeData} from '../storage/AsyncStorage';
+import {partnersAsyncStorageKey} from './reducers/partnerReducer';
+import {User} from '../models/user';
 
 export type ContextType = {
   partners: Partner[];
   profile?: User;
+
+  setProfile: (user: User) => void;
 };
 
-const defaultContext: ContextType = {
+const ProfileContext = createContext<{
+  profile: User;
+  setProfile: (user: User) => void;
+}>({
+  profile: {},
+  setProfile: (_: User) => {},
+});
+
+const PartnerContext = createContext<{
+  partners: Partner[];
+  setPartners: (partner: Partner[]) => void;
+}>({
   partners: [],
-  profile: undefined,
-  [immerable]: true,
-} as ContextType;
-
-const defaultDispatch: (dispatch: Action) => void = () => {};
-
-const AppState = createContext(defaultContext);
-const AppDispatch = createContext(defaultDispatch);
+  setPartners: (_: Partner[]) => {},
+});
 
 const AppStateProvider: FunctionComponent = ({children}) => {
-  const [state, dispatch] = useReducer(AppReducer, defaultContext);
-
-  const middleware = makeMiddleware(dispatch, state);
+  const [profile, setProfile] = useState<User>({});
+  const [partners, setPartners] = useState<Partner[]>([]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    storeData(userKey, profile);
+  }, [profile]);
+
+  useEffect(() => {
+    if (partners.length !== 0) {
+      storeData(partnersAsyncStorageKey, partners);
+    }
+  }, [partners]);
 
   return (
-    <AppState.Provider value={state}>
-      <AppDispatch.Provider value={middleware}>{children}</AppDispatch.Provider>
-    </AppState.Provider>
+    <PartnerContext.Provider value={{partners, setPartners}}>
+      <ProfileContext.Provider value={{profile, setProfile}}>
+        {children}
+      </ProfileContext.Provider>
+    </PartnerContext.Provider>
   );
 };
 
-export {AppStateProvider, AppState, AppDispatch};
+export {AppStateProvider, ProfileContext, PartnerContext};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FunctionComponent, useContext} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -8,8 +8,7 @@ import {ProfilePage} from './src/pages/ProfilePage';
 import {RegisterFlowScreen} from './src/pages/RegisterFlowScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AddPartnerPage} from './src/pages/AddPartnerPage';
-import {AppStateProvider} from './src/context/Context';
-import {useLoginUser} from './src/hooks/useLoginUser';
+import {AppStateProvider, ProfileContext} from './src/context/Context';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -22,27 +21,27 @@ const Home = () => {
     </Tab.Navigator>
   );
 };
-const App = () => {
-  const [profile] = useLoginUser();
 
+const Authorized: FunctionComponent = ({children}) => {
+  const {profile} = useContext(ProfileContext);
+  return <>{profile?.complete ? <>{children}</> : <RegisterFlowScreen />}</>;
+};
+
+const App = () => {
   return (
     <AppStateProvider>
-      <NavigationContainer>
-        {profile?.complete ? (
-          <>
-            <Stack.Navigator>
-              <Stack.Screen name={'History'} component={Home} />
-              <Stack.Screen
-                name={'AddPartner'}
-                component={AddPartnerPage}
-                options={{title: 'Add new partner', headerLeft: null}}
-              />
-            </Stack.Navigator>
-          </>
-        ) : (
-          <RegisterFlowScreen />
-        )}
-      </NavigationContainer>
+      <Authorized>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name={'History'} component={Home} />
+            <Stack.Screen
+              name={'AddPartner'}
+              component={AddPartnerPage}
+              options={{title: 'Add new partner', headerLeft: null}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Authorized>
     </AppStateProvider>
   );
 };
