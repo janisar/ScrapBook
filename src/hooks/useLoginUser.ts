@@ -34,7 +34,7 @@ export const useLoginUser = (): [
 
   const facebookLogin = (value?: FBAccessToken | null) => {
     if (value) {
-      saveField('fbUserData')(value);
+      setUser({...user, id: value.userID, fbUserData: value, auth: 'facebook'});
       storeData('fbUserKey', value);
     }
   };
@@ -46,7 +46,7 @@ export const useLoginUser = (): [
   };
 
   const saveField =
-    (field: 'fbUserData' | 'age' | 'sex' | 'dating') =>
+    (field: 'fbUserData' | 'age' | 'sex' | 'dating' | 'id') =>
     (value: number | string | FBAccessToken | null) => {
       setUser({...user, [`${field}`]: value});
     };
