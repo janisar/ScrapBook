@@ -1,6 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {useStatistics} from './useStatistics';
-import {usePartners} from './usePartners';
 import {useLoginUser} from './useLoginUser';
 import {Mode, Partner, Sex} from '../models';
 
@@ -10,7 +9,6 @@ jest.mock('./useLoginUser');
 describe('Usestatitsics.tests', () => {
   it('should create all time statistics', async () => {
     const mode = Mode.ALL_TIME;
-    (usePartners as jest.Mock).mockReturnValue([[{}]]);
     (useLoginUser as jest.Mock).mockReturnValue([{sex: Sex.Male, age: 29}]);
 
     const {result} = renderHook(() => useStatistics(mode));
@@ -23,7 +21,6 @@ describe('Usestatitsics.tests', () => {
     const mode = Mode.ALL_TIME;
     const partner = new Partner();
     partner.startDate = new Date();
-    (usePartners as jest.Mock).mockReturnValue([[partner]]);
     (useLoginUser as jest.Mock).mockReturnValue([{sex: Sex.Male, age: 29}]);
 
     const {result} = renderHook(() => useStatistics(mode));

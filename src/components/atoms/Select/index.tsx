@@ -2,7 +2,7 @@ import React, {FunctionComponent} from 'react';
 import RNPickerSelect from 'react-native-picker-select';
 import {SelectItem} from '../../../models';
 import {Label} from '../Label';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 
 type Props = {
   onChange: (value: string) => void;
@@ -10,6 +10,7 @@ type Props = {
   placeholder: string;
   label?: string;
   onNext: () => void;
+  extendedStyle?: {};
 };
 
 const styles = StyleSheet.create({
@@ -18,6 +19,11 @@ const styles = StyleSheet.create({
   },
   inputAndroid: {
     fontSize: 18,
+    color: 'black',
+  },
+  wrapper: {
+    width: Platform.OS === 'android' ? '95%' : 'auto',
+    flex: 1,
   },
 });
 export const Select: FunctionComponent<Props> = ({
@@ -25,10 +31,11 @@ export const Select: FunctionComponent<Props> = ({
   items,
   label,
   placeholder,
+  extendedStyle,
   onNext,
 }) => {
   return (
-    <View>
+    <View style={{...styles.wrapper, ...extendedStyle}}>
       {label && <Label>{label}: </Label>}
       {!label && <Label>&nbsp;</Label>}
       <RNPickerSelect

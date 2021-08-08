@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import {FunctionComponent} from 'react';
 import {ScrollViewPage} from '../components/molecules/ScrollViewPage';
 import {useTranslation} from 'react-i18next';
@@ -55,10 +55,20 @@ export const RegisterFlowScreen: FunctionComponent<Props> = () => {
                       onChange={value => {
                         saveField(page.field!)(value);
                       }}
+                      extendedStyle={{alignItems: 'center'}}
                       onNext={toNextPage}
                       placeholder={'Please select'}
                       items={page.options}
                     />
+                    {Platform.OS === 'android' && (
+                      <Button
+                        inProgress={false}
+                        label={'Next'}
+                        onPress={toNextPage}
+                        extendedStyle={{}}
+                        disabled={false}
+                      />
+                    )}
                   </View>
                 )}
                 {page.type === 'age' && (

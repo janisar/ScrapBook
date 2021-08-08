@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,8 +10,9 @@ import {
 import {useTranslation} from 'react-i18next';
 import {Header2} from '../components/atoms/Header2';
 import {PartnerListCard} from '../components/organisms/PartnerListCard';
-import {usePartners} from '../hooks/usePartners';
 import {useNavigation} from '@react-navigation/native';
+import {PartnerContext} from '../context/Context';
+import {NoPartners} from '../components/molecules/NoPartners';
 
 const styles = StyleSheet.create({
   header: {
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 export const HistoryPage = () => {
-  const [p] = usePartners();
+  const {partners} = useContext(PartnerContext);
   const navigation = useNavigation();
   const {t} = useTranslation('history');
 
@@ -55,17 +56,20 @@ export const HistoryPage = () => {
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.innerWrapper}>
         <Header2 extendedStyle={styles.header}>{t('title')}</Header2>
-        <ScrollView style={styles.partnersList}>
-          {p.map(partner => {
-            return (
-              <PartnerListCard
-                partner={partner}
-                allPartners={p}
-                key={partner.name}
-              />
-            );
-          })}
-        </ScrollView>
+        {partners.length > 0 && (
+          <ScrollView style={styles.partnersList}>
+            {partners.map(partner => {
+              return (
+                <PartnerListCard
+                  partner={partner}
+                  allPartners={partners}
+                  key={partner.name}
+                />
+              );
+            })}
+          </ScrollView>
+        )}
+        {partners.length === 0 && <NoPartners message={t('noPartners')} />}
       </View>
       <View style={styles.actionButton}>
         <TouchableOpacity

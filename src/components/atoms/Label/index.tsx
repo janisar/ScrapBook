@@ -9,6 +9,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Label: FunctionComponent = ({children}) => {
-  return <Text style={styles.t}>{children}</Text>;
+type Props = {
+  extendedStyle?: {};
+};
+
+export const Label: FunctionComponent<Props> = ({children, extendedStyle}) => {
+  return <Text style={{...styles.t, ...extendedStyle}}>{children}</Text>;
 };

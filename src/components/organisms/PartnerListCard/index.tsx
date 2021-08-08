@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Partner} from '../../../models';
+import {useNavigation} from '@react-navigation/native';
 
 type Props = {
   allPartners: Partner[];
@@ -73,10 +74,13 @@ export const PartnerListCard: FunctionComponent<Props> = ({
   const width = (partner.durationInDays! * 100) / longest!;
   const colour = getColour(partner.type);
   const style = styles(`${getWidth(width, partner.type)}%`, colour);
+  const nav = useNavigation();
   return (
-    <View style={style.wrapper}>
+    <TouchableOpacity
+      style={style.wrapper}
+      onPress={() => nav.navigate('Partner', {partner: partner})}>
       <Text style={style.partnerLabel}>{partner.name}</Text>
       <View style={style.progressBar} />
-    </View>
+    </TouchableOpacity>
   );
 };

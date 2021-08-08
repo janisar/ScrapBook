@@ -42,7 +42,18 @@ const styles = StyleSheet.create({
   col: {
     display: 'flex',
     flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
+  },
+  colItem: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  type: {
+    justifyContent: 'center',
+    width: '50%',
   },
   safeArea: {
     paddingTop: 0,
@@ -73,8 +84,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '100%',
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    textAlign: 'center',
   },
 });
 
@@ -125,6 +137,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     <Select
                       onChange={setFormValue('type')}
                       items={page.options!}
+                      extendedStyle={styles.type}
                       placeholder={'Select Type'}
                       onNext={() => {}}
                     />
@@ -159,14 +172,14 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                       {page.title}
                     </Header2>
                     <View style={styles.col}>
-                      <View style={{marginTop: 20}}>
+                      <View style={styles.colItem}>
                         <Input
                           onChange={setFormValue('duration')}
                           keyboardType={'numeric'}
                           editable={!form.inProgress}
                         />
                       </View>
-                      <View style={{marginLeft: 20}}>
+                      <View style={styles.colItem}>
                         <Select
                           onChange={setFormValue('durationUnit')}
                           items={page.options!}

@@ -32,6 +32,7 @@ export class Partner {
   durationInDays?: number;
   startDate?: Date;
   inProgress?: boolean;
+  country?: string;
 
   static createFromPartnerForm(form: PartnerForm): Partner {
     const partner = new Partner();
@@ -41,6 +42,21 @@ export class Partner {
     partner.startDate = form.startDate;
     partner.inProgress = form.inProgress;
     return partner;
+  }
+
+  static create(partner: Partner) {
+    const result = new Partner();
+    result.name = partner.name;
+    result.type = partner.type;
+    result.durationInDays = partner.durationInDays;
+    result.startDate = partner.startDate;
+    result.inProgress = partner.inProgress;
+    return result;
+  };
+
+  withCountry(country?: string): Partner {
+    this.country = country;
+    return this;
   }
 
   isValid() {

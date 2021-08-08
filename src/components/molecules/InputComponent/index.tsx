@@ -6,6 +6,8 @@ type InputComponentProps = {
   onChange: (value: string) => void;
   width?: number;
   placeholder?: string;
+  extendedStyle?: {};
+  value?: string;
 };
 
 const styles = StyleSheet.create({
@@ -21,13 +23,16 @@ const styles = StyleSheet.create({
 export const InputComponent: FunctionComponent<InputComponentProps> = ({
   onChange,
   width,
+  extendedStyle,
+  value,
   placeholder,
 }) => {
   return (
-    <View style={styles.inputComponent}>
+    <View style={{...styles.inputComponent, ...extendedStyle}}>
       <Input
         onChange={onChange}
         width={width}
+        value={value}
         placeholder={placeholder}
         editable={true}
       />

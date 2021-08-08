@@ -13,16 +13,18 @@ type Props = {
   extendedStyle?: any;
   inProgress: boolean;
   disabled: boolean;
+  secondary?: boolean;
 };
 
 const Button: FunctionComponent<Props> = ({
   onPress,
   label,
   extendedStyle,
+  secondary,
   inProgress = false,
   disabled = false,
 }) => {
-  const styles = stylesheet;
+  const styles = stylesheet(secondary);
   return (
     <View
       style={{
@@ -33,32 +35,38 @@ const Button: FunctionComponent<Props> = ({
         disabled={disabled || inProgress}
         style={{...styles.button, ...extendedStyle.button}}
         onPress={onPress}>
-        {inProgress ? <ActivityIndicator /> : <Text extendedStyle={styles.label}>{label}</Text>}
+        {inProgress ? (
+          <ActivityIndicator />
+        ) : (
+          <Text extendedStyle={styles.label}>{label}</Text>
+        )}
       </TouchableOpacity>
     </View>
   );
 };
 
-const stylesheet = StyleSheet.create({
-  label: {
-    fontSize: 18,
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  button: {
-    width: '80%',
-    height: 49,
-    backgroundColor: 'purple',
-    borderRadius: 5,
-    alignContent: 'center',
-    justifyContent: 'center',
-    bottom: 0,
-  },
-  outerWrapper: {
-    width: '100%',
-    flexDirection: 'row',
-  },
-});
+const stylesheet = (secondary?: boolean) =>
+  StyleSheet.create({
+    label: {
+      fontSize: 18,
+      color: 'white',
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    button: {
+      width: '80%',
+      height: 49,
+      backgroundColor: secondary ? 'gray' : 'purple',
+      borderRadius: 5,
+      justifyContent: 'center',
+      bottom: 0,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+    outerWrapper: {
+      width: '100%',
+      flexDirection: 'row',
+    },
+  });
 
 export default Button;

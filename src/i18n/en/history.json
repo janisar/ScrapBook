@@ -1,10 +1,11 @@
 {
-  "title": "Your history looks empty",
+  "title": "Your sexual history",
+  "noPartners": "Wow, such empty..",
   "add": "Add",
   "name": "Name...",
   "pages": [
     {
-      "title": "Who did you hit?",
+      "title": "Who did you tap?",
       "action": "Next",
       "type": "name",
       "placeholder": "Enter name.."

@@ -1,4 +1,4 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import {useState} from 'react';
 
 export const useScrollView = (
@@ -10,7 +10,8 @@ export const useScrollView = (
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
 
   const toNextPage = () => {
-    const screenWidth = Dimensions.get('screen').width - 80;
+    const screenWidth =
+      Dimensions.get('screen').width - (Platform.OS === 'ios' ? 80 : 100);
     setOffset(offset + screenWidth);
     setCurrentPageIndex(currentPageIndex + 1);
     if (currentPageIndex >= totalPages) {
@@ -19,7 +20,8 @@ export const useScrollView = (
   };
 
   const toPreviousPage = () => {
-    const screenWidth = Dimensions.get('screen').width - 80;
+    const screenWidth =
+      Dimensions.get('screen').width - (Platform.OS === 'ios' ? 80 : 100);
     setOffset(offset - screenWidth);
     setCurrentPageIndex(currentPageIndex - 1);
   };

@@ -23,21 +23,6 @@
           "value": "F"
         }
       ]
-    },
-    {
-      "title": "Who do you date?",
-      "type": "dating",
-      "field": "dating",
-      "options": [
-        {
-          "label": "Male",
-          "value": "M"
-        },
-        {
-          "label": "Female",
-          "value": "F"
-        }
-      ]
     }
   ]
 }

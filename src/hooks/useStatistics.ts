@@ -1,9 +1,9 @@
-import {usePartners} from './usePartners';
 import {useLoginUser} from './useLoginUser';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import * as allTime from '../data/all-time/index.json';
 import * as lastYear from '../data/past-year/index.json';
 import {Mode} from '../models';
+import {PartnerContext} from '../context/Context';
 
 const getAgeGroup = (age: number): string => {
   if (age >= 70) {
@@ -73,7 +73,7 @@ function calc(array: number[], i1: number, i2: number): number {
 export const useStatistics = (mode: Mode): [number, number] => {
   const [stats, setStats] = useState<number>(0);
   const [pastYear, setPastYear] = useState<number>(0);
-  const [partners] = usePartners();
+  const {partners} = useContext(PartnerContext);
   const [profile] = useLoginUser();
 
   useEffect(() => {

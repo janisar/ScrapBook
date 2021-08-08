@@ -8,7 +8,7 @@ export const resources = {
   en: {
     history,
     common,
-    register
+    register,
   },
 } as const;
 

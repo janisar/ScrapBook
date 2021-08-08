@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import {Partner} from '../models';
 import {userKey} from '../hooks/useLoginUser';
-import {storeData} from '../storage/AsyncStorage';
+import { retrieveData, storeData } from "../storage/AsyncStorage";
 import {partnersAsyncStorageKey} from './reducers/partnerReducer';
 import {User} from '../models/user';
 
@@ -40,6 +40,17 @@ const AppStateProvider: FunctionComponent = ({children}) => {
   useEffect(() => {
     storeData(userKey, profile);
   }, [profile]);
+
+  useEffect(() => {
+    fetchPartnersFromAsyncStorage();
+  }, []);
+
+  const fetchPartnersFromAsyncStorage = async () => {
+    const data = await retrieveData<Partner[]>(partnersAsyncStorageKey);
+    if (data) {
+      setPartners(data);
+    }
+  };
 
   useEffect(() => {
     if (partners.length !== 0) {

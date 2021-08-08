@@ -8,6 +8,7 @@ type Props = {
   width?: number;
   label?: string;
   editable?: boolean;
+  value?: string;
 };
 
 const styles = (width: number) =>
@@ -18,16 +19,19 @@ const styles = (width: number) =>
       borderRadius: 10,
       width: width,
       height: 30,
+      padding: 0,
       paddingLeft: 4,
-      fontSize: 18
+      fontSize: 18,
     },
     wrapper: {
+      height: 30,
     },
   });
 export const Input: FunctionComponent<Props> = ({
   onChange,
   placeholder,
   label,
+  value,
   keyboardType = 'default',
   width = 80,
   editable,
@@ -37,6 +41,7 @@ export const Input: FunctionComponent<Props> = ({
     <View style={s.wrapper}>
       <TextInput
         style={s.input}
+        value={value}
         editable={!!editable}
         placeholder={placeholder}
         onChangeText={onChange}
