@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">History</string>
+    <string name="app_name">Scrapbook</string>
     <string name="facebook_app_id">140492838146069</string>
     <string name="facebook_client_token">7267fadad4cf204fc735c4df5698fc76</string>
     <string name="google_api_key">AIzaSyCVFhTojeOAz419cL5c_PhjmkTNJbzJ2uM</string>
