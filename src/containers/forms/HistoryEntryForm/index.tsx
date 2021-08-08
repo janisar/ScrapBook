@@ -51,6 +51,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
   },
+  colItem2: {
+    flex: 1,
+    alignItems: 'center',
+  },
   type: {
     justifyContent: 'center',
     width: '50%',
@@ -179,7 +183,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                           editable={!form.inProgress}
                         />
                       </View>
-                      <View style={styles.colItem}>
+                      <View style={styles.colItem2}>
                         <Select
                           onChange={setFormValue('durationUnit')}
                           items={page.options!}

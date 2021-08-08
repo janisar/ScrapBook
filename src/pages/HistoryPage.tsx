@@ -1,18 +1,12 @@
 import React, {useContext} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Header2} from '../components/atoms/Header2';
 import {PartnerListCard} from '../components/organisms/PartnerListCard';
 import {useNavigation} from '@react-navigation/native';
 import {PartnerContext} from '../context/Context';
 import {NoPartners} from '../components/molecules/NoPartners';
+import {AddButton} from '../components/molecules/AddButton';
 
 const styles = StyleSheet.create({
   header: {
@@ -26,18 +20,18 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   innerWrapper: {
-    paddingVertical: 0,
     display: 'flex',
-  },
-  add: {
-    marginBottom: 200,
+    alignItems: 'center',
     flex: 1,
+    width: '100%',
   },
   partnersList: {
     display: 'flex',
     flex: 9,
     flexDirection: 'column',
     paddingVertical: 10,
+    paddingHorizontal: 30,
+    width: '100%',
     marginBottom: 20,
   },
   actionButton: {
@@ -72,11 +66,7 @@ export const HistoryPage = () => {
         {partners.length === 0 && <NoPartners message={t('noPartners')} />}
       </View>
       <View style={styles.actionButton}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddPartner')}
-          style={styles.add}>
-          <Text>{t('add')}</Text>
-        </TouchableOpacity>
+        <AddButton onPress={() => navigation.navigate('AddPartner')} />
       </View>
     </SafeAreaView>
   );

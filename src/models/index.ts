@@ -1,6 +1,6 @@
 export type SelectItem = {
   label: string;
-  value: number;
+  value: number | string;
 };
 
 export type PartnerForm = {
@@ -51,6 +51,7 @@ export class Partner {
     result.durationInDays = partner.durationInDays;
     result.startDate = partner.startDate;
     result.inProgress = partner.inProgress;
+    result.country = partner.country;
     return result;
   };
 

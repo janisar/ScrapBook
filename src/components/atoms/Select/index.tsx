@@ -11,18 +11,20 @@ type Props = {
   label?: string;
   onNext: () => void;
   extendedStyle?: {};
+  value?: string;
 };
 
 const styles = StyleSheet.create({
   inputIOS: {
     fontSize: 18,
+    marginTop: 10,
   },
   inputAndroid: {
     fontSize: 18,
     color: 'black',
   },
   wrapper: {
-    width: Platform.OS === 'android' ? '95%' : 'auto',
+    minWidth: Platform.OS === 'android' ? 200 : 'auto',
     flex: 1,
   },
 });
@@ -32,6 +34,7 @@ export const Select: FunctionComponent<Props> = ({
   label,
   placeholder,
   extendedStyle,
+  value,
   onNext,
 }) => {
   return (
@@ -39,6 +42,7 @@ export const Select: FunctionComponent<Props> = ({
       {label && <Label>{label}: </Label>}
       {!label && <Label>&nbsp;</Label>}
       <RNPickerSelect
+        value={value}
         style={styles}
         placeholder={{label: placeholder, value: 0}}
         onValueChange={onChange}

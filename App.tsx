@@ -10,6 +10,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {AddPartnerPage} from './src/pages/AddPartnerPage';
 import {AppStateProvider, ProfileContext} from './src/context/Context';
 import {PartnerPage} from './src/pages/PartnerPage';
+import {MapPage} from './src/pages/MapPage';
 import {StyleSheet} from 'react-native';
 
 const Tab = createBottomTabNavigator();
@@ -26,6 +27,7 @@ const Home = () => {
     <Tab.Navigator tabBarOptions={{style: tabBarStyle.style}}>
       <Tab.Screen name="History" component={HistoryPage} />
       <Tab.Screen name="Profile" component={ProfilePage} />
+      <Tab.Screen name="Map" component={MapPage} />
     </Tab.Navigator>
   );
 };
