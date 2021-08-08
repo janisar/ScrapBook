@@ -57,7 +57,7 @@ export const HistoryPage = () => {
                 <PartnerListCard
                   partner={partner}
                   allPartners={partners}
-                  key={partner.name}
+                  key={partner.id}
                 />
               );
             })}

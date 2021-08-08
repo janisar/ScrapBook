@@ -1,3 +1,5 @@
+import {uuidv4} from '../utils';
+
 export type SelectItem = {
   label: string;
   value: number | string;
@@ -27,12 +29,17 @@ export function getDurationInDays(form: any): number {
 }
 
 export class Partner {
+  id: string;
   name?: string;
   type?: string;
   durationInDays?: number;
   startDate?: Date;
   inProgress?: boolean;
   country?: string;
+
+  constructor() {
+    this.id = uuidv4();
+  }
 
   static createFromPartnerForm(form: PartnerForm): Partner {
     const partner = new Partner();
@@ -53,7 +60,7 @@ export class Partner {
     result.inProgress = partner.inProgress;
     result.country = partner.country;
     return result;
-  };
+  }
 
   withCountry(country?: string): Partner {
     this.country = country;
@@ -69,7 +76,8 @@ export class Partner {
       p1.durationInDays === p2.durationInDays &&
       p1.name === p2.name &&
       p1.type === p2.type &&
-      p1.startDate === p2.startDate
+      p1.startDate === p2.startDate &&
+      p1.id === p2.id
     );
   }
 }
