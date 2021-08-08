@@ -68,6 +68,7 @@ export const RegisterFlowScreen: FunctionComponent<Props> = () => {
                   <View style={styles.page}>
                     <Input
                       onChange={saveField('age')}
+                      keyboardType={'numeric'}
                       width={120}
                       placeholder={'Enter your age'}
                       editable={true}
