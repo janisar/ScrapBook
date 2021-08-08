@@ -18,17 +18,10 @@ import {Input} from '../components/atoms/Input';
 type Props = {};
 
 export const RegisterFlowScreen: FunctionComponent<Props> = () => {
-  const [, saveField, complete] = useLoginUser();
+  const [, saveField, facebookLogin, complete] = useLoginUser();
   const {t} = useTranslation('register');
   const pages: RegisterPage[] = t('pages', {returnObjects: true});
   const [offset, toNextPage, , onBack] = useScrollView(pages.length, complete);
-
-  const facebookLogin = (value?: FBAccessToken | null) => {
-    if (value) {
-      storeData('fbUserKey', value);
-      saveField('fbUserData')(value);
-    }
-  };
 
   return (
     <ScrollViewPage
@@ -39,7 +32,7 @@ export const RegisterFlowScreen: FunctionComponent<Props> = () => {
         <ScrollView pages={pages} offset={offset}>
           {pages.map(page => {
             return (
-              <View style={styles.scrollViewContent}>
+              <View style={styles.scrollViewContent} key={page.title}>
                 <Header2 extendedStyle={styles.header}>{page.title}</Header2>
                 <View style={styles.page}>
                   {page.type === 'login' && (
