@@ -1,4 +1,4 @@
-package com.history;
+package com.smokey.scrapbook;
 
 import android.os.Bundle;
 
