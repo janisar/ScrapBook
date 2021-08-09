@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		21109AF126BF7DA00011DB01 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 21109AF026BF7DA00011DB01 /* fonts */; };
 		2184A3F926B2C49800974832 /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2184A3F826B2C49800974832 /* empty.swift */; };
+		21BF9AA526C14CDA004E4D52 /* AppCenter-config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21BF9AA426C14CDA004E4D52 /* AppCenter-config.plist */; };
 		7F1A08CAF48E67F8881D20FF /* libPods-History-HistoryTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A4A84F2ADD93B5717B2770 /* libPods-History-HistoryTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C612ECDD4B9FA8B35DDE7955 /* libPods-History.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 506ACFBF64091716641D38E1 /* libPods-History.a */; };
@@ -41,6 +42,7 @@
 		21109AF026BF7DA00011DB01 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		2184A3F726B2C49800974832 /* History-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "History-Bridging-Header.h"; sourceTree = "<group>"; };
 		2184A3F826B2C49800974832 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
+		21BF9AA426C14CDA004E4D52 /* AppCenter-config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-config.plist"; sourceTree = "<group>"; };
 		2C226939F4EADD9205F2F142 /* Pods-History.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-History.release.xcconfig"; path = "Target Support Files/Pods-History/Pods-History.release.xcconfig"; sourceTree = "<group>"; };
 		31A4A84F2ADD93B5717B2770 /* libPods-History-HistoryTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-History-HistoryTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		503F7B4127F9CE86B7A0FA5A /* Pods-History-HistoryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-History-HistoryTests.release.xcconfig"; path = "Target Support Files/Pods-History-HistoryTests/Pods-History-HistoryTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				21BF9AA426C14CDA004E4D52 /* AppCenter-config.plist */,
 				21109AF026BF7DA00011DB01 /* fonts */,
 				2184A3F826B2C49800974832 /* empty.swift */,
 				13B07FAE1A68108700A75B9A /* History */,
@@ -249,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				21109AF126BF7DA00011DB01 /* fonts in Resources */,
+				21BF9AA526C14CDA004E4D52 /* AppCenter-config.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
