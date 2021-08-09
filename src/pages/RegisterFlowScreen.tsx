@@ -6,8 +6,6 @@ import {useTranslation} from 'react-i18next';
 import {Select} from '../components/atoms/Select';
 import {LoginComponent} from './LoginPage';
 import {useLoginUser} from '../hooks/useLoginUser';
-import {FBAccessToken} from 'react-native-fbsdk-next/types/FBAccessToken';
-import {storeData} from '../storage/AsyncStorage';
 import {RegisterPage} from '../i18n/models';
 import {ScrollView} from '../components/atoms/ScrollView';
 import {useScrollView} from '../hooks/useScrollView';

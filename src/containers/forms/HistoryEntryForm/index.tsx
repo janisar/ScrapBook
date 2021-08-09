@@ -1,6 +1,5 @@
 import React, {FunctionComponent} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {PartnerForm} from '../../../models';
 import {Header2} from '../../../components/atoms/Header2';
 import {Input} from '../../../components/atoms/Input';
 import {Select} from '../../../components/atoms/Select';
@@ -13,6 +12,7 @@ import {useScrollView} from '../../../hooks/useScrollView';
 import {ScrollViewPage} from '../../../components/molecules/ScrollViewPage';
 import Button from '../../../components/molecules/Button';
 import {useNavigation} from '@react-navigation/native';
+import {PartnerForm} from '../../../models/partner';
 
 type Props = {
   setFormValue: (field: string) => (value: string | Date | boolean) => void;

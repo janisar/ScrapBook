@@ -167,7 +167,6 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				B9536B7D35C5E98512E7620B /* [CP] Embed Pods Frameworks */,
 				78A3B58B565FF156F1838FE2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -190,7 +189,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				A2BCBCD5617F5FDD0DEE35CD /* [CP] Embed Pods Frameworks */,
 				CC64E2CF911679E8766D2685 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -334,40 +332,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-History-HistoryTests/Pods-History-HistoryTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A2BCBCD5617F5FDD0DEE35CD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-History/Pods-History-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-History/Pods-History-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-History/Pods-History-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B9536B7D35C5E98512E7620B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-History-HistoryTests/Pods-History-HistoryTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-History-HistoryTests/Pods-History-HistoryTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-History-HistoryTests/Pods-History-HistoryTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		CC64E2CF911679E8766D2685 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -458,7 +422,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.smokey.scrapbook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/History.app/History";
 			};
@@ -483,7 +447,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.smokey.scrapbook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/History.app/History";
 			};
@@ -508,7 +472,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.smokey.scrapbook;
 				PRODUCT_NAME = History;
 				SWIFT_OBJC_BRIDGING_HEADER = "History-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -536,7 +500,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.smokey.scrapbook;
 				PRODUCT_NAME = History;
 				SWIFT_OBJC_BRIDGING_HEADER = "History-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

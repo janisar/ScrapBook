@@ -8,10 +8,11 @@ import {ProfilePage} from './src/pages/ProfilePage';
 import {RegisterFlowScreen} from './src/pages/RegisterFlowScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AddPartnerPage} from './src/pages/AddPartnerPage';
-import {AppStateProvider, ProfileContext} from './src/context/Context';
+import {AppStateProvider} from './src/context/Context';
 import {PartnerPage} from './src/pages/PartnerPage';
 import {MapPage} from './src/pages/MapPage';
 import {StyleSheet} from 'react-native';
+import {ProfileContext} from './src/context/UserContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

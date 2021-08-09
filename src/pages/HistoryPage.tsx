@@ -4,9 +4,9 @@ import {useTranslation} from 'react-i18next';
 import {Header2} from '../components/atoms/Header2';
 import {PartnerListCard} from '../components/organisms/PartnerListCard';
 import {useNavigation} from '@react-navigation/native';
-import {PartnerContext} from '../context/Context';
 import {NoPartners} from '../components/molecules/NoPartners';
 import {AddButton} from '../components/molecules/AddButton';
+import {PartnerContext} from '../context/PartnerContext';
 
 const styles = StyleSheet.create({
   header: {

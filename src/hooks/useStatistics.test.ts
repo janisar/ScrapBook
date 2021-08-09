@@ -1,7 +1,8 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {useStatistics} from './useStatistics';
 import {useLoginUser} from './useLoginUser';
-import {Mode, Partner, Sex} from '../models';
+import {Mode, Sex} from '../models';
+import {Partner} from '../models/partner';
 
 jest.mock('./usePartners');
 jest.mock('./useLoginUser');

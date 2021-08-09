@@ -1,7 +1,7 @@
 import {FBAccessToken} from 'react-native-fbsdk-next/types/FBAccessToken';
+import {Synchronise} from './index';
 
-export interface User {
-  id?: string;
+export class User extends Synchronise {
   auth?: 'facebook';
   fbUserData?: FBAccessToken;
   age?: number;

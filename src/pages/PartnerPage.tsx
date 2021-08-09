@@ -1,13 +1,13 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Text} from '../components/atoms/Text';
-import {Partner} from '../models';
 import {Label} from '../components/atoms/Label';
 import Button from '../components/molecules/Button';
 import {useNavigation} from '@react-navigation/native';
-import {PartnerContext} from '../context/Context';
 import {useCountries} from '../hooks/useCountries';
 import {Select} from '../components/atoms/Select';
+import {Partner} from '../models/partner';
+import {PartnerContext} from '../context/PartnerContext';
 
 type Props = {
   route: {params: {partner: Partner}};

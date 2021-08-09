@@ -1,7 +1,7 @@
 import * as countries from '../data/countries/countries.geo.json';
 import {useContext, useMemo} from 'react';
 import {SelectItem} from '../models';
-import {PartnerContext} from '../context/Context';
+import {PartnerContext} from '../context/PartnerContext';
 
 export const useCountries = (): [SelectItem[], any, any] => {
   const {partners} = useContext(PartnerContext);

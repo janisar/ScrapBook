@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from 'react';
 import * as allTime from '../data/all-time/index.json';
 import * as lastYear from '../data/past-year/index.json';
 import {Mode} from '../models';
-import {PartnerContext} from '../context/Context';
+import {PartnerContext} from '../context/PartnerContext';
 
 const getAgeGroup = (age: number): string => {
   if (age >= 70) {

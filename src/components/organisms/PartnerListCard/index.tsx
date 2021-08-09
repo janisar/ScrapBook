@@ -1,7 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Partner} from '../../../models';
 import {useNavigation} from '@react-navigation/native';
+import {Partner} from '../../../models/partner';
 
 type Props = {
   allPartners: Partner[];

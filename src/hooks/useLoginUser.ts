@@ -1,8 +1,9 @@
 import {useContext, useEffect, useState} from 'react';
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {FBAccessToken} from 'react-native-fbsdk-next/types/FBAccessToken';
-import {ProfileContext} from '../context/Context';
 import {User} from '../models/user';
+import {addUserFetch} from '../fetch/user';
+import {ProfileContext} from '../context/UserContext';
 
 export const fbUserKey = 'fbUserKey';
 export const userKey = 'scrapbook-user';
@@ -43,6 +44,12 @@ export const useLoginUser = (): [
     const result = {...user, complete: true};
     setUser(result);
     setProfile(result);
+
+    addUserFetch(result).then(response => {
+      if (response.ok) {
+        setProfile({...result, synced: true});
+      }
+    });
   };
 
   const saveField =
