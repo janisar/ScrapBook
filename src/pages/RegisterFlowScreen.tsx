@@ -25,6 +25,7 @@ export const RegisterFlowScreen: FunctionComponent<Props> = () => {
     <ScrollViewPage
       extendedStyle={styles.safeArea}
       onBack={onBack}
+      showBack={offset !== 0}
       backLabel={'Back'}>
       <View style={styles.scrollViewContainer}>
         <ScrollView pages={pages} offset={offset}>

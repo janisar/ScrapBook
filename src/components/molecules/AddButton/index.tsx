@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
@@ -19,9 +19,7 @@ type AddProps = {
 export const AddButton: FunctionComponent<AddProps> = ({onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.add}>
-      <Text>
-        <FontAwesomeIcon icon={faPlus} />
-      </Text>
+      <FontAwesomeIcon icon={faPlus} />
     </TouchableOpacity>
   );
 };

@@ -110,6 +110,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
   return (
     <ScrollViewPage
       extendedStyle={styles.safeArea}
+      showBack={true}
       onBack={onBack}
       backLabel={'Back'}>
       <View style={styles.wrapper}>

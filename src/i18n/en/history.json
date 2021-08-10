@@ -5,7 +5,7 @@
   "name": "Name...",
   "pages": [
     {
-      "title": "Who did you tap?",
+      "title": "Enter the name of the person",
       "action": "Next",
       "type": "name",
       "placeholder": "Enter name.."

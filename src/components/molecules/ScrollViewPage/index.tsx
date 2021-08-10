@@ -6,20 +6,24 @@ import BackButton from '../BackButton';
 type Props = {
   extendedStyle: {};
   onBack: () => void;
+  showBack: boolean;
   backLabel: string;
 };
 
 export const ScrollViewPage: FunctionComponent<Props> = ({
   extendedStyle,
   children,
+  showBack,
   onBack,
   backLabel,
 }) => (
   <Page extendedStyle={extendedStyle}>
     <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.header}>
-        <BackButton label={backLabel} onPress={onBack} />
-      </View>
+      {showBack && (
+        <View style={styles.header}>
+          <BackButton label={backLabel} onPress={onBack} />
+        </View>
+      )}
       <View style={styles.content}>
         <ScrollView contentContainerStyle={styles.container}>
           {children}
