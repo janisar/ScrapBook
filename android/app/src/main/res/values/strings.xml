@@ -3,4 +3,6 @@
     <string name="facebook_app_id">140492838146069</string>
     <string name="facebook_client_token">7267fadad4cf204fc735c4df5698fc76</string>
     <string name="google_api_key">AIzaSyCVFhTojeOAz419cL5c_PhjmkTNJbzJ2uM</string>
+    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
+    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
 </resources>
