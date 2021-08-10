@@ -25,19 +25,19 @@ export const MapPage: FunctionComponent<Props> = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        minZoomLevel={0}
-        zoomEnabled={false}
-        maxZoomLevel={0}>
+        minZoomLevel={-1}
+        zoomEnabled={true}
+        maxZoomLevel={3}>
         <Geojson
           geojson={unConquered}
-          strokeColor="#FF6D6A"
-          fillColor="#FF6D6A"
+          strokeColor="gray"
+          fillColor="gray"
           strokeWidth={2}
         />
         <Geojson
           geojson={conquered}
-          strokeColor="green"
-          fillColor="green"
+          strokeColor="purple"
+          fillColor="purple"
           strokeWidth={2}
         />
       </MapView>

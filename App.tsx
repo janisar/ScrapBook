@@ -19,13 +19,20 @@ const Stack = createStackNavigator();
 
 const tabBarStyle = StyleSheet.create({
   style: {
-    paddingBottom: 17,
+    display: 'flex',
+  },
+  tabStyle: {
+    justifyContent: 'center',
   },
 });
 
 const Home = () => {
   return (
-    <Tab.Navigator tabBarOptions={{style: tabBarStyle.style}}>
+    <Tab.Navigator
+      tabBarOptions={{
+        style: tabBarStyle.style,
+        tabStyle: tabBarStyle.tabStyle,
+      }}>
       <Tab.Screen name="History" component={HistoryPage} />
       <Tab.Screen name="Profile" component={ProfilePage} />
       <Tab.Screen name="Map" component={MapPage} />

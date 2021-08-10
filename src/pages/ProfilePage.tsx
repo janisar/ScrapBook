@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flex: 1,
+    flex: 2,
   },
   image: {
     width: 100,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   chart: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'space-between',
     alignItems: 'center',
   },

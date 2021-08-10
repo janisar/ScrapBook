@@ -160,7 +160,11 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     <Header2>{page.title}</Header2>
                     <DateSelect
                       date={form.startDate ?? new Date()}
-                      onChange={setFormValue('startDate')}
+                      onChange={(event, date) => {
+                        if (date) {
+                          setFormValue('startDate')(date);
+                        }
+                      }}
                     />
                     <Button
                       inProgress={false}

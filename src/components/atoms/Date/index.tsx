@@ -2,10 +2,11 @@ import React, {FunctionComponent, useState} from 'react';
 import {View} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Input} from 'react-native-elements';
+import {AndroidEvent} from '@react-native-community/datetimepicker';
 
 type Props = {
   date: Date;
-  onChange: (value: Date) => void;
+  onChange: (event: AndroidEvent, value: Date | undefined) => void;
 };
 
 export const DateSelect: FunctionComponent<Props> = ({date, onChange}) => {
@@ -24,7 +25,7 @@ export const DateSelect: FunctionComponent<Props> = ({date, onChange}) => {
       />
       <DateTimePickerModal
         isVisible={showModal}
-        onDateChange={onChange}
+        onChange={onChange}
         date={date}
         onCancel={() => {
           setShowModal(false);

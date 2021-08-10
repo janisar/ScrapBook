@@ -8,6 +8,7 @@ import {useCountries} from '../hooks/useCountries';
 import {Select} from '../components/atoms/Select';
 import {Partner} from '../models/partner';
 import {PartnerContext} from '../context/PartnerContext';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
   route: {params: {partner: Partner}};
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: 'column',
     alignItems: 'center',
+    marginTop: 80,
     flex: 2,
   },
   actionButton: {
@@ -42,6 +44,7 @@ const styles = StyleSheet.create({
 });
 
 export const PartnerPage: FunctionComponent<Props> = ({route}) => {
+  const {t} = useTranslation('common');
   const [countries] = useCountries();
   const [country, setCountry] = useState<string | undefined>(undefined);
   const [currentPartner, setUpdatedPartner] = useState<Partner | undefined>(
@@ -75,13 +78,19 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
     navigation.setOptions({title: currentPartner?.name});
   }, [navigation, currentPartner]);
 
+  const types: {[key: string]: [string]} = t('types', {returnObjects: true});
+
   return (
     <View style={styles.page}>
       <View style={styles.info}>
-        <Text extendedStyle={styles.formComponent}>{currentPartner?.name}</Text>
-        <Text extendedStyle={styles.formComponent}>{currentPartner?.type}</Text>
         <Text extendedStyle={styles.formComponent}>
-          {currentPartner?.durationInDays}
+          {t('name')}: {currentPartner?.name}
+        </Text>
+        <Text extendedStyle={styles.formComponent}>
+          {types[`${currentPartner?.type}`]}
+        </Text>
+        <Text extendedStyle={styles.formComponent}>
+          Lasted {currentPartner?.durationInDays} days
         </Text>
         <Label extendedStyle={styles.formComponent}>Where was she from?</Label>
         <Select

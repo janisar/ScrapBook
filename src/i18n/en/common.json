@@ -1,1 +1,9 @@
-{}
+{
+  "name": "Name",
+  "types": {
+    "1": "Relationship",
+    "2": "Fling",
+    "3": "One-night-stand",
+    "4": "Friends with benefits"
+  }
+}
