@@ -70,7 +70,11 @@ const App = () => {
                 headerLeft: null,
               }}
             />
-            <Stack.Screen options={headerOptions} name={'Partner'} component={PartnerPage} />
+            <Stack.Screen
+              options={headerOptions}
+              name={'Partner'}
+              component={PartnerPage}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </Authorized>
