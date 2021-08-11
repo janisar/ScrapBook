@@ -45,19 +45,32 @@ const Authorized: FunctionComponent = ({children}) => {
   return <>{profile?.complete ? <>{children}</> : <RegisterFlowScreen />}</>;
 };
 
+export const headerOptions = {
+  headerTitleStyle: {color: '#000000', fontWeight: '200'},
+  headerTitleAlign: 'left',
+};
+
 const App = () => {
   return (
     <AppStateProvider>
       <Authorized>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name={'History'} component={Home} />
+            <Stack.Screen
+              name={'ScrapBook'}
+              component={Home}
+              options={headerOptions}
+            />
             <Stack.Screen
               name={'AddPartner'}
               component={AddPartnerPage}
-              options={{title: 'Add new partner', headerLeft: null}}
+              options={{
+                ...headerOptions,
+                title: 'Add new partner',
+                headerLeft: null,
+              }}
             />
-            <Stack.Screen name={'Partner'} component={PartnerPage} />
+            <Stack.Screen options={headerOptions} name={'Partner'} component={PartnerPage} />
           </Stack.Navigator>
         </NavigationContainer>
       </Authorized>

@@ -160,9 +160,10 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     <Header2>{page.title}</Header2>
                     <DateSelect
                       date={form.startDate ?? new Date()}
-                      onChange={(event, date) => {
-                        if (date) {
-                          setFormValue('startDate')(date);
+                      onChange={event => {
+                        console.log(event as Date);
+                        if (event) {
+                          setFormValue('startDate')(event as Date);
                         }
                       }}
                     />
