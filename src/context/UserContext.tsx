@@ -7,6 +7,7 @@ import React, {
 import {User} from '../models/user';
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {userKey} from '../hooks/useLoginUser';
+import {addUserFetch} from '../fetch/user';
 
 const ProfileContext = createContext<{
   profile: User;
@@ -35,9 +36,26 @@ const UserContextProvider: FunctionComponent = ({children}) => {
   const fetchUserFromAsyncStorage = async () => {
     const data = await retrieveData<User>(userKey);
     if (data) {
-      setProfile(data);
+      if (!data.synced) {
+        addUserFetch(data)
+          .then(response => {
+            if (response.ok) {
+              setProfile({...data, synced: true});
+            } else {
+              setProfile(data);
+            }
+            setProfileLoading(false);
+          })
+          .catch(err => {
+            console.log(err);
+            setProfile(data);
+            setProfileLoading(false);
+          });
+      } else {
+        setProfile(data);
+        setProfileLoading(false);
+      }
     }
-    setProfileLoading(false);
   };
 
   return (

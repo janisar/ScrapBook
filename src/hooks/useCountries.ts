@@ -3,9 +3,10 @@ import {useContext, useMemo} from 'react';
 import {SelectItem} from '../models';
 import {PartnerContext} from '../context/PartnerContext';
 
-export const useCountries = (): [SelectItem[], any, any] => {
+export const useCountries = (): [SelectItem[], any, any, boolean] => {
   const {partners} = useContext(PartnerContext);
 
+  const canShow = partners.some(p => p.country);
   const selectItems: SelectItem[] = useMemo<SelectItem[]>(() => {
     return countries.features.map(feature => ({
       value: feature.id,
@@ -31,5 +32,5 @@ export const useCountries = (): [SelectItem[], any, any] => {
     return c;
   }, [partners]);
 
-  return [selectItems, conqueredCountries, unConqueredCountries];
+  return [selectItems, conqueredCountries, unConqueredCountries, canShow];
 };

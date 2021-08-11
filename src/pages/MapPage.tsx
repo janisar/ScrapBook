@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import MapView, {Geojson} from 'react-native-maps';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {Alert, SafeAreaView, StyleSheet} from 'react-native';
 import {useCountries} from '../hooks/useCountries';
 
 type Props = {};
@@ -13,10 +13,15 @@ const styles = StyleSheet.create({
 });
 
 export const MapPage: FunctionComponent<Props> = () => {
-  const [, conquered, unConquered] = useCountries();
+  const [, conquered, unConquered, canShow] = useCountries();
 
   return (
     <SafeAreaView>
+      {!canShow &&
+        Alert.alert(
+          'Add some data',
+          'You can add origin country to you partners on your history page',
+        )}
       <MapView
         style={styles.map}
         initialRegion={{
@@ -25,9 +30,9 @@ export const MapPage: FunctionComponent<Props> = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        minZoomLevel={-1}
+        minZoomLevel={1}
         zoomEnabled={true}
-        maxZoomLevel={3}>
+        maxZoomLevel={10}>
         <Geojson
           geojson={unConquered}
           strokeColor="gray"

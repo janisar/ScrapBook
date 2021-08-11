@@ -5,11 +5,11 @@ import {SplashContextProvider} from './SplashContext';
 
 const AppStateProvider: FunctionComponent = ({children}) => {
   return (
-    <PartnerContextProvider>
-      <UserContextProvider>
+    <UserContextProvider>
+      <PartnerContextProvider>
         <SplashContextProvider>{children}</SplashContextProvider>
-      </UserContextProvider>
-    </PartnerContextProvider>
+      </PartnerContextProvider>
+    </UserContextProvider>
   );
 };
 
