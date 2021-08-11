@@ -55,6 +55,8 @@ const UserContextProvider: FunctionComponent = ({children}) => {
         setProfile(data);
         setProfileLoading(false);
       }
+    } else {
+      setProfileLoading(false);
     }
   };
 

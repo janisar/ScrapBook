@@ -30,9 +30,9 @@ export const MapPage: FunctionComponent<Props> = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        minZoomLevel={1}
+        minZoomLevel={0}
         zoomEnabled={true}
-        maxZoomLevel={10}>
+        maxZoomLevel={1}>
         <Geojson
           geojson={unConquered}
           strokeColor="gray"

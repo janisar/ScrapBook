@@ -65,6 +65,8 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
           setPartnersLoading(false);
         })
         .catch(err => console.log(err));
+    } else {
+      setPartnersLoading(false);
     }
   };
 
