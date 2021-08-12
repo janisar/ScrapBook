@@ -18,16 +18,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: '90%',
     display: 'flex',
+    flex: 1,
   },
   innerWrapper: {
     display: 'flex',
     alignItems: 'center',
-    flex: 1,
+    flex: 11,
     width: '100%',
   },
   partnersList: {
     display: 'flex',
-    flex: 9,
+    flex: 11,
     flexDirection: 'column',
     paddingVertical: 10,
     paddingHorizontal: 30,
@@ -36,8 +37,9 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     display: 'flex',
+    flex: 2,
     alignSelf: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
   },
 });
 

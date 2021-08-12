@@ -45,16 +45,16 @@ const partnersSort = (p1: Partner, p2: Partner): number => {
 function getColour(type: string | undefined): string {
   switch (type) {
     case '0':
-      return 'black';
+      return 'teal';
     case '1':
       return 'purple';
     case '2':
-      return 'black';
+      return 'teal';
     case '3':
-      return 'black';
+      return 'teal';
     case '4':
     default:
-      return 'black';
+      return 'teal';
   }
 }
 
