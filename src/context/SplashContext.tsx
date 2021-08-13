@@ -7,7 +7,6 @@ const SplashContextProvider: FunctionComponent = ({children}) => {
   const {isLoading: partnersLoading} = useContext(PartnerContext);
   const {isLoading: profileLoading} = useContext(ProfileContext);
 
-  console.log(partnersLoading, profileLoading);
   useEffect(() => {
     if (!profileLoading && !partnersLoading) {
       SplashScreen.hide();

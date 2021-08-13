@@ -37,9 +37,7 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     display: 'flex',
-    flex: 2,
-    alignSelf: 'center',
-    justifyContent: 'center',
+    flex: 1,
   },
 });
 
