@@ -15,6 +15,8 @@ import {Input} from '../components/atoms/Input';
 
 type Props = {};
 
+export type loginType = 'login' | 'register';
+
 export const RegisterFlowScreen: FunctionComponent<Props> = () => {
   const [, saveField, facebookLogin, complete] = useLoginUser();
   const {t} = useTranslation('register');
@@ -38,6 +40,7 @@ export const RegisterFlowScreen: FunctionComponent<Props> = () => {
                     <LoginComponent
                       setUser={facebookLogin}
                       onNext={toNextPage}
+                      saveField={saveField}
                     />
                   )}
                 </View>

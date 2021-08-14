@@ -28,7 +28,10 @@ const calculateTiming = (d: number) => {
   };
 };
 
-export const getPartnerDuration = (partner: Partner): string => {
+export const getPartnerDuration = (partner: Partner | undefined): string => {
+  if (!partner) {
+    return '';
+  }
   const {years, months, weeks, days} = calculateTiming(partner.durationInDays!);
   if (years) {
     return years + (years > 1 ? ' years' : ' year');

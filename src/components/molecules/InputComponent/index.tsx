@@ -1,13 +1,15 @@
 import React, {FunctionComponent} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Input} from '../../atoms/Input';
+import {Input, KeyboardType} from '../../atoms/Input';
 
 type InputComponentProps = {
   onChange: (value: string) => void;
-  width?: number;
+  width?: number | string;
   placeholder?: string;
   extendedStyle?: {};
   value?: string;
+  secure?: boolean;
+  type?: KeyboardType;
 };
 
 const styles = StyleSheet.create({
@@ -25,6 +27,8 @@ export const InputComponent: FunctionComponent<InputComponentProps> = ({
   width,
   extendedStyle,
   value,
+  secure,
+  type,
   placeholder,
 }) => {
   return (
@@ -34,6 +38,7 @@ export const InputComponent: FunctionComponent<InputComponentProps> = ({
         width={width}
         value={value}
         placeholder={placeholder}
+        secure={secure}
         editable={true}
       />
     </View>

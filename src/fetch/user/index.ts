@@ -7,3 +7,7 @@ const AddUserEndpoint =
 export const addUserFetch = (user: User): Promise<Response> => {
   return post<User>(AddUserEndpoint, user);
 };
+
+export const registerUser = (user: User): Promise<Response> => {
+  return post<User>(AddUserEndpoint, user);
+}

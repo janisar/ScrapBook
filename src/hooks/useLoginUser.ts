@@ -8,7 +8,14 @@ import {ProfileContext} from '../context/UserContext';
 export const fbUserKey = 'fbUserKey';
 export const userKey = 'scrapbook-user';
 
-export type UserField = 'fbUserData' | 'age' | 'sex' | 'dating';
+export type UserField =
+  | 'fbUserData'
+  | 'age'
+  | 'sex'
+  | 'dating'
+  | 'email'
+  | 'password'
+  | 'name';
 export type UserValue = number | string | FBAccessToken | null;
 
 export const useLoginUser = (): [
@@ -43,6 +50,7 @@ export const useLoginUser = (): [
   const complete = () => {
     const result = {...user, complete: true};
     setUser(result);
+    console.log(result);
     setProfile(result);
 
     addUserFetch(result).then(response => {
@@ -52,11 +60,11 @@ export const useLoginUser = (): [
     });
   };
 
-  const saveField =
-    (field: 'fbUserData' | 'age' | 'sex' | 'dating' | 'id') =>
-    (value: number | string | FBAccessToken | null) => {
-      setUser({...user, [`${field}`]: value});
-    };
+  const saveField = (field: UserField) => (value: UserValue) => {
+    // console.log(field, value);
+    setUser({...user, [`${field}`]: value});
+    setProfile({...user, [`${field}`]: value});
+  };
 
   return [user, saveField, facebookLogin, complete, getToken];
 };

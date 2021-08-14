@@ -9,6 +9,7 @@ import {Select} from '../components/atoms/Select';
 import {Partner} from '../models/partner';
 import {PartnerContext} from '../context/PartnerContext';
 import {useTranslation} from 'react-i18next';
+import {getPartnerDuration} from '../utils/dateUtils';
 
 type Props = {
   route: {params: {partner: Partner}};
@@ -90,9 +91,11 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
           {types[`${currentPartner?.type}`]}
         </Text>
         <Text extendedStyle={styles.formComponent}>
-          Lasted {currentPartner?.durationInDays} days
+          Lasted {getPartnerDuration(currentPartner)}
         </Text>
-        <Label extendedStyle={styles.formComponent}>Where was she from?</Label>
+        <Label extendedStyle={styles.formComponent}>
+          Where was the person from?
+        </Label>
         <Select
           onChange={(c: string) => setCountry(c)}
           placeholder={'Country'}
