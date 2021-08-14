@@ -1,7 +1,10 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useContext, useState} from 'react';
 import MapView, {Geojson} from 'react-native-maps';
 import {Alert, SafeAreaView, StyleSheet} from 'react-native';
-import {useCountries} from '../hooks/useCountries';
+import {getCountryByCoordinates, useCountries} from '../hooks/useCountries';
+import {PartnerContext} from '../context/PartnerContext';
+import {SelectItem} from '../models';
+import {PartnerMapModal} from '../components/organisms/PartnerMapModal';
 
 type Props = {};
 
@@ -14,6 +17,11 @@ const styles = StyleSheet.create({
 
 export const MapPage: FunctionComponent<Props> = () => {
   const [, conquered, unConquered, canShow] = useCountries();
+  const {partners} = useContext(PartnerContext);
+  const [selectedCountry, setSelectedCountry] = useState<
+    SelectItem | undefined
+  >(undefined);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   return (
     <SafeAreaView>
@@ -32,6 +40,15 @@ export const MapPage: FunctionComponent<Props> = () => {
         }}
         minZoomLevel={0}
         zoomEnabled={true}
+        onPress={e => {
+          const country = getCountryByCoordinates(e.nativeEvent.coordinate);
+          if (country && partners.find(p => p.country === country.value)) {
+            setSelectedCountry(country);
+            setModalVisible(true);
+          } else {
+            setModalVisible(false);
+          }
+        }}
         maxZoomLevel={1}>
         <Geojson
           geojson={unConquered}
@@ -46,6 +63,13 @@ export const MapPage: FunctionComponent<Props> = () => {
           strokeWidth={2}
         />
       </MapView>
+      {selectedCountry && modalVisible && (
+        <PartnerMapModal
+          country={selectedCountry}
+          partners={partners}
+          onClose={() => setModalVisible(false)}
+        />
+      )}
     </SafeAreaView>
   );
 };

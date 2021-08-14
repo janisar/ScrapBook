@@ -9,6 +9,7 @@ import {AddButton} from '../components/molecules/AddButton';
 import {PartnerContext} from '../context/PartnerContext';
 import {Text} from '../components/atoms/Text';
 import {Partner} from '../models/partner';
+import { getYearFromDate } from "../utils/dateUtils";
 
 const styles = StyleSheet.create({
   header: {
@@ -57,13 +58,11 @@ export const HistoryPage = () => {
 
   function getYear(partner: Partner, index: number): number | undefined {
     if (partner.startDate) {
-      const partnerYear = new Date(partner.startDate).getFullYear();
+      const partnerYear = getYearFromDate(partner.startDate);
       if (index === 0) {
         return partnerYear;
       }
-      const prevPartnerYear = new Date(
-        partners[index - 1].startDate!,
-      ).getFullYear();
+      const prevPartnerYear = getYearFromDate(partners[index - 1].startDate!);
       if (partnerYear !== prevPartnerYear) {
         return partnerYear;
       }

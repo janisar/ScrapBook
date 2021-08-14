@@ -3,6 +3,27 @@ import {useContext, useMemo} from 'react';
 import {SelectItem} from '../models';
 import {PartnerContext} from '../context/PartnerContext';
 
+const pointInPolygonNested = require('point-in-polygon');
+
+export const getCountryByCoordinates = (coordinates: {
+  latitude: number;
+  longitude: number;
+}): SelectItem | null => {
+  const res = countries.features.find(feature => {
+    return feature.geometry.coordinates.some(p => {
+      return pointInPolygonNested(
+        [coordinates.longitude, coordinates.latitude],
+        [].concat(...p),
+      );
+    });
+  });
+  if (res) {
+    return {label: res.properties.name, value: res.id};
+  } else {
+    return null;
+  }
+};
+
 export const useCountries = (): [SelectItem[], any, any, boolean] => {
   const {partners} = useContext(PartnerContext);
 
