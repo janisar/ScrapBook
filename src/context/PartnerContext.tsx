@@ -61,7 +61,7 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
       );
       updatedData
         .then(res => {
-          setPartners(res);
+          setPartners(sortPartners(res));
           setPartnersLoading(false);
         })
         .catch(err => console.log(err));
@@ -70,10 +70,24 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     }
   };
 
+  function sortPartners(arr: Partner[]): Partner[] {
+    return arr.sort((p, p2) => {
+      if (p.startDate && p2.startDate) {
+        if (p.startDate < p2.startDate) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else {
+        return p.name!.localeCompare(p2.name!);
+      }
+    });
+  }
+
   const addPartner = (partner: Partner, _?: string) => {
     syncPartner(partner)
       .then(res => {
-        setPartners([...partners, res]);
+        setPartners(sortPartners([...partners, res]));
       })
       .catch(err => console.log(err));
   };

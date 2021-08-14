@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Header2} from '../components/atoms/Header2';
@@ -7,11 +7,15 @@ import {useNavigation} from '@react-navigation/native';
 import {NoPartners} from '../components/molecules/NoPartners';
 import {AddButton} from '../components/molecules/AddButton';
 import {PartnerContext} from '../context/PartnerContext';
+import {Text} from '../components/atoms/Text';
+import {Partner} from '../models/partner';
 
 const styles = StyleSheet.create({
   header: {
     marginTop: 20,
     marginBottom: 20,
+    color: '#535353',
+    fontSize: 20,
   },
   wrapper: {
     alignItems: 'center',
@@ -39,6 +43,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
   },
+  year: {
+    fontWeight: '100',
+    marginBottom: 8,
+    marginTop: 12,
+  },
 });
 
 export const HistoryPage = () => {
@@ -46,19 +55,38 @@ export const HistoryPage = () => {
   const navigation = useNavigation();
   const {t} = useTranslation('history');
 
+  function getYear(partner: Partner, index: number): number | undefined {
+    if (partner.startDate) {
+      const partnerYear = new Date(partner.startDate).getFullYear();
+      if (index === 0) {
+        return partnerYear;
+      }
+      const prevPartnerYear = new Date(
+        partners[index - 1].startDate!,
+      ).getFullYear();
+      if (partnerYear !== prevPartnerYear) {
+        return partnerYear;
+      }
+    }
+    return undefined;
+  }
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.innerWrapper}>
         <Header2 extendedStyle={styles.header}>{t('title')}</Header2>
         {partners.length > 0 && (
           <ScrollView style={styles.partnersList}>
-            {partners.map(partner => {
+            {partners.map((partner, index) => {
               return (
-                <PartnerListCard
-                  partner={partner}
-                  allPartners={partners}
-                  key={partner.id}
-                />
+                <View key={partner.id}>
+                  {getYear(partner, index) && (
+                    <Text extendedStyle={styles.year}>
+                      {getYear(partner, index)}
+                    </Text>
+                  )}
+                  <PartnerListCard partner={partner} allPartners={partners} />
+                </View>
               );
             })}
           </ScrollView>

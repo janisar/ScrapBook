@@ -2,6 +2,7 @@ import React, {FunctionComponent} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Partner} from '../../../models/partner';
+import { getPartnerDuration } from "../../../utils/dateUtils";
 
 type Props = {
   allPartners: Partner[];
@@ -11,7 +12,7 @@ type Props = {
 const styles = (width: string = '40%', colour: string) =>
   StyleSheet.create({
     wrapper: {
-      marginTop: 30,
+      marginTop: 10,
       backgroundColor: '#bababa',
       marginBottom: 10,
       borderRadius: 50,
@@ -35,6 +36,15 @@ const styles = (width: string = '40%', colour: string) =>
       height: 30,
       zIndex: -1,
       borderRadius: 50,
+    },
+    rightLabel: {
+      position: 'absolute',
+      right: 0,
+      fontSize: 11,
+      marginRight: 8,
+      fontStyle: 'italic',
+      fontWeight: 'bold',
+      color: 'white',
     },
   });
 
@@ -81,6 +91,7 @@ export const PartnerListCard: FunctionComponent<Props> = ({
       onPress={() => nav.navigate('Partner', {partner: partner})}>
       <Text style={style.partnerLabel}>{partner.name}</Text>
       <View style={style.progressBar} />
+      <Text style={style.rightLabel}>{getPartnerDuration(partner)}</Text>
     </TouchableOpacity>
   );
 };

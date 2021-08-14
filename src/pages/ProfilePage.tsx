@@ -28,7 +28,7 @@ export const ProfilePage: FunctionComponent<Props> = () => {
         {profile?.imageURL && (
           <Image style={styles.image} source={{uri: profile?.imageURL}} />
         )}
-        <Text>{profile?.name}</Text>
+        <Text extendedStyle={styles.name}>{profile?.name}</Text>
       </View>
       <View style={styles.chart}>
         <Pie
@@ -77,6 +77,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
+  },
+  name: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   header: {
     flex: 2,
