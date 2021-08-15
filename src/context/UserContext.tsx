@@ -11,10 +11,14 @@ import {addUserFetch} from '../fetch/user';
 
 const ProfileContext = createContext<{
   profile: User;
+  loggedIn: boolean;
+  setLoggedIn: (loggedIn: boolean) => void;
   setProfile: (user: User) => void;
   isLoading: boolean;
 }>({
   profile: {},
+  loggedIn: false,
+  setLoggedIn: (_: boolean) => {},
   setProfile: (_: User) => {},
   isLoading: true,
 });
@@ -22,6 +26,7 @@ const ProfileContext = createContext<{
 const UserContextProvider: FunctionComponent = ({children}) => {
   const [profile, setProfile] = useState<User>({});
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     fetchUserFromAsyncStorage();
@@ -62,7 +67,13 @@ const UserContextProvider: FunctionComponent = ({children}) => {
 
   return (
     <ProfileContext.Provider
-      value={{profile, setProfile, isLoading: profileLoading}}>
+      value={{
+        profile,
+        setProfile,
+        isLoading: profileLoading,
+        loggedIn,
+        setLoggedIn,
+      }}>
       {children}
     </ProfileContext.Provider>
   );

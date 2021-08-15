@@ -1,0 +1,23 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-scrapbook-prod-204430-authRole",
+      "UnauthRoleArn": "arn:aws:iam::664496272277:role/amplify-scrapbook-prod-204430-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::664496272277:role/amplify-scrapbook-prod-204430-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-scrapbook-prod-204430-deployment",
+      "UnauthRoleName": "amplify-scrapbook-prod-204430-unauthRole",
+      "StackName": "amplify-scrapbook-prod-204430",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:664496272277:stack/amplify-scrapbook-prod-204430/c886d6c0-fdb5-11eb-b8cc-02522c427d96",
+      "AmplifyAppId": "d2hj2j61fwijen"
+    },
+    "categories": {
+      "auth": {
+        "scrapbook8110a4628110a462": {
+          "facebookAppId": "140492838146069",
+          "googleClientId": "    29549711523-g8jjkk4mu62bfs9qims2a7c3u97mespn.apps.googleusercontent.com"
+        }
+      }
+    }
+  }
+}

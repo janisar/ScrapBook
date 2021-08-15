@@ -17,6 +17,16 @@ import {ProfileContext} from './src/context/UserContext';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+import Amplify from 'aws-amplify';
+import config from './src/aws-exports';
+
+Amplify.configure({
+  ...config,
+  Analytics: {
+    disabled: true,
+  },
+});
+
 const tabBarStyle = StyleSheet.create({
   style: {
     display: 'flex',
@@ -41,8 +51,8 @@ const Home = () => {
 };
 
 const Authorized: FunctionComponent = ({children}) => {
-  const {profile} = useContext(ProfileContext);
-  return <>{profile?.complete ? <>{children}</> : <RegisterFlowScreen />}</>;
+  const {loggedIn} = useContext(ProfileContext);
+  return <>{loggedIn ? <>{children}</> : <RegisterFlowScreen />}</>;
 };
 
 export const headerOptions = {

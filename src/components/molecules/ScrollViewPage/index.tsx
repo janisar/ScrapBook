@@ -5,7 +5,7 @@ import BackButton from '../BackButton';
 
 type Props = {
   extendedStyle: {};
-  onBack: () => void;
+  onBack?: () => void;
   showBack: boolean;
   backLabel: string;
 };
@@ -21,7 +21,7 @@ export const ScrollViewPage: FunctionComponent<Props> = ({
     <SafeAreaView style={styles.safeAreaView}>
       {showBack && (
         <View style={styles.header}>
-          <BackButton label={backLabel} onPress={onBack} />
+          <BackButton label={backLabel} onPress={onBack ? onBack : () => {}} />
         </View>
       )}
       <View style={styles.content}>

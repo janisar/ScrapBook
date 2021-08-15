@@ -50,7 +50,6 @@ export const useLoginUser = (): [
   const complete = () => {
     const result = {...user, complete: true};
     setUser(result);
-    console.log(result);
     setProfile(result);
 
     addUserFetch(result).then(response => {

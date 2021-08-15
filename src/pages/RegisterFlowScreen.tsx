@@ -1,96 +1,113 @@
-import React from 'react';
-import {Platform, StyleSheet, View} from 'react-native';
+import React, {useContext} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {FunctionComponent} from 'react';
 import {ScrollViewPage} from '../components/molecules/ScrollViewPage';
-import {useTranslation} from 'react-i18next';
-import {Select} from '../components/atoms/Select';
-import {LoginComponent} from './LoginPage';
-import {useLoginUser} from '../hooks/useLoginUser';
-import {RegisterPage} from '../i18n/models';
-import {ScrollView} from '../components/atoms/ScrollView';
 import {useScrollView} from '../hooks/useScrollView';
-import {Header2} from '../components/atoms/Header2';
-import Button from '../components/molecules/Button';
-import {Input} from '../components/atoms/Input';
+import {
+  Authenticator,
+  AmplifyTheme,
+  CognitoUser,
+} from 'aws-amplify-react-native';
+import {ProfileContext} from '../context/UserContext';
 
 type Props = {};
 
 export type loginType = 'login' | 'register';
 
 export const RegisterFlowScreen: FunctionComponent<Props> = () => {
-  const [, saveField, facebookLogin, complete] = useLoginUser();
-  const {t} = useTranslation('register');
-  const pages: RegisterPage[] = t('pages', {returnObjects: true});
-  const [offset, toNextPage, , onBack] = useScrollView(pages.length, complete);
+  const {setLoggedIn} = useContext(ProfileContext);
+  const [offset] = useScrollView(1, () => {});
 
   return (
     <ScrollViewPage
       extendedStyle={styles.safeArea}
-      onBack={onBack}
       showBack={offset !== 0}
       backLabel={'Back'}>
       <View style={styles.scrollViewContainer}>
-        <ScrollView pages={pages} offset={offset}>
-          {pages.map(page => {
-            return (
-              <View style={styles.scrollViewContent} key={page.title}>
-                <Header2 extendedStyle={styles.header}>{page.title}</Header2>
-                <View style={styles.page}>
-                  {page.type === 'login' && (
-                    <LoginComponent
-                      setUser={facebookLogin}
-                      onNext={toNextPage}
-                      saveField={saveField}
-                    />
-                  )}
-                </View>
-                {page.options && (
-                  <View style={styles.page}>
-                    <Select
-                      onChange={value => {
-                        saveField(page.field!)(value);
-                      }}
-                      extendedStyle={{alignItems: 'center'}}
-                      onNext={toNextPage}
-                      placeholder={'Please select'}
-                      items={page.options}
-                    />
-                    {Platform.OS === 'android' && (
-                      <Button
-                        inProgress={false}
-                        label={'Next'}
-                        onPress={toNextPage}
-                        extendedStyle={{}}
-                        disabled={false}
-                      />
-                    )}
-                  </View>
-                )}
-                {page.type === 'age' && (
-                  <View style={styles.page}>
-                    <Input
-                      onChange={saveField('age')}
-                      keyboardType={'numeric'}
-                      width={120}
-                      placeholder={'Enter your age'}
-                      editable={true}
-                    />
-                    <Button
-                      inProgress={false}
-                      disabled={false}
-                      label={page.action!}
-                      onPress={() => toNextPage()}
-                      extendedStyle={styles.actionButton}
-                    />
-                  </View>
-                )}
-              </View>
-            );
-          })}
-        </ScrollView>
+        <Authenticator
+          signUpConfig={signUpConfig}
+          // hideDefault={true}
+          authData={CognitoUser | 'username'}
+          usernameAttributes={'Email'}
+          onStateChange={authState => {
+            console.log(authState);
+            if (authState === 'signedIn') {
+              console.log(authState);
+              setLoggedIn(true);
+            }
+          }}
+          theme={authTheme}
+        />
       </View>
     </ScrollViewPage>
   );
+};
+
+const signUpConfig = {
+  header: 'Register',
+  hideAllDefaults: true,
+  signUpFields: [
+    {
+      label: 'Email',
+      key: 'email',
+      required: true,
+      displayOrder: 1,
+      type: 'string',
+    },
+    {
+      label: 'Name',
+      key: 'name',
+      required: true,
+      displayOrder: 2,
+      type: 'string',
+    },
+    {
+      label: 'Gender',
+      key: 'gender',
+      required: true,
+      displayOrder: 3,
+      type: 'string',
+    },
+    {
+      label: 'Date of birth',
+      key: 'birthdate',
+      required: true,
+      displayOrder: 3,
+      hint: 'Hello',
+      custom: true,
+      type: 'date',
+    },
+    {
+      label: 'Password',
+      key: 'password',
+      required: true,
+      displayOrder: 2,
+      type: 'password',
+    },
+  ],
+};
+
+const authTheme = {
+  ...AmplifyTheme,
+  sectionHeader: {
+    ...AmplifyTheme.sectionHeader,
+    color: 'red',
+  },
+  formSection: {
+    ...AmplifyTheme.formSection,
+    backgroundColor: 'green',
+  },
+  sectionFooter: {
+    ...AmplifyTheme.sectionFooter,
+  },
+  navButton: {
+    ...AmplifyTheme.navButton,
+    color: 'blue',
+  },
+  button: {
+    ...AmplifyTheme.button,
+    backgroundColor: 'purple',
+  },
 };
 
 const styles = StyleSheet.create({
