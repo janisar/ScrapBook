@@ -42,6 +42,7 @@
 		21109AF026BF7DA00011DB01 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		2184A3F726B2C49800974832 /* History-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "History-Bridging-Header.h"; sourceTree = "<group>"; };
 		2184A3F826B2C49800974832 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
+		21AA0D7A26CA85A100A00765 /* History.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = History.entitlements; path = History/History.entitlements; sourceTree = "<group>"; };
 		21BF9AA426C14CDA004E4D52 /* AppCenter-config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppCenter-config.plist"; sourceTree = "<group>"; };
 		2C226939F4EADD9205F2F142 /* Pods-History.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-History.release.xcconfig"; path = "Target Support Files/Pods-History/Pods-History.release.xcconfig"; sourceTree = "<group>"; };
 		31A4A84F2ADD93B5717B2770 /* libPods-History-HistoryTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-History-HistoryTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +94,7 @@
 		13B07FAE1A68108700A75B9A /* History */ = {
 			isa = PBXGroup;
 			children = (
+				21AA0D7A26CA85A100A00765 /* History.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -463,7 +465,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = History/History.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z2MTYR22TQ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = History/Info.plist;
@@ -492,7 +495,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = History/History.entitlements;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z2MTYR22TQ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = History/Info.plist;

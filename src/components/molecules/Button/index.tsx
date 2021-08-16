@@ -11,8 +11,8 @@ type Props = {
   onPress: () => void;
   label: string;
   extendedStyle?: any;
-  inProgress: boolean;
-  disabled: boolean;
+  inProgress?: boolean;
+  disabled?: boolean;
   secondary?: boolean;
 };
 
@@ -54,7 +54,7 @@ const stylesheet = (secondary?: boolean) =>
       fontWeight: 'bold',
     },
     button: {
-      width: '80%',
+      width: '100%',
       height: 49,
       backgroundColor: secondary ? 'gray' : 'purple',
       borderRadius: 5,

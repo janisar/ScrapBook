@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {
   Image,
   SafeAreaView,
@@ -13,6 +13,7 @@ import {useFacebookUser} from '../hooks/useFacebookUser';
 import Pie from 'react-native-pie';
 import {useStatistics} from '../hooks/useStatistics';
 import {Mode} from '../models';
+import {Auth} from 'aws-amplify';
 
 type Props = {};
 
@@ -22,13 +23,26 @@ export const ProfilePage: FunctionComponent<Props> = () => {
   const [mode, setMode] = useState<Mode>(Mode.ALL_TIME);
   const [allTime, lastYear] = useStatistics(mode);
 
+  const [cognitoUser, setCognitoUser] = useState<any>();
+
+  useEffect(() => {
+    if (!profile) {
+      Auth.currentUserInfo().then(user => {
+        setCognitoUser(user);
+      });
+    }
+  }, [profile]);
+
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.header}>
         {profile?.imageURL && (
           <Image style={styles.image} source={{uri: profile?.imageURL}} />
         )}
-        <Text extendedStyle={styles.name}>{profile?.name}</Text>
+        {!profile && (
+          <Image style={styles.image} source={require('./index.png')} />
+        )}
+        <Text extendedStyle={styles.name}>{profile ? profile.name : cognitoUser?.attributes.name}</Text>
       </View>
       <View style={styles.chart}>
         <Pie

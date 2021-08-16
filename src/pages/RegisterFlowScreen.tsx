@@ -7,8 +7,14 @@ import {
   Authenticator,
   AmplifyTheme,
   CognitoUser,
+  ForgotPassword,
+  RequireNewPassword,
+  ConfirmSignIn,
+  ConfirmSignUp,
 } from 'aws-amplify-react-native';
 import {ProfileContext} from '../context/UserContext';
+import {ScrapBookSignUp} from '../components/organisms/ScrapBookSignUp';
+import { ScrapBookSignIn } from "../components/organisms/ScrapBookSignIn";
 
 type Props = {};
 
@@ -26,18 +32,22 @@ export const RegisterFlowScreen: FunctionComponent<Props> = () => {
       <View style={styles.scrollViewContainer}>
         <Authenticator
           signUpConfig={signUpConfig}
-          // hideDefault={true}
+          hideDefault={true}
           authData={CognitoUser | 'username'}
           usernameAttributes={'Email'}
           onStateChange={authState => {
-            console.log(authState);
             if (authState === 'signedIn') {
-              console.log(authState);
               setLoggedIn(true);
             }
           }}
-          theme={authTheme}
-        />
+          theme={authTheme}>
+          <ConfirmSignIn />
+          <ConfirmSignUp />
+          <ScrapBookSignUp signUpConfig={signUpConfig} />
+          <ForgotPassword />
+          <RequireNewPassword />
+          <ScrapBookSignIn />
+        </Authenticator>
       </View>
     </ScrollViewPage>
   );
@@ -66,7 +76,7 @@ const signUpConfig = {
       key: 'gender',
       required: true,
       displayOrder: 3,
-      type: 'string',
+      type: 'gender',
     },
     {
       label: 'Date of birth',
@@ -96,6 +106,10 @@ const authTheme = {
   formSection: {
     ...AmplifyTheme.formSection,
     backgroundColor: 'green',
+  },
+  sectionFooterLink: {
+    ...AmplifyTheme.sectionFooterLink,
+    color: 'gray',
   },
   sectionFooter: {
     ...AmplifyTheme.sectionFooter,
