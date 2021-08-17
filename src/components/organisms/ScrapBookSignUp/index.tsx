@@ -1,10 +1,5 @@
-import React, {
-  FunctionComponent,
-  PropsWithChildren,
-  useRef,
-  useState,
-} from 'react';
-import {ScrollView, Text, TextInput, View} from 'react-native';
+import React, {FunctionComponent, PropsWithChildren, useState} from 'react';
+import {ScrollView, View} from 'react-native';
 import {
   AmplifyButton,
   LinkCell,
@@ -13,112 +8,17 @@ import {
   Wrapper,
 } from 'aws-amplify-react-native';
 import {Auth, I18n} from 'aws-amplify';
-import AmplifyTheme, {
-  placeholderColor,
-} from 'aws-amplify-react-native/src/AmplifyTheme';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import RNPickerSelect from 'react-native-picker-select';
-import {SelectItem} from '../../../models';
-import dateFormat from 'dateformat';
+import {InputSelect} from '../../molecules/InputSelect';
+import {InputDateField} from '../../molecules/InputDateField';
 
 type SignupProps = {
   signUpConfig: {};
 };
 
-type SelectFieldProps = {
-  onValueChange: (value: string) => void;
-};
-
-const DateField: FunctionComponent<SelectFieldProps> = (
-  props: PropsWithChildren<any>,
-) => {
-  const theme = props.theme || AmplifyTheme;
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [value, setValue] = useState<string | undefined>();
-
-  return (
-    <View style={theme.formField}>
-      <Text style={theme.inputLabel}>
-        {props.label} {props.required ? '*' : ''}
-      </Text>
-      <TextInput
-        style={theme.input}
-        autoCapitalize="none"
-        editable={false}
-        value={value}
-        autoCorrect={false}
-        placeholderTextColor={placeholderColor}
-        onTouchEnd={() => {
-          setShowModal(!showModal);
-        }}
-        {...props}
-      />
-      <DateTimePickerModal
-        isVisible={showModal}
-        onChange={() => {}}
-        date={new Date()}
-        onCancel={() => {
-          setShowModal(false);
-        }}
-        onConfirm={val => {
-          setValue(dateFormat(val, 'dd-mm-yyyy'));
-          setShowModal(false);
-          props.onValueChange(dateFormat(val, 'dd-mm-yyyy'));
-        }}
-        mode={'date'}
-      />
-    </View>
-  );
-};
-
-const InputSelect: FunctionComponent<SelectFieldProps> = (
-  props: PropsWithChildren<any>,
-) => {
-  const theme = props.theme || AmplifyTheme;
-  const [value, setValue] = useState<SelectItem | undefined>();
-  const ref = useRef();
-  const items = [
-    {label: 'Male', value: 'M'},
-    {label: 'Female', value: 'F'},
-  ];
-
-  return (
-    <View style={theme.formField}>
-      <Text style={theme.inputLabel}>
-        {props.label} {props.required ? '*' : ''}
-      </Text>
-      <TextInput
-        style={theme.input}
-        autoCapitalize="none"
-        editable={false}
-        value={value?.label}
-        onPressIn={() => {
-          ref?.current?.togglePicker();
-        }}
-        autoCorrect={false}
-        placeholderTextColor={placeholderColor}
-        {...props}
-      />
-      <RNPickerSelect
-        ref={ref}
-        value=""
-        style={{viewContainer: {height: 0}}}
-        onValueChange={val => {
-          if (val) {
-            const res = items.find(i => i.value === val);
-            if (res) {
-              setValue(res);
-            }
-          }
-        }}
-        onDonePress={() => {
-          props.onValueChange(value?.value);
-        }}
-        items={items}
-      />
-    </View>
-  );
-};
+const items = [
+  {label: 'Male', value: 'M'},
+  {label: 'Female', value: 'F'},
+];
 
 type Form = {
   email?: string;
@@ -163,7 +63,7 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
               switch (field.type) {
                 case 'date':
                   return (
-                    <DateField
+                    <InputDateField
                       {...props}
                       {...field}
                       onValueChange={val =>
@@ -179,6 +79,7 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
                       onValueChange={value =>
                         setForm({...form, [field.key]: value})
                       }
+                      items={items}
                     />
                   );
                 default:

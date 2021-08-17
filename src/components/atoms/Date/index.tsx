@@ -20,7 +20,12 @@ export const DateSelect: FunctionComponent<Props> = ({date, onChange}) => {
         }}
         editable={false}
         value={value.toDateString()}
-        style={{textAlign: 'center'}}
+        style={{
+          textAlign: 'center',
+          borderWidth: 1,
+          borderColor: '#eaeaea',
+          padding: 16,
+        }}
       />
       <DateTimePickerModal
         isVisible={showModal}

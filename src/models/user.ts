@@ -1,13 +1,12 @@
-import {FBAccessToken} from 'react-native-fbsdk-next/types/FBAccessToken';
 import {Synchronise} from './index';
 
 export class User extends Synchronise {
-  auth?: 'facebook' | 'internal';
-  fbUserData?: FBAccessToken;
+  auth?: 'facebook' | 'congnito';
+  imageUrl?: string;
   name?: string;
   email?: string;
   password?: string;
-  age?: number;
+  birthDate?: string;
   sex?: string;
   dating?: string;
   complete?: boolean;

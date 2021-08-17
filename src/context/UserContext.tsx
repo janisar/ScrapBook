@@ -8,6 +8,8 @@ import {User} from '../models/user';
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {userKey} from '../hooks/useLoginUser';
 import {addUserFetch} from '../fetch/user';
+import {Auth} from 'aws-amplify';
+import {Profile} from 'react-native-fbsdk-next';
 
 const ProfileContext = createContext<{
   profile: User;
@@ -31,6 +33,32 @@ const UserContextProvider: FunctionComponent = ({children}) => {
   useEffect(() => {
     fetchUserFromAsyncStorage();
   }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      Auth.currentUserInfo().then(user => {
+        if (user === null) {
+          Profile.getCurrentProfile().then(currentProfile => {
+            if (currentProfile) {
+              setProfile({
+                email: currentProfile.email,
+                id: currentProfile.userID,
+                imageUrl: currentProfile.imageURL,
+              });
+            }
+          });
+        } else {
+          setProfile({
+            id: user.id,
+            name: user.attributes.name,
+            birthDate: user.attributes.birthdate,
+            sex: user.attributes.sex,
+            email: user.attributes.email,
+          });
+        }
+      });
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     if (profile?.complete) {

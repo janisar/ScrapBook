@@ -13,6 +13,10 @@ import {ScrollViewPage} from '../../../components/molecules/ScrollViewPage';
 import Button from '../../../components/molecules/Button';
 import {useNavigation} from '@react-navigation/native';
 import {PartnerForm} from '../../../models/partner';
+import {FormField, AmplifyTheme} from 'aws-amplify-react-native';
+import {InputSelect} from '../../../components/molecules/InputSelect';
+import {FormInput} from '../../../components/molecules/FormInput';
+import { InputDateField } from "../../../components/molecules/InputDateField";
 
 type Props = {
   setFormValue: (field: string) => (value: string | Date | boolean) => void;
@@ -42,8 +46,7 @@ const styles = StyleSheet.create({
   col: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     flex: 1,
   },
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
   safeArea: {
     paddingTop: 0,
     height: '100%',
-    backgroundColor: 'purple',
+    backgroundColor: '#c583cb',
   },
   scrollViewContent: {
     flexBasis: '100%',
@@ -83,6 +86,7 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     justifyContent: 'center',
+    width: '90%',
   },
   startDate: {
     display: 'flex',
@@ -121,11 +125,10 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                 {page.type === 'name' && (
                   <View style={styles.startDate}>
                     <Header2>{page.title}</Header2>
-                    <Input
+                    <FormInput
                       onChange={setFormValue('name')}
-                      width={170}
-                      placeholder={page.placeholder}
-                      editable={true}
+                      label={'Name'}
+                      placeholder={'Enter name'}
                     />
                     <Button
                       inProgress={false}
@@ -139,12 +142,12 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                 {page.type === 'relationship' && (
                   <View style={styles.startDate}>
                     <Header2>{page.title}</Header2>
-                    <Select
-                      onChange={setFormValue('type')}
+                    <InputSelect
+                      theme={authTheme}
+                      label={'Type'}
+                      required={true}
+                      onValueChange={setFormValue('type')}
                       items={page.options!}
-                      extendedStyle={styles.type}
-                      placeholder={'Select Type'}
-                      onNext={() => {}}
                     />
                     <Button
                       inProgress={false}
@@ -161,7 +164,6 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     <DateSelect
                       date={form.startDate ?? new Date()}
                       onChange={event => {
-                        console.log(event as Date);
                         if (event) {
                           setFormValue('startDate')(event as Date);
                         }
@@ -183,24 +185,27 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     </Header2>
                     <View style={styles.col}>
                       <View style={styles.colItem}>
-                        <Input
+                        <FormInput
                           onChange={setFormValue('duration')}
-                          keyboardType={'numeric'}
-                          editable={!form.inProgress}
+                          label={'Duration'}
+                          placeholder={'4'}
+                          width={110}
                         />
                       </View>
                       <View style={styles.colItem2}>
-                        <Select
-                          onChange={setFormValue('durationUnit')}
+                        <InputSelect
+                          theme={authTheme}
+                          required={true}
+                          label={'Unit'}
+                          onValueChange={setFormValue('durationUnit')}
                           items={page.options!}
-                          placeholder={'Select unit'}
-                          onNext={() => {}}
+                          width={110}
                         />
                       </View>
                     </View>
-                    <View style={{flex: 5, width: 140}}>
+                    <View style={{flex: 5}}>
                       <CheckboxComponent
-                        title={'still in progress'}
+                        title={'Still in progress'}
                         checked={!!form.inProgress}
                         onClick={() => {
                           setFormValue('inProgress')(!form.inProgress);
@@ -223,4 +228,16 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
       </View>
     </ScrollViewPage>
   );
+};
+
+const authTheme = {
+  ...AmplifyTheme,
+  input: {
+    ...AmplifyTheme.input,
+    width: 220,
+  },
+  formField: {
+    ...AmplifyTheme.formField,
+    justifyContent: 'center',
+  },
 };

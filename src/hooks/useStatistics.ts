@@ -1,9 +1,10 @@
-import {useLoginUser} from './useLoginUser';
 import {useContext, useEffect, useState} from 'react';
 import * as allTime from '../data/all-time/index.json';
 import * as lastYear from '../data/past-year/index.json';
 import {Mode} from '../models';
 import {PartnerContext} from '../context/PartnerContext';
+import {ProfileContext} from '../context/UserContext';
+import { User } from "../models/user";
 
 const getAgeGroup = (age: number): string => {
   if (age >= 70) {
@@ -70,15 +71,27 @@ function calc(array: number[], i1: number, i2: number): number {
   return Math.round(result * 100) / 100;
 }
 
+function getBirthYear(profile: User) {
+  let birthYear: string | undefined = profile.birthDate
+    ?.match('[\\d]{4}')
+    ?.find(m => m);
+  if (!birthYear) {
+    //FIXME
+    birthYear = '1995';
+  }
+  const today = new Date();
+  return today.getFullYear() - (+birthYear as number);
+}
+
 export const useStatistics = (mode: Mode): [number, number] => {
   const [stats, setStats] = useState<number>(0);
   const [pastYear, setPastYear] = useState<number>(0);
   const {partners} = useContext(PartnerContext);
-  const [profile] = useLoginUser();
+  const {profile} = useContext(ProfileContext);
 
   useEffect(() => {
     setStats(
-      allTime.data[`${getSex(profile?.sex)}_${getAgeGroup(profile?.age)}`][
+      allTime.data[`${getSex(profile?.sex)}_${getAgeGroup(getBirthYear(profile))}`][
         partners.length
       ],
     );
@@ -92,7 +105,7 @@ export const useStatistics = (mode: Mode): [number, number] => {
     }).length;
     const data =
       lastYear.data[
-        `${getSex(profile?.sex)}_${getAgeGroupPastYear(profile?.age)}`
+        `${getSex(profile?.sex)}_${getAgeGroupPastYear(getBirthYear(profile))}`
       ];
     setPastYear(calc(data, lastYearPartners + 1, data.length));
   }, [mode]);

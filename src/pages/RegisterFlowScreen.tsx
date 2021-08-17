@@ -14,7 +14,7 @@ import {
 } from 'aws-amplify-react-native';
 import {ProfileContext} from '../context/UserContext';
 import {ScrapBookSignUp} from '../components/organisms/ScrapBookSignUp';
-import { ScrapBookSignIn } from "../components/organisms/ScrapBookSignIn";
+import {ScrapBookSignIn} from '../components/organisms/ScrapBookSignIn';
 
 type Props = {};
 

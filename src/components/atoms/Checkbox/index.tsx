@@ -1,6 +1,7 @@
-import {Label} from '../Label';
 import React, {FunctionComponent} from 'react';
-import CheckBox from 'react-native-check-box';
+import CheckBox from '@react-native-community/checkbox';
+import {Text} from '../Text';
+import {View} from 'react-native';
 
 type Props = {
   title: string;
@@ -14,8 +15,16 @@ export const CheckboxComponent: FunctionComponent<Props> = ({
   onClick,
 }) => {
   return (
-    <>
-      <CheckBox leftText={title} isChecked={checked} onClick={onClick} />
-    </>
+    <View style={{flexDirection: 'row'}}>
+      <CheckBox value={checked} onValueChange={onClick} />
+      <Text
+        extendedStyle={{
+          marginTop: 'auto',
+          marginBottom: 'auto',
+          marginLeft: 10,
+        }}>
+        {title}
+      </Text>
+    </View>
   );
 };

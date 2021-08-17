@@ -51,7 +51,7 @@ const Home = () => {
 };
 
 const Authorized: FunctionComponent = ({children}) => {
-  const {loggedIn} = useContext(ProfileContext);
+  const {loggedIn, profile} = useContext(ProfileContext);
   return <>{loggedIn ? <>{children}</> : <RegisterFlowScreen />}</>;
 };
 

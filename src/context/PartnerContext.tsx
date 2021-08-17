@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import {Partner} from '../models/partner';
-import {addPartnerFetch} from '../fetch/partners';
+import {addPartnerFetch, getAllPartnersFetch} from '../fetch/partners';
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {partnersAsyncStorageKey} from './reducers/partnerReducer';
 import {ProfileContext} from './UserContext';
@@ -35,6 +35,18 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
   }, [partners]);
 
   useEffect(() => {
+    if (!partnersLoading && (!partners || partners.length === 0)) {
+      getAllPartnersFetch(profile.id!)
+        .then(result => {
+          setPartners(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }, [partnersLoading, profile.id]);
+
+  useEffect(() => {
     fetchPartnersFromAsyncStorage();
   }, []);
 
@@ -46,7 +58,9 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
             return Promise.resolve(partner.withSynced());
           }
         });
-      } catch (e) {}
+      } catch (e) {
+        console.error(e);
+      }
     }
     return Promise.resolve(partner);
   };

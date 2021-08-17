@@ -9,7 +9,9 @@ import {PartnerContext} from '../context/PartnerContext';
 type Props = {};
 
 export const AddPartnerPage: FunctionComponent<Props> = () => {
-  const [formValue, setFormValue] = useState<PartnerForm>({});
+  const [formValue, setFormValue] = useState<PartnerForm>({
+    startDate: new Date(),
+  });
   const {profile} = useContext(ProfileContext);
   const {addPartner} = useContext(PartnerContext);
   const navigation = useNavigation();

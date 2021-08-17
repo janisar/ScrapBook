@@ -36,7 +36,6 @@ export const ScrapBookSignIn: FunctionComponent = (
     try {
       if (form.email && form.password) {
         const user = await Auth.signIn(form.email, form.password);
-        console.log(user);
       }
     } catch (error) {
       console.log('error signing in', error);
@@ -87,7 +86,6 @@ export const ScrapBookSignIn: FunctionComponent = (
                 AccessToken.getCurrentAccessToken().then(token =>
                   Profile.getCurrentProfile().then(currentProfile => {
                     if (currentProfile) {
-                      console.log(currentProfile);
                       setLoggedIn(true);
                     }
                   }),
