@@ -52,7 +52,7 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
     undefined,
   );
   const navigation = useNavigation();
-  const {partners, setPartners} = useContext(PartnerContext);
+  const {partners, setPartners, deletePartner} = useContext(PartnerContext);
 
   useEffect(() => {
     const {partner} = route.params;
@@ -60,8 +60,10 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
     setCountry(partner.country);
   }, [route.params]);
 
-  const deletePartner = () => {
-    setPartners(partners.filter(p => p.name !== currentPartner?.name));
+  const deleteCurrentPartner = () => {
+    if (currentPartner) {
+      deletePartner(currentPartner);
+    }
     navigation.goBack();
   };
 
@@ -108,7 +110,7 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
         <Button
           secondary={true}
           extendedStyle={styles.actionButton}
-          onPress={deletePartner}
+          onPress={deleteCurrentPartner}
           label={'Delete'}
           inProgress={false}
           disabled={false}

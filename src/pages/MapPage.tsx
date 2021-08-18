@@ -58,7 +58,7 @@ export const MapPage: FunctionComponent<Props> = () => {
         />
         <Geojson
           geojson={conquered}
-          strokeColor="purple"
+          strokeColor="#999999FF"
           fillColor="purple"
           strokeWidth={2}
         />

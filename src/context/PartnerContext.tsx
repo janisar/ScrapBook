@@ -15,10 +15,12 @@ const PartnerContext = createContext<{
   partners: Partner[];
   setPartners: (partner: Partner[]) => void;
   addPartner: (partner: Partner, userId?: string) => void;
+  deletePartner: (partner: Partner) => void;
   isLoading: boolean;
 }>({
   partners: [],
   addPartner: (_p: Partner, _?: string) => {},
+  deletePartner: (_: Partner) => {},
   setPartners: (_: Partner[]) => {},
   isLoading: true,
 });
@@ -29,7 +31,7 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
   const {profile} = useContext(ProfileContext);
 
   useEffect(() => {
-    if (partners.length !== 0) {
+    if (partners && partners.length !== 0) {
       storeData(partnersAsyncStorageKey, partners);
     }
   }, [partners]);
@@ -38,7 +40,9 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     if (!partnersLoading && (!partners || partners.length === 0)) {
       getAllPartnersFetch(profile.id!)
         .then(result => {
-          setPartners(result);
+          if (result) {
+            setPartners(result);
+          }
         })
         .catch(err => {
           console.log(err);
@@ -63,6 +67,11 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
       }
     }
     return Promise.resolve(partner);
+  };
+
+  const deletePartner = (partner: Partner) => {
+    setPartners(partners.filter(p => partner.id !== p.id));
+    storeData(partnersAsyncStorageKey, partners);
   };
 
   const fetchPartnersFromAsyncStorage = async () => {
@@ -108,7 +117,13 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
 
   return (
     <PartnerContext.Provider
-      value={{partners, setPartners, addPartner, isLoading: partnersLoading}}>
+      value={{
+        partners,
+        setPartners,
+        addPartner,
+        isLoading: partnersLoading,
+        deletePartner,
+      }}>
       {children}
     </PartnerContext.Provider>
   );

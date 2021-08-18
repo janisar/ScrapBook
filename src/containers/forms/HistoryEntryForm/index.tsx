@@ -1,8 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Header2} from '../../../components/atoms/Header2';
-import {Input} from '../../../components/atoms/Input';
-import {Select} from '../../../components/atoms/Select';
 import {DateSelect} from '../../../components/atoms/Date';
 import {CheckboxComponent} from '../../../components/atoms/Checkbox';
 import {useTranslation} from 'react-i18next';
@@ -13,10 +11,10 @@ import {ScrollViewPage} from '../../../components/molecules/ScrollViewPage';
 import Button from '../../../components/molecules/Button';
 import {useNavigation} from '@react-navigation/native';
 import {PartnerForm} from '../../../models/partner';
-import {FormField, AmplifyTheme} from 'aws-amplify-react-native';
+// @ts-ignore
+import {AmplifyTheme} from 'aws-amplify-react-native';
 import {InputSelect} from '../../../components/molecules/InputSelect';
 import {FormInput} from '../../../components/molecules/FormInput';
-import { InputDateField } from "../../../components/molecules/InputDateField";
 
 type Props = {
   setFormValue: (field: string) => (value: string | Date | boolean) => void;
@@ -187,6 +185,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                       <View style={styles.colItem}>
                         <FormInput
                           onChange={setFormValue('duration')}
+                          keyboardType={'numeric'}
                           label={'Duration'}
                           placeholder={'4'}
                           width={110}

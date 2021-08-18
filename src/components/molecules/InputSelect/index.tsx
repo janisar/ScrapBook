@@ -8,7 +8,7 @@ import AmplifyTheme, {
   placeholderColor,
 } from 'aws-amplify-react-native/src/AmplifyTheme';
 import {SelectItem} from '../../../models';
-import {Text, TextInput, View} from 'react-native';
+import {Platform, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 export type SelectFieldProps = {
@@ -17,6 +17,7 @@ export type SelectFieldProps = {
   label?: string;
   required?: boolean;
   width?: number;
+  theme?: any;
 };
 
 export const InputSelect: FunctionComponent<SelectFieldProps> = (
@@ -31,25 +32,22 @@ export const InputSelect: FunctionComponent<SelectFieldProps> = (
       <Text style={theme.inputLabel}>
         {props.label} {props.required ? '*' : ''}
       </Text>
-      <TextInput
-        style={theme.input}
-        autoCapitalize="none"
-        editable={false}
-        value={value?.label}
-        onPressIn={() => {
-          ref?.current?.togglePicker();
-        }}
-        autoCorrect={false}
-        placeholderTextColor={placeholderColor}
-        {...props}
-      />
       <RNPickerSelect
-        ref={ref}
+        collapsable={false}
+        ref={Platform.OS === 'ios' ? ref : null}
         value=""
-        style={{viewContainer: {height: 0}}}
+        style={{
+          viewContainer: {height: 0},
+          inputAndroid: {
+            opacity: 0,
+            paddingBottom: 100,
+            height: 100,
+            zIndex: 100,
+          },
+        }}
         onValueChange={val => {
           if (val) {
-            const res = props.items.find(i => i.value === val);
+            const res = props.items.find((i: SelectItem) => i.value === val);
             if (res) {
               setValue(res);
             }
@@ -60,6 +58,22 @@ export const InputSelect: FunctionComponent<SelectFieldProps> = (
         }}
         items={props.items}
       />
+      <TouchableOpacity
+        onPress={() => {
+          // @ts-ignore
+          ref?.current?.togglePicker();
+        }}>
+        <TextInput
+          style={theme.input}
+          autoCapitalize="none"
+          editable={false}
+          pointerEvents="none"
+          value={value?.label}
+          autoCorrect={false}
+          placeholderTextColor={placeholderColor}
+          {...props}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

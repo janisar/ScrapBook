@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FunctionComponent} from 'react';
 import {ScrollViewPage} from '../components/molecules/ScrollViewPage';
@@ -15,14 +15,21 @@ import {
 import {ProfileContext} from '../context/UserContext';
 import {ScrapBookSignUp} from '../components/organisms/ScrapBookSignUp';
 import {ScrapBookSignIn} from '../components/organisms/ScrapBookSignIn';
+import SplashScreen from 'react-native-splash-screen';
 
 type Props = {};
 
 export type loginType = 'login' | 'register';
 
 export const RegisterFlowScreen: FunctionComponent<Props> = () => {
-  const {setLoggedIn} = useContext(ProfileContext);
+  const {loggedIn, setLoggedIn} = useContext(ProfileContext);
   const [offset] = useScrollView(1, () => {});
+
+  useEffect(() => {
+    if (!loggedIn) {
+      SplashScreen.hide();
+    }
+  }, [loggedIn]);
 
   return (
     <ScrollViewPage
