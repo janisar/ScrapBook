@@ -7,11 +7,9 @@ import React, {
 import {User} from '../models/user';
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {userIdKey, userKey} from '../hooks/useLoginUser';
-import {addUserFetch} from '../fetch/user';
 import {Auth} from 'aws-amplify';
 import {Profile} from 'react-native-fbsdk-next';
 import {getUniqueId} from 'react-native-device-info';
-import appleAuth from '@invertase/react-native-apple-authentication';
 
 const ProfileContext = createContext<{
   profile: User;
@@ -39,21 +37,8 @@ const UserContextProvider: FunctionComponent = ({children}) => {
   }, []);
 
   useEffect(() => {
-    retrieveData<string>(userIdKey).then(userId => {
-      if (!userId) {
-        const id = getUniqueId();
-        storeData(userIdKey, id);
-        setProfile({id: id});
-        setProfileLoading(false);
-      } else {
-        setProfile({id: userId});
-        setProfileLoading(false);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (loggedIn) {
+    if (loggedIn && profile) {
+      console.log(profile);
       Auth.currentUserInfo().then(user => {
         if (user === null) {
           Profile.getCurrentProfile().then(currentProfile => {
@@ -62,6 +47,8 @@ const UserContextProvider: FunctionComponent = ({children}) => {
                 email: currentProfile.email,
                 id: currentProfile.userID,
                 imageUrl: currentProfile.imageURL,
+                birthDate: profile.birthDate,
+                sex: profile.sex,
               });
             }
           });
@@ -87,23 +74,21 @@ const UserContextProvider: FunctionComponent = ({children}) => {
   const fetchUserFromAsyncStorage = async () => {
     const data = await retrieveData<User>(userKey);
     if (data) {
-      if (!data.synced) {
-        addUserFetch(data)
-          .then(response => {
-            if (response.ok) {
-              setProfile({...data, synced: true});
-            } else {
-              setProfile(data);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            setProfile(data);
-          });
-      } else {
-        setProfile(data);
-      }
+      setProfile({...data, birthDate: data.birthDate});
+      setLoggedIn(true);
+      setProfileLoading(false);
     } else {
+      retrieveData<string>(userIdKey).then(userId => {
+        if (!userId) {
+          const id = getUniqueId();
+          storeData(userIdKey, id);
+          setProfile({...profile, id: id});
+          setProfileLoading(false);
+        } else {
+          setProfile({...profile, id: userId});
+          setProfileLoading(false);
+        }
+      });
     }
   };
 

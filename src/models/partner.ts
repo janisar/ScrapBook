@@ -57,7 +57,11 @@ export class Partner extends Synchronise {
   }
 
   isValid() {
-    return this.name && this.type && this.durationInDays && this.startDate;
+    if (!this.inProgress) {
+      return this.name && this.type && this.durationInDays && this.startDate;
+    } else {
+      return this.name && this.type && this.startDate;
+    }
   }
 
   static equals(p1: Partner, p2: Partner): boolean {

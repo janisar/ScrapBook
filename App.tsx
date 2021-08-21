@@ -22,14 +22,7 @@ Amplify.configure({
 });
 
 const Authorized: FunctionComponent = ({children}) => {
-  const {loggedIn, isLoading} = useContext(ProfileContext);
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (!loggedIn && !isLoading) {
-      setShow(true);
-    }
-  }, [loggedIn, isLoading]);
+  const {loggedIn, profile, isLoading} = useContext(ProfileContext);
 
   return (
     <>

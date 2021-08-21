@@ -55,7 +55,11 @@ export const ScrapBookSignIn: FunctionComponent<Props> = (
         const user: {email: string} = jwt_decode(
           appleAuthRequestResponse.identityToken,
         );
-        const profile = {id: appleAuthRequestResponse.user, email: user.email};
+        const profile = {
+          id: appleAuthRequestResponse.user,
+          email: user.email,
+          complete: true,
+        };
         setLoggedIn(true);
         setProfile(profile);
       }
