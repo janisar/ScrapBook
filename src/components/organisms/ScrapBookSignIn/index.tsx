@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import {ScrollView, View} from 'react-native';
+import {Alert, Button, Platform, ScrollView, View} from 'react-native';
 import {
   AmplifyButton,
   FormField,
@@ -12,30 +12,60 @@ import {
   Wrapper,
   Header,
 } from 'aws-amplify-react-native';
+import jwt_decode from 'jwt-decode';
+import appleAuth, {
+  AppleButton,
+} from '@invertase/react-native-apple-authentication';
 import {Auth} from 'aws-amplify';
 import {I18n} from 'aws-amplify';
 import {AccessToken, LoginButton, Profile} from 'react-native-fbsdk-next';
 import {ProfileContext} from '../../../context/UserContext';
-import { useFacebookUser } from "../../../hooks/useFacebookUser";
+import {useFacebookUser} from '../../../hooks/useFacebookUser';
 
 type LoginForm = {
   email?: string;
   password?: string;
 };
 
-export const ScrapBookSignIn: FunctionComponent = (
+type Props = {
+  skip: () => void;
+};
+
+export const ScrapBookSignIn: FunctionComponent<Props> = (
   props: PropsWithChildren<any>,
 ) => {
   const [form, setForm] = useState<LoginForm>({});
   useFacebookUser(undefined);
-  const {setLoggedIn} = useContext(ProfileContext);
+  const {setLoggedIn, setProfile} = useContext(ProfileContext);
   if (props.authState !== 'signIn') {
     return null;
   }
+
+  async function onAppleButtonPress() {
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      if (appleAuthRequestResponse.identityToken) {
+        const user: {email: string} = jwt_decode(
+          appleAuthRequestResponse.identityToken,
+        );
+        const profile = {id: appleAuthRequestResponse.user, email: user.email};
+        setLoggedIn(true);
+        setProfile(profile);
+      }
+    }
+  }
+
   async function signIn() {
     try {
       if (form.email && form.password) {
-        const user = await Auth.signIn(form.email, form.password);
+        await Auth.signIn(form.email, form.password);
       }
     } catch (error) {
       console.log('error signing in', error);
@@ -94,6 +124,27 @@ export const ScrapBookSignIn: FunctionComponent = (
             }}
             onLogoutFinished={() => console.log('logout.')}
           />
+          {Platform.OS === 'ios' && (
+            <AppleButton
+              buttonStyle={AppleButton.Style.BLACK}
+              buttonType={AppleButton.Type.SIGN_IN}
+              style={{
+                marginTop: 20,
+                borderRadius: 0,
+                width: '100%', // You must specify a width
+                height: 45, // You must specify a height
+              }}
+              onPress={() => onAppleButtonPress()}
+            />
+          )}
+          <View style={{marginTop: 15}}>
+            <Button
+              onPress={() => {
+                props.skip();
+              }}
+              title={'Continue without logging in'}
+            />
+          </View>
         </View>
         <View style={props.theme.sectionFooter}>
           <LinkCell

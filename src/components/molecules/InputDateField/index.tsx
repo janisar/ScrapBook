@@ -23,7 +23,7 @@ export const InputDateField: FunctionComponent<SelectFieldProps> = (
         style={theme.input}
         autoCapitalize="none"
         editable={false}
-        value={value}
+        value={props.value || value}
         autoCorrect={false}
         placeholderTextColor={placeholderColor}
         onTouchEnd={() => {
@@ -42,6 +42,7 @@ export const InputDateField: FunctionComponent<SelectFieldProps> = (
           setValue(dateFormat(val, 'dd-mm-yyyy'));
           setShowModal(false);
           props.onValueChange(dateFormat(val, 'dd-mm-yyyy'));
+          props.onConfirm();
         }}
         mode={'date'}
       />

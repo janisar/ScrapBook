@@ -1,4 +1,4 @@
-import {getDurationInDays, uuidv4} from '../utils';
+import {createPartnerUUID, getDurationInDays} from '../utils';
 import {Synchronise} from './index';
 
 export type PartnerForm = {
@@ -6,7 +6,8 @@ export type PartnerForm = {
   type?: string;
   duration?: number;
   durationUnit?: number;
-  startDate?: Date;
+  startDate?: string;
+  country?: string;
   inProgress?: boolean;
 };
 
@@ -14,13 +15,13 @@ export class Partner extends Synchronise {
   name?: string;
   type?: string;
   durationInDays?: number;
-  startDate?: Date;
+  startDate?: string;
   inProgress?: boolean;
   country?: string;
   userId?: string;
 
   constructor() {
-    super(uuidv4());
+    super(createPartnerUUID());
   }
 
   static createFromPartnerForm(form: PartnerForm): Partner {
@@ -30,6 +31,7 @@ export class Partner extends Synchronise {
     partner.durationInDays = getDurationInDays(form);
     partner.startDate = form.startDate;
     partner.inProgress = form.inProgress;
+    partner.country = form.country;
     return partner;
   }
 

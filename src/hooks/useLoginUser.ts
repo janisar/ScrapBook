@@ -7,6 +7,7 @@ import {ProfileContext} from '../context/UserContext';
 
 export const fbUserKey = 'fbUserKey';
 export const userKey = 'scrapbook-user';
+export const userIdKey = 'scrapbook-user-id';
 
 export type UserField =
   | 'fbUserData'

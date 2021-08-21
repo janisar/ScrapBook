@@ -7,10 +7,10 @@ import {InputComponent} from '../components/molecules/InputComponent';
 import Button from '../components/molecules/Button';
 import {loginType} from './RegisterFlowScreen';
 import {User} from '../models/user';
-import {uuidv4} from '../utils';
 import {registerUser} from '../fetch/user';
 import {ProfileContext} from '../context/UserContext';
 import {UserField, UserValue} from '../hooks/useLoginUser';
+import { getUniqueId } from "react-native-device-info";
 
 type LoginProps = {
   setUser: (user?: FBAccessToken | null) => void;
@@ -76,8 +76,8 @@ export const LoginComponent: FunctionComponent<LoginProps> = ({
   const register = async () => {
     if (profile.password && validateEmail(profile.email!)) {
       const user: User = {
-        auth: 'internal',
-        id: uuidv4(),
+        auth: 'congnito',
+        id: getUniqueId(),
         email: profile.email,
         password: profile.password,
       };

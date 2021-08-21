@@ -1,4 +1,4 @@
-import React, {FunctionComponent} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Header2} from '../../../components/atoms/Header2';
 import {DateSelect} from '../../../components/atoms/Date';
@@ -15,6 +15,8 @@ import {PartnerForm} from '../../../models/partner';
 import {AmplifyTheme} from 'aws-amplify-react-native';
 import {InputSelect} from '../../../components/molecules/InputSelect';
 import {FormInput} from '../../../components/molecules/FormInput';
+import { Select } from "../../../components/atoms/Select";
+import { useCountries } from "../../../hooks/useCountries";
 
 type Props = {
   setFormValue: (field: string) => (value: string | Date | boolean) => void;
@@ -103,11 +105,14 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
 }) => {
   const {t} = useTranslation('history');
   const pages: HistoryPage[] = t('pages', {returnObjects: true});
+  const [width, setWidth] = useState<number | undefined>();
+  const [countries] = useCountries();
   const history = useNavigation();
   const [offset, toNextPage, , onBack] = useScrollView(
     pages.length,
     save,
     history,
+    width,
   );
   return (
     <ScrollViewPage
@@ -116,12 +121,17 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
       onBack={onBack}
       backLabel={'Back'}>
       <View style={styles.wrapper}>
-        <ScrollView pages={pages} offset={offset}>
+        <ScrollView pagesCount={pages.length} offset={offset}>
           {pages.map(page => {
             return (
               <View style={styles.scrollViewContent}>
                 {page.type === 'name' && (
-                  <View style={styles.startDate}>
+                  <View
+                    style={styles.startDate}
+                    onLayout={event => {
+                      const {width: w} = event.nativeEvent.layout;
+                      setWidth(w);
+                    }}>
                     <Header2>{page.title}</Header2>
                     <FormInput
                       onChange={setFormValue('name')}
@@ -163,7 +173,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                       date={form.startDate ?? new Date()}
                       onChange={event => {
                         if (event) {
-                          setFormValue('startDate')(event as Date);
+                          setFormValue('startDate')(event as string);
                         }
                       }}
                     />
@@ -211,6 +221,26 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                         }}
                       />
                     </View>
+                    <Button
+                      inProgress={false}
+                      disabled={false}
+                      label={page.action!}
+                      onPress={() => toNextPage()}
+                      extendedStyle={styles.actionButton}
+                    />
+                  </View>
+                )}
+                {page.type === 'country' && (
+                  <View style={styles.startDate}>
+                    <Header2>{page.title}</Header2>
+                    <InputSelect
+                      theme={authTheme}
+                      required={false}
+                      label={'Country'}
+                      onValueChange={setFormValue('country')}
+                      items={countries}
+                      width={200}
+                    />
                     <Button
                       inProgress={false}
                       disabled={false}

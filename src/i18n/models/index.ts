@@ -2,7 +2,12 @@ import {SelectItem} from '../../models';
 import {UserField} from '../../hooks/useLoginUser';
 
 type RegisterSteps = 'login' | 'age' | 'sex' | 'dating';
-type HistorySteps = 'relationship' | 'name' | 'duration' | 'startDate';
+type HistorySteps =
+  | 'relationship'
+  | 'name'
+  | 'duration'
+  | 'startDate'
+  | 'country';
 
 export interface ScrollViewPage {
   title: string;

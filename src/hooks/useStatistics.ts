@@ -1,10 +1,9 @@
-import {useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useMemo, useState} from 'react';
 import * as allTime from '../data/all-time/index.json';
 import * as lastYear from '../data/past-year/index.json';
 import {Mode} from '../models';
-import {PartnerContext} from '../context/PartnerContext';
+import { PartnerContext, sortPartners } from "../context/PartnerContext";
 import {ProfileContext} from '../context/UserContext';
-import { User } from "../models/user";
 
 const getAgeGroup = (age: number): string => {
   if (age >= 70) {
@@ -71,29 +70,49 @@ function calc(array: number[], i1: number, i2: number): number {
   return Math.round(result * 100) / 100;
 }
 
-function getBirthYear(profile: User) {
-  let birthYear: string | undefined = profile.birthDate
-    ?.match('[\\d]{4}')
-    ?.find(m => m);
+function getYear(date: string | undefined | Date) {
+  if (date instanceof Date) {
+    return date.getFullYear();
+  }
+  let birthYear: string | undefined = date?.match('[\\d]{4}')?.find(m => m);
   if (!birthYear) {
-    //FIXME
     birthYear = '1995';
   }
-  const today = new Date();
-  return today.getFullYear() - (+birthYear as number);
+  return birthYear;
 }
 
-export const useStatistics = (mode: Mode): [number, number] => {
+function getAge(date: string | undefined) {
+  let birthYear = getYear(date);
+  return new Date().getFullYear() - (+birthYear as number);
+}
+
+export const useStatistics = (
+  mode: Mode,
+): [number, number, Map<number, number>] => {
   const [stats, setStats] = useState<number>(0);
   const [pastYear, setPastYear] = useState<number>(0);
   const {partners} = useContext(PartnerContext);
   const {profile} = useContext(ProfileContext);
 
+  const yearsMap = useMemo(() => {
+    const result = new Map<number, number>();
+
+    sortPartners(partners).forEach(partner => {
+      const year = +getYear(partner.startDate);
+      if (result.has(year)) {
+        result.set(year, result.get(year)! + 1);
+      } else {
+        result.set(year, 1);
+      }
+    });
+    return result;
+  }, [partners]);
+
   useEffect(() => {
     setStats(
-      allTime.data[`${getSex(profile?.sex)}_${getAgeGroup(getBirthYear(profile))}`][
-        partners.length
-      ],
+      allTime.data[
+        `${getSex(profile?.sex)}_${getAgeGroup(getAge(profile.birthDate))}`
+      ][partners.length],
     );
   }, [profile, partners]);
 
@@ -105,10 +124,12 @@ export const useStatistics = (mode: Mode): [number, number] => {
     }).length;
     const data =
       lastYear.data[
-        `${getSex(profile?.sex)}_${getAgeGroupPastYear(getBirthYear(profile))}`
+        `${getSex(profile?.sex)}_${getAgeGroupPastYear(
+          getAge(profile.birthDate),
+        )}`
       ];
     setPastYear(calc(data, lastYearPartners + 1, data.length));
   }, [mode]);
 
-  return [stats, pastYear];
+  return [stats, pastYear, yearsMap];
 };

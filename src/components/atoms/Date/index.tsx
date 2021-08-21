@@ -4,11 +4,16 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Input} from 'react-native-elements';
 
 type Props = {
-  date: Date;
+  date: Date | string;
   onChange: (date: Event, value: Date | undefined) => void;
+  onDone?: () => void;
 };
 
-export const DateSelect: FunctionComponent<Props> = ({date, onChange}) => {
+export const DateSelect: FunctionComponent<Props> = ({
+  date,
+  onChange,
+  onDone,
+}) => {
   const [value, setValue] = useState<Date>(new Date());
   const [showModal, setShowModal] = useState(false);
 
@@ -30,13 +35,16 @@ export const DateSelect: FunctionComponent<Props> = ({date, onChange}) => {
       <DateTimePickerModal
         isVisible={showModal}
         onChange={onChange}
-        date={date}
+        date={new Date(date)}
         onCancel={() => {
           setShowModal(false);
         }}
         onConfirm={val => {
           setValue(val);
           setShowModal(false);
+          if (onDone) {
+            onDone();
+          }
         }}
         mode={'date'}
       />

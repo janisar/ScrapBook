@@ -15,9 +15,11 @@ type SignupProps = {
   signUpConfig: {};
 };
 
-const items = [
+export const items = [
   {label: 'Male', value: 'M'},
   {label: 'Female', value: 'F'},
+  {label: 'Other', value: 'O'},
+  {label: 'Prefer not to say', value: '0'},
 ];
 
 type Form = {

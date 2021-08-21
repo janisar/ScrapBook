@@ -5,24 +5,23 @@ export const useScrollView = (
   totalPages: number,
   complete: () => void,
   history?: any,
+  width: number = Dimensions.get('screen').width,
 ): [number, () => void, () => void, () => void] => {
   const [offset, setOffset] = useState<number>(0);
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
 
   const toNextPage = () => {
-    const screenWidth =
-      Dimensions.get('screen').width - (Platform.OS === 'ios' ? 80 : 100);
-    setOffset(offset + screenWidth);
+    setOffset(offset + width);
     setCurrentPageIndex(currentPageIndex + 1);
     if (currentPageIndex >= totalPages) {
       complete();
+      setOffset(0);
+      setCurrentPageIndex(0);
     }
   };
 
   const toPreviousPage = () => {
-    const screenWidth =
-      Dimensions.get('screen').width - (Platform.OS === 'ios' ? 80 : 100);
-    setOffset(offset - screenWidth);
+    setOffset(offset - width);
     setCurrentPageIndex(currentPageIndex - 1);
   };
 

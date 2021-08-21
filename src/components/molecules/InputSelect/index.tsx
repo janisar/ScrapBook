@@ -18,6 +18,8 @@ export type SelectFieldProps = {
   required?: boolean;
   width?: number;
   theme?: any;
+  value?: string;
+  onConfirm?: () => void;
 };
 
 export const InputSelect: FunctionComponent<SelectFieldProps> = (

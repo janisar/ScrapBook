@@ -62,6 +62,12 @@
           "value": "4"
         }
       ],
+      "action": "Next"
+    },
+    {
+      "title": "Where was the partner from? [optional]",
+      "field": "country",
+      "type": "country",
       "action": "Done"
     }
   ]

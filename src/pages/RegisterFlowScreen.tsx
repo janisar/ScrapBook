@@ -1,14 +1,13 @@
 import React, {useContext, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FunctionComponent} from 'react';
-import {ScrollViewPage} from '../components/molecules/ScrollViewPage';
-import {useScrollView} from '../hooks/useScrollView';
 import {
   Authenticator,
   AmplifyTheme,
   CognitoUser,
   ForgotPassword,
   RequireNewPassword,
+  Loading,
   ConfirmSignIn,
   ConfirmSignUp,
 } from 'aws-amplify-react-native';
@@ -17,13 +16,14 @@ import {ScrapBookSignUp} from '../components/organisms/ScrapBookSignUp';
 import {ScrapBookSignIn} from '../components/organisms/ScrapBookSignIn';
 import SplashScreen from 'react-native-splash-screen';
 
-type Props = {};
+type Props = {
+  skip: () => void;
+};
 
 export type loginType = 'login' | 'register';
 
-export const RegisterFlowScreen: FunctionComponent<Props> = () => {
+export const RegisterFlowScreen: FunctionComponent<Props> = ({skip}) => {
   const {loggedIn, setLoggedIn} = useContext(ProfileContext);
-  const [offset] = useScrollView(1, () => {});
 
   useEffect(() => {
     if (!loggedIn) {
@@ -32,31 +32,27 @@ export const RegisterFlowScreen: FunctionComponent<Props> = () => {
   }, [loggedIn]);
 
   return (
-    <ScrollViewPage
-      extendedStyle={styles.safeArea}
-      showBack={offset !== 0}
-      backLabel={'Back'}>
-      <View style={styles.scrollViewContainer}>
-        <Authenticator
-          signUpConfig={signUpConfig}
-          hideDefault={true}
-          authData={CognitoUser | 'username'}
-          usernameAttributes={'Email'}
-          onStateChange={authState => {
-            if (authState === 'signedIn') {
-              setLoggedIn(true);
-            }
-          }}
-          theme={authTheme}>
-          <ConfirmSignIn />
-          <ConfirmSignUp />
-          <ScrapBookSignUp signUpConfig={signUpConfig} />
-          <ForgotPassword />
-          <RequireNewPassword />
-          <ScrapBookSignIn />
-        </Authenticator>
-      </View>
-    </ScrollViewPage>
+    <View style={styles.scrollViewContainer}>
+      <Authenticator
+        signUpConfig={signUpConfig}
+        hideDefault={true}
+        authData={CognitoUser | 'username'}
+        usernameAttributes={'Email'}
+        onStateChange={authState => {
+          if (authState === 'signedIn') {
+            setLoggedIn(true);
+          }
+        }}
+        theme={authTheme}>
+        <ConfirmSignIn />
+        <ConfirmSignUp />
+        <ScrapBookSignUp signUpConfig={signUpConfig} />
+        <ForgotPassword />
+        <Loading />
+        <RequireNewPassword />
+        <ScrapBookSignIn skip={skip} />
+      </Authenticator>
+    </View>
   );
 };
 
@@ -145,6 +141,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     flex: 10,
+    maxWidth: '100%',
     backgroundColor: 'white',
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,

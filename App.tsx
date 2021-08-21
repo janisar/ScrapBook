@@ -1,24 +1,18 @@
-import React, {FunctionComponent, useContext} from 'react';
-
+import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HistoryPage} from './src/pages/HistoryPage';
 import './src/i18n/config';
-import {ProfilePage} from './src/pages/ProfilePage';
-import {RegisterFlowScreen} from './src/pages/RegisterFlowScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {AddPartnerPage} from './src/pages/AddPartnerPage';
 import {AppStateProvider} from './src/context/Context';
 import {PartnerPage} from './src/pages/PartnerPage';
-import {MapPage} from './src/pages/MapPage';
-import {StyleSheet} from 'react-native';
-import {ProfileContext} from './src/context/UserContext';
 
-const Tab = createBottomTabNavigator();
+import {ProfileContext} from './src/context/UserContext';
 const Stack = createStackNavigator();
 
 import Amplify from 'aws-amplify';
 import config from './src/aws-exports';
+import {LoginModal} from './src/components/organisms/LoginModal';
+import {DrawerNavigator} from './src/navigator/drawer';
 
 Amplify.configure({
   ...config,
@@ -27,37 +21,26 @@ Amplify.configure({
   },
 });
 
-const tabBarStyle = StyleSheet.create({
-  style: {
-    display: 'flex',
-  },
-  tabStyle: {
-    justifyContent: 'center',
-  },
-});
+const Authorized: FunctionComponent = ({children}) => {
+  const {loggedIn, isLoading} = useContext(ProfileContext);
+  const [show, setShow] = useState(false);
 
-const Home = () => {
+  useEffect(() => {
+    if (!loggedIn && !isLoading) {
+      setShow(true);
+    }
+  }, [loggedIn, isLoading]);
+
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        style: tabBarStyle.style,
-        tabStyle: tabBarStyle.tabStyle,
-      }}>
-      <Tab.Screen name="History" component={HistoryPage} />
-      <Tab.Screen name="Profile" component={ProfilePage} />
-      <Tab.Screen name="Map" component={MapPage} />
-    </Tab.Navigator>
+    <>
+      {!loggedIn && !isLoading && <LoginModal visible={true} />}
+      {children}
+    </>
   );
 };
 
-const Authorized: FunctionComponent = ({children}) => {
-  const {loggedIn, profile} = useContext(ProfileContext);
-  return <>{loggedIn ? <>{children}</> : <RegisterFlowScreen />}</>;
-};
-
 export const headerOptions = {
-  headerTitleStyle: {color: '#000000', fontWeight: '200'},
-  headerTitleAlign: 'left',
+  headerShown: false,
 };
 
 const App = () => {
@@ -68,7 +51,7 @@ const App = () => {
           <Stack.Navigator>
             <Stack.Screen
               name={'ScrapBook'}
-              component={Home}
+              component={DrawerNavigator}
               options={headerOptions}
             />
             <Stack.Screen
@@ -77,7 +60,6 @@ const App = () => {
               options={{
                 ...headerOptions,
                 title: 'Add new partner',
-                headerLeft: null,
               }}
             />
             <Stack.Screen

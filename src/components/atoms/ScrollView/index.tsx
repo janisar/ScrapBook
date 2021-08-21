@@ -1,9 +1,8 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {ScrollView as RNScrollView, StyleSheet} from 'react-native';
-import {ScrollViewPage} from '../../../i18n/models';
 
 type Props = {
-  pages: ScrollViewPage[];
+  pagesCount: number;
   offset: number;
 };
 
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 export const ScrollView: FunctionComponent<Props> = ({
-  pages,
+  pagesCount,
   offset,
   children,
 }) => {
@@ -34,7 +33,7 @@ export const ScrollView: FunctionComponent<Props> = ({
       horizontal={true}
       contentContainerStyle={{
         ...styles.scrollView,
-        width: `${100 * pages.length}%`,
+        width: `${100 * pagesCount}%`,
       }}
       showsHorizontalScrollIndicator={true}
       scrollEnabled={false}>

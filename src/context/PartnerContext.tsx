@@ -17,13 +17,29 @@ const PartnerContext = createContext<{
   addPartner: (partner: Partner, userId?: string) => void;
   deletePartner: (partner: Partner) => void;
   isLoading: boolean;
+  clearAll: () => void;
 }>({
   partners: [],
   addPartner: (_p: Partner, _?: string) => {},
   deletePartner: (_: Partner) => {},
   setPartners: (_: Partner[]) => {},
   isLoading: true,
+  clearAll: () => {},
 });
+
+export function sortPartners(arr: Partner[]): Partner[] {
+  return arr.sort((p, p2) => {
+    if (p.startDate && p2.startDate) {
+      if (p.startDate < p2.startDate) {
+        return -1;
+      } else {
+        return 1;
+      }
+    } else {
+      return p.name!.localeCompare(p2.name!);
+    }
+  });
+}
 
 const PartnerContextProvider: FunctionComponent = ({children}) => {
   const [partners, setPartners] = useState<Partner[]>([]);
@@ -74,6 +90,11 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     storeData(partnersAsyncStorageKey, partners);
   };
 
+  const clearAll = () => {
+    setPartners([]);
+    storeData(partnersAsyncStorageKey, []);
+  };
+
   const fetchPartnersFromAsyncStorage = async () => {
     const data = await retrieveData<Partner[]>(partnersAsyncStorageKey);
     if (data) {
@@ -93,20 +114,6 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     }
   };
 
-  function sortPartners(arr: Partner[]): Partner[] {
-    return arr.sort((p, p2) => {
-      if (p.startDate && p2.startDate) {
-        if (p.startDate < p2.startDate) {
-          return -1;
-        } else {
-          return 1;
-        }
-      } else {
-        return p.name!.localeCompare(p2.name!);
-      }
-    });
-  }
-
   const addPartner = (partner: Partner, _?: string) => {
     syncPartner(partner)
       .then(res => {
@@ -123,6 +130,7 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
         addPartner,
         isLoading: partnersLoading,
         deletePartner,
+        clearAll,
       }}>
       {children}
     </PartnerContext.Provider>
