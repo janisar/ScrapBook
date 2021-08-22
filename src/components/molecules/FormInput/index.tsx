@@ -4,6 +4,7 @@ import {KeyboardType} from '../../atoms/Input';
 
 type Props = {
   onChange: (text: string) => void;
+  value?: string | number;
   label?: string;
   placeholder?: string;
   keyboardType?: KeyboardType;
@@ -11,6 +12,7 @@ type Props = {
 };
 export const FormInput: FunctionComponent<Props> = ({
   onChange,
+  value,
   width,
   label,
   placeholder,
@@ -21,6 +23,7 @@ export const FormInput: FunctionComponent<Props> = ({
     <FormField
       theme={theme}
       onChangeText={onChange}
+      value={value}
       keyboardType={keyboardType}
       label={label}
       placeholder={placeholder}

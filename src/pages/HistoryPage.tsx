@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Header2} from '../components/atoms/Header2';
@@ -6,10 +6,8 @@ import {PartnerListCard} from '../components/organisms/PartnerListCard';
 import {useNavigation} from '@react-navigation/native';
 import {NoPartners} from '../components/molecules/NoPartners';
 import {AddButton} from '../components/molecules/AddButton';
-import {PartnerContext} from '../context/PartnerContext';
+import {PartnerContext, partnersSortFunc} from '../context/PartnerContext';
 import {Text} from '../components/atoms/Text';
-import {Partner} from '../models/partner';
-import { getYearFromDate } from "../utils/dateUtils";
 
 const styles = StyleSheet.create({
   header: {
@@ -56,41 +54,36 @@ export const HistoryPage = () => {
   const navigation = useNavigation();
   const {t} = useTranslation('history');
 
-  function getYear(partner: Partner, index: number): number | undefined {
-    if (partner.startDate) {
-      const partnerYear = getYearFromDate(partner.startDate);
-      if (index === 0) {
-        return partnerYear;
-      }
-      const prevPartnerYear = getYearFromDate(partners[index - 1].startDate!);
-      if (partnerYear !== prevPartnerYear) {
-        return partnerYear;
-      }
-    }
-    return undefined;
-  }
-
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.innerWrapper}>
         <Header2 extendedStyle={styles.header}>{t('title')}</Header2>
-        {partners.length > 0 && (
+        {partners.size > 0 && (
           <ScrollView style={styles.partnersList}>
-            {partners.map((partner, index) => {
-              return (
-                <View key={partner.id}>
-                  {getYear(partner, index) && (
-                    <Text extendedStyle={styles.year}>
-                      {getYear(partner, index)}
-                    </Text>
-                  )}
-                  <PartnerListCard partner={partner} allPartners={partners} />
-                </View>
-              );
-            })}
+            {Array.from(partners.keys())
+              .sort()
+              .map(year => {
+                return (
+                  <View key={year}>
+                    <Text extendedStyle={styles.year}>{year}</Text>
+                    {partners
+                      .get(year)
+                      ?.sort(partnersSortFunc())
+                      .map(partner => (
+                        <PartnerListCard
+                          key={partner.id}
+                          partner={partner}
+                          allPartners={Array.from(partners.values()).flatMap(
+                            a => a,
+                          )}
+                        />
+                      ))}
+                  </View>
+                );
+              })}
           </ScrollView>
         )}
-        {partners.length === 0 && <NoPartners message={t('noPartners')} />}
+        {partners.size === 0 && <NoPartners message={t('noPartners')} />}
       </View>
       <View style={styles.actionButton}>
         <AddButton onPress={() => navigation.navigate('AddPartner')} />

@@ -22,7 +22,6 @@ export const AddPartnerPage: FunctionComponent<Props> = () => {
 
   const save = () => {
     const partner = Partner.createFromPartnerForm(formValue);
-
     if (partner.isValid()) {
       addPartner(partner, profile.id);
       navigation.goBack();

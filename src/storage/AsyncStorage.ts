@@ -17,6 +17,8 @@ export const retrieveData = async <T>(key: string): Promise<T | null> => {
     if (value !== null) {
       return JSON.parse(value) as T;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
   return null;
 };

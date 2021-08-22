@@ -7,18 +7,20 @@ type Props = {
   date: Date | string;
   onChange: (date: Event, value: Date | undefined) => void;
   onDone?: () => void;
+  width?: number | string;
 };
 
 export const DateSelect: FunctionComponent<Props> = ({
   date,
   onChange,
+  width = '80%',
   onDone,
 }) => {
   const [value, setValue] = useState<Date>(new Date());
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <View style={{width: '80%'}}>
+    <View style={{width: width}}>
       <Input
         onTouchEnd={() => {
           setShowModal(!showModal);
@@ -26,6 +28,7 @@ export const DateSelect: FunctionComponent<Props> = ({
         editable={false}
         value={value.toDateString()}
         style={{
+          width: width,
           textAlign: 'center',
           borderWidth: 1,
           borderColor: '#eaeaea',

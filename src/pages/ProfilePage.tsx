@@ -13,13 +13,17 @@ import {useStatistics} from '../hooks/useStatistics';
 import {Mode} from '../models';
 import {ProfileContext} from '../context/UserContext';
 import {ProfileInfoModal} from '../components/organisms/ProfileInfoModal';
+import {PartnerContext} from '../context/PartnerContext';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faUsers} from '@fortawesome/free-solid-svg-icons';
 
 type Props = {};
 
 export const ProfilePage: FunctionComponent<Props> = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [mode, setMode] = useState<Mode>(Mode.ALL_TIME);
-  const [allTime, lastYear, yearsData] = useStatistics(mode);
+  const {partners} = useContext(PartnerContext);
+  const [allTime, lastYear] = useStatistics(mode);
   const {profile} = useContext(ProfileContext);
 
   useEffect(() => {
@@ -29,10 +33,12 @@ export const ProfilePage: FunctionComponent<Props> = () => {
   }, [profile]);
 
   const data = {
-    labels: Array.from(yearsData.keys()),
+    labels: Array.from(partners.keys()).sort(),
     datasets: [
       {
-        data: Array.from(yearsData.values()),
+        data: Array.from(partners.keys())
+          .sort()
+          .map(key => partners.get(key)?.length),
       },
     ],
   };
@@ -41,8 +47,9 @@ export const ProfilePage: FunctionComponent<Props> = () => {
     backgroundGradientFrom: '#f1f1f1',
     backgroundGradientTo: '#f1f1f1',
     decimalPlaces: 0,
+    barPercentage: 0.75,
     color: (opacity = 1) => `rgba(167, 42, 199, ${opacity})`,
-    strokeWidth: 2,
+    strokeWidth: 1,
   };
 
   return (
@@ -59,8 +66,8 @@ export const ProfilePage: FunctionComponent<Props> = () => {
                 ? [allTime / 100]
                 : [(100 - lastYear) / 100]
             }
-            fromNumber={2}
-            radius={90}
+            fromNumber={0}
+            radius={100}
             hideLegend={true}
             width={Dimensions.get('window').width}
             height={320}
@@ -90,22 +97,31 @@ export const ProfilePage: FunctionComponent<Props> = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={{marginTop: 40}}>
+          <View style={{marginTop: 40, width: '100%'}}>
             <BarChart
+              style={partners.size > 6 ? styles.barchart : {}}
               yAxisSuffix={''}
               xAxisLabel={''}
-              flatColor={true}
               withInnerLines={false}
               showBarTops={true}
               fromZero={true}
               data={data}
-              segments={2}
+              segments={3}
               withCustomBarColorFromData={false}
               width={Dimensions.get('window').width}
-              height={200}
+              height={250}
               yAxisLabel={''}
               chartConfig={chartConfig}
             />
+          </View>
+          <View style={{flexDirection: 'row', marginTop: 30}}>
+            <FontAwesomeIcon icon={faUsers} style={{color: 'purple', marginTop: 'auto', marginBottom: 'auto', marginRight: 10, opacity: 0.8}} />
+            <Text>
+              Total number of partners:{' '}
+            </Text>
+            <Text extendedStyle={{color: 'purple', fontWeight: '500'}}>
+              {Array.from(partners.values()).flatMap(a => a).length}
+            </Text>
           </View>
           <View
             style={{marginTop: 40, paddingHorizontal: 30, paddingBottom: 40}}>
@@ -162,5 +178,8 @@ const styles = StyleSheet.create({
   },
   active: {
     color: 'blue',
+  },
+  barchart: {
+    right: 35,
   },
 });

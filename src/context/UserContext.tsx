@@ -38,7 +38,6 @@ const UserContextProvider: FunctionComponent = ({children}) => {
 
   useEffect(() => {
     if (loggedIn && profile) {
-      console.log(profile);
       Auth.currentUserInfo().then(user => {
         if (user === null) {
           Profile.getCurrentProfile().then(currentProfile => {
@@ -47,12 +46,12 @@ const UserContextProvider: FunctionComponent = ({children}) => {
                 email: currentProfile.email,
                 id: currentProfile.userID,
                 imageUrl: currentProfile.imageURL,
-                birthDate: profile.birthDate,
-                sex: profile.sex,
+                birthDate: profile.birthDate || profile.birthDate,
+                sex: profile.sex || profile.sex,
               });
             }
           });
-        } else {
+        } else if (!profile) {
           setProfile({
             id: user.id,
             name: user.attributes.name,
@@ -74,7 +73,8 @@ const UserContextProvider: FunctionComponent = ({children}) => {
   const fetchUserFromAsyncStorage = async () => {
     const data = await retrieveData<User>(userKey);
     if (data) {
-      setProfile({...data, birthDate: data.birthDate});
+      console.log('here2?', data);
+      setProfile({...data, birthDate: data.birthDate, sex: data.sex});
       setLoggedIn(true);
       setProfileLoading(false);
     } else {

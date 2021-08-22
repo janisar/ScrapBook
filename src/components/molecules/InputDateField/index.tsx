@@ -3,7 +3,7 @@ import {SelectFieldProps} from '../InputSelect';
 import AmplifyTheme, {
   placeholderColor,
 } from 'aws-amplify-react-native/src/AmplifyTheme';
-import {Text, TextInput, View} from 'react-native';
+import {Text, TextInput, TouchableOpacity, View} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import dateFormat from 'dateformat';
 
@@ -19,18 +19,20 @@ export const InputDateField: FunctionComponent<SelectFieldProps> = (
       <Text style={theme.inputLabel}>
         {props.label} {props.required ? '*' : ''}
       </Text>
-      <TextInput
-        style={theme.input}
-        autoCapitalize="none"
-        editable={false}
-        value={props.value || value}
-        autoCorrect={false}
-        placeholderTextColor={placeholderColor}
-        onTouchEnd={() => {
+      <TouchableOpacity
+        onPress={() => {
           setShowModal(!showModal);
-        }}
-        {...props}
-      />
+        }}>
+        <TextInput
+          style={theme.input}
+          autoCapitalize="none"
+          editable={false}
+          value={props.value || value}
+          autoCorrect={false}
+          placeholderTextColor={placeholderColor}
+          {...props}
+        />
+      </TouchableOpacity>
       <DateTimePickerModal
         isVisible={showModal}
         onChange={() => {}}

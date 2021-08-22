@@ -1,9 +1,10 @@
-import {useContext, useEffect, useMemo, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import * as allTime from '../data/all-time/index.json';
 import * as lastYear from '../data/past-year/index.json';
 import {Mode} from '../models';
-import { PartnerContext, sortPartners } from "../context/PartnerContext";
+import {PartnerContext} from '../context/PartnerContext';
 import {ProfileContext} from '../context/UserContext';
+import {mapPartnersForAsyncStorage} from '../utils/partners';
 
 const getAgeGroup = (age: number): string => {
   if (age >= 70) {
@@ -86,50 +87,37 @@ function getAge(date: string | undefined) {
   return new Date().getFullYear() - (+birthYear as number);
 }
 
-export const useStatistics = (
-  mode: Mode,
-): [number, number, Map<number, number>] => {
+export const useStatistics = (mode: Mode): [number, number] => {
   const [stats, setStats] = useState<number>(0);
   const [pastYear, setPastYear] = useState<number>(0);
   const {partners} = useContext(PartnerContext);
   const {profile} = useContext(ProfileContext);
 
-  const yearsMap = useMemo(() => {
-    const result = new Map<number, number>();
-
-    sortPartners(partners).forEach(partner => {
-      const year = +getYear(partner.startDate);
-      if (result.has(year)) {
-        result.set(year, result.get(year)! + 1);
-      } else {
-        result.set(year, 1);
-      }
-    });
-    return result;
-  }, [partners]);
-
   useEffect(() => {
     setStats(
       allTime.data[
         `${getSex(profile?.sex)}_${getAgeGroup(getAge(profile.birthDate))}`
-      ][partners.length],
+      ][mapPartnersForAsyncStorage(partners).length],
     );
   }, [profile, partners]);
 
   useEffect(() => {
     const today = new Date();
     today.setFullYear(today.getFullYear() - 1);
-    const lastYearPartners = partners.filter(p => {
+    const lastYearPartners = mapPartnersForAsyncStorage(partners).filter(p => {
       return new Date(p.startDate!) > today;
     }).length;
+    console.log(lastYearPartners);
     const data =
       lastYear.data[
         `${getSex(profile?.sex)}_${getAgeGroupPastYear(
           getAge(profile.birthDate),
         )}`
       ];
-    setPastYear(calc(data, lastYearPartners + 1, data.length));
+    const result = calc(data, lastYearPartners + 1, data.length);
+    console.log(result);
+    setPastYear(result);
   }, [mode]);
 
-  return [stats, pastYear, yearsMap];
+  return [stats, pastYear];
 };

@@ -1,5 +1,5 @@
 import {Dimensions, Platform} from 'react-native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 export const useScrollView = (
   totalPages: number,
@@ -9,6 +9,10 @@ export const useScrollView = (
 ): [number, () => void, () => void, () => void] => {
   const [offset, setOffset] = useState<number>(0);
   const [currentPageIndex, setCurrentPageIndex] = useState(1);
+
+  useEffect(() => {
+    setOffset(0);
+  }, []);
 
   const toNextPage = () => {
     setOffset(offset + width);

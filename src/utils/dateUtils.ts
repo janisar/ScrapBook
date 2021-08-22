@@ -43,6 +43,11 @@ export const getPartnerDuration = (partner: Partner | undefined): string => {
   return days + (days > 1 ? ' days' : ' day');
 };
 
-export const getYearFromDate = (date: Date | string): number => {
+export const getYearFromDate = (
+  date: Date | string | undefined,
+): number | undefined => {
+  if (!date) {
+    return undefined;
+  }
   return new Date(date).getFullYear();
 };

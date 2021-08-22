@@ -10,25 +10,33 @@ import {addPartnerFetch, getAllPartnersFetch} from '../fetch/partners';
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {partnersAsyncStorageKey} from './reducers/partnerReducer';
 import {ProfileContext} from './UserContext';
+import {getYearFromDate} from '../utils/dateUtils';
+import {
+  addPartnerToMap,
+  mapPartners,
+  mapPartnersForAsyncStorage,
+} from '../utils/partners';
 
 const PartnerContext = createContext<{
-  partners: Partner[];
-  setPartners: (partner: Partner[]) => void;
+  partners: Map<number, Partner[]>;
+  setPartners: (partner: Map<number, Partner[]>) => void;
   addPartner: (partner: Partner, userId?: string) => void;
   deletePartner: (partner: Partner) => void;
   isLoading: boolean;
   clearAll: () => void;
+  syncPartner: (partner: Partner) => void;
 }>({
-  partners: [],
+  partners: new Map(),
   addPartner: (_p: Partner, _?: string) => {},
   deletePartner: (_: Partner) => {},
-  setPartners: (_: Partner[]) => {},
+  setPartners: (_: Map<number, Partner[]>) => {},
   isLoading: true,
   clearAll: () => {},
+  syncPartner: (_: Partner) => {},
 });
 
-export function sortPartners(arr: Partner[]): Partner[] {
-  return arr.sort((p, p2) => {
+export function partnersSortFunc() {
+  return (p, p2) => {
     if (p.startDate && p2.startDate) {
       if (p.startDate < p2.startDate) {
         return -1;
@@ -38,26 +46,30 @@ export function sortPartners(arr: Partner[]): Partner[] {
     } else {
       return p.name!.localeCompare(p2.name!);
     }
-  });
+  };
+}
+
+export function sortPartners(arr: Partner[]): Partner[] {
+  return arr.sort(partnersSortFunc());
 }
 
 const PartnerContextProvider: FunctionComponent = ({children}) => {
-  const [partners, setPartners] = useState<Partner[]>([]);
+  const [partners, setPartners] = useState<Map<number, Partner[]>>(new Map());
   const [partnersLoading, setPartnersLoading] = useState<boolean>(true);
   const {profile} = useContext(ProfileContext);
 
   useEffect(() => {
-    if (partners && partners.length !== 0) {
-      storeData(partnersAsyncStorageKey, partners);
+    if (partners && partners.size) {
+      storeData(partnersAsyncStorageKey, mapPartnersForAsyncStorage(partners));
     }
   }, [partners]);
 
   useEffect(() => {
-    if (!partnersLoading && (!partners || partners.length === 0)) {
+    if (!partnersLoading && (!partners || !partners.size)) {
       getAllPartnersFetch(profile.id!)
         .then(result => {
           if (result) {
-            setPartners(result);
+            setPartners(mapPartners(result));
           }
         })
         .catch(err => {
@@ -73,9 +85,10 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
   const syncPartner = (partner: Partner): Promise<Partner> => {
     if (!partner.synced && profile.id) {
       try {
+        console.log('syncing partner', partner);
         addPartnerFetch(partner, profile.id).then(result => {
           if (result.ok) {
-            return Promise.resolve(partner.withSynced());
+            return Promise.resolve(Partner.create(partner).withSynced());
           }
         });
       } catch (e) {
@@ -86,26 +99,36 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
   };
 
   const deletePartner = (partner: Partner) => {
-    setPartners(partners.filter(p => partner.id !== p.id));
-    storeData(partnersAsyncStorageKey, partners);
+    const year = getYearFromDate(partner.startDate);
+    if (year) {
+      const newPartners = partners.get(year)?.filter(p => partner.id !== p.id);
+      partners.set(year, newPartners || []);
+      setPartners(partners);
+      storeData(
+        partnersAsyncStorageKey,
+        Array.from(partners.entries()).flatMap(a => a.values()),
+      );
+    }
   };
 
   const clearAll = () => {
-    setPartners([]);
+    setPartners(new Map());
     storeData(partnersAsyncStorageKey, []);
   };
 
   const fetchPartnersFromAsyncStorage = async () => {
-    const data = await retrieveData<Partner[]>(partnersAsyncStorageKey);
-    if (data) {
+    const dataArray = await retrieveData<Partner[]>(partnersAsyncStorageKey);
+    if (dataArray) {
+      setPartners(mapPartners(dataArray));
+      setPartnersLoading(false);
       const updatedData = Promise.all(
-        data.map(partner => {
+        dataArray.map(partner => {
           return syncPartner(partner);
         }),
       );
       updatedData
         .then(res => {
-          setPartners(sortPartners(res));
+          setPartners(mapPartners(res));
           setPartnersLoading(false);
         })
         .catch(err => console.log(err));
@@ -117,7 +140,8 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
   const addPartner = (partner: Partner, _?: string) => {
     syncPartner(partner)
       .then(res => {
-        setPartners(sortPartners([...partners, res]));
+        addPartnerToMap(res, partners);
+        setPartners(new Map(partners));
       })
       .catch(err => console.log(err));
   };
@@ -131,6 +155,7 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
         isLoading: partnersLoading,
         deletePartner,
         clearAll,
+        syncPartner,
       }}>
       {children}
     </PartnerContext.Provider>

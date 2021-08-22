@@ -37,6 +37,7 @@ export class Partner extends Synchronise {
 
   static create(partner: Partner) {
     const result = new Partner();
+    result.id = partner.id;
     result.name = partner.name;
     result.type = partner.type;
     result.durationInDays = partner.durationInDays;
@@ -48,6 +49,11 @@ export class Partner extends Synchronise {
 
   withCountry(country?: string): Partner {
     this.country = country;
+    return this;
+  }
+
+  withStartDate(startDate?: string): Partner {
+    this.startDate = startDate;
     return this;
   }
 

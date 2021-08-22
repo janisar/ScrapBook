@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from 'react';
+import React, {FunctionComponent, useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Header2} from '../../../components/atoms/Header2';
 import {DateSelect} from '../../../components/atoms/Date';
@@ -15,8 +15,7 @@ import {PartnerForm} from '../../../models/partner';
 import {AmplifyTheme} from 'aws-amplify-react-native';
 import {InputSelect} from '../../../components/molecules/InputSelect';
 import {FormInput} from '../../../components/molecules/FormInput';
-import { Select } from "../../../components/atoms/Select";
-import { useCountries } from "../../../hooks/useCountries";
+import {useCountries} from '../../../hooks/useCountries';
 
 type Props = {
   setFormValue: (field: string) => (value: string | Date | boolean) => void;
@@ -181,7 +180,13 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                       inProgress={false}
                       disabled={false}
                       label={page.action!}
-                      onPress={() => toNextPage()}
+                      onPress={() => {
+                        toNextPage();
+                        if (form.type === '3') {
+                          setFormValue('duration')('1');
+                          setFormValue('durationUnit')('1');
+                        }
+                      }}
                       extendedStyle={styles.actionButton}
                     />
                   </View>
@@ -196,6 +201,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                         <FormInput
                           onChange={setFormValue('duration')}
                           keyboardType={'numeric'}
+                          value={form.duration}
                           label={'Duration'}
                           placeholder={'4'}
                           width={110}
