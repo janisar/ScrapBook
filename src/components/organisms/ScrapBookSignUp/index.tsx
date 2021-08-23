@@ -1,4 +1,10 @@
-import React, {FunctionComponent, PropsWithChildren, useState} from 'react';
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import {ScrollView, View} from 'react-native';
 import {
   AmplifyButton,
@@ -11,6 +17,7 @@ import {Auth, I18n} from 'aws-amplify';
 import {InputSelect} from '../../molecules/InputSelect';
 import {InputDateField} from '../../molecules/InputDateField';
 import {Text} from '../../atoms/Text';
+import {ProfileContext} from '../../../context/UserContext';
 
 type SignupProps = {
   signUpConfig: {};
@@ -34,6 +41,15 @@ type Form = {
 export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
   props: PropsWithChildren<any>,
 ) => {
+  const {setLoggedIn, setProfile} = useContext(ProfileContext);
+
+  useEffect(() => {
+    if (props.authState === 'signedUp') {
+      setLoggedIn(true);
+      setProfile({});
+    }
+  }, [props.authState]);
+
   const [form, setForm] = useState<Form>({});
   const [error, setError] = useState<string | undefined>(undefined);
 
@@ -50,8 +66,8 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
     try {
       if (validateForm(form)) {
         await Auth.signUp({
-          username: form.email,
-          password: form.password,
+          username: form.email!,
+          password: form.password!,
           attributes: {
             email: form.email,
             gender: form.gender,
