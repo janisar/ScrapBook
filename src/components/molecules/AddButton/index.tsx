@@ -5,21 +5,28 @@ import {faPlus} from '@fortawesome/free-solid-svg-icons';
 
 const styles = StyleSheet.create({
   add: {
-    padding: 16,
+    padding: 12,
     borderRadius: 100,
     backgroundColor: '#d2d2d2',
+    shadowOffset: {
+      width: 0.4,
+      height: 0.4,
+    },
+    shadowColor: '#000',
+    shadowOpacity: 0.4,
   },
 });
 
 type AddProps = {
   onPress: () => void;
   label?: string;
+  width?: number;
 };
 
-export const AddButton: FunctionComponent<AddProps> = ({onPress}) => {
+export const AddButton: FunctionComponent<AddProps> = ({onPress, width}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.add}>
-      <FontAwesomeIcon icon={faPlus} />
+      <FontAwesomeIcon icon={faPlus} color={'#2f2f2f'} width={width} height={width} />
     </TouchableOpacity>
   );
 };

@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#535353',
     fontSize: 20,
+    flexDirection: 'row',
   },
   wrapper: {
     alignItems: 'center',
@@ -47,6 +48,19 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 12,
   },
+  addButton: {
+    alignSelf: 'flex-end',
+  },
+  headerWrapper: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-around',
+  },
+  headerAdd: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
 });
 
 export const HistoryPage = () => {
@@ -57,7 +71,18 @@ export const HistoryPage = () => {
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.innerWrapper}>
-        <Header2 extendedStyle={styles.header}>{t('title')}</Header2>
+        <View style={styles.headerWrapper}>
+          <Header2 extendedStyle={styles.header}>{t('title')}</Header2>
+          {partners.size > 0 && (
+            <View style={styles.headerAdd}>
+              <AddButton
+                onPress={() => navigation.navigate('AddPartner')}
+                width={12}
+              />
+            </View>
+          )}
+        </View>
+
         {partners.size > 0 && (
           <ScrollView style={styles.partnersList}>
             {Array.from(partners.keys())
@@ -85,9 +110,14 @@ export const HistoryPage = () => {
         )}
         {partners.size === 0 && <NoPartners message={t('noPartners')} />}
       </View>
-      <View style={styles.actionButton}>
-        <AddButton onPress={() => navigation.navigate('AddPartner')} />
-      </View>
+      {partners.size === 0 && (
+        <View style={styles.actionButton}>
+          <AddButton
+            onPress={() => navigation.navigate('AddPartner')}
+            width={14}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
