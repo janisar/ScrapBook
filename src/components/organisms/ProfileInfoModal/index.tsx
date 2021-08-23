@@ -67,7 +67,7 @@ export const ProfileInfoModal: FunctionComponent<Props> = ({visible, hide}) => {
         </View>
         <View style={styles.scrollViewContent}>
           <ModalContent value={profile.sex} next={toNextPage}>
-            <Header2>Select your sex</Header2>
+            <Header2>Select your gender</Header2>
             <InputSelect
               onValueChange={value => setSex(value)}
               width={140}

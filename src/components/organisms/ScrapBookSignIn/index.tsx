@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import {Alert, Button, Platform, ScrollView, View} from 'react-native';
+import {Button, Platform, ScrollView, View} from 'react-native';
 import {
   AmplifyButton,
   FormField,
@@ -21,6 +21,7 @@ import {I18n} from 'aws-amplify';
 import {AccessToken, LoginButton, Profile} from 'react-native-fbsdk-next';
 import {ProfileContext} from '../../../context/UserContext';
 import {useFacebookUser} from '../../../hooks/useFacebookUser';
+import {Text} from '../../atoms/Text';
 
 type LoginForm = {
   email?: string;
@@ -36,7 +37,9 @@ export const ScrapBookSignIn: FunctionComponent<Props> = (
 ) => {
   const [form, setForm] = useState<LoginForm>({});
   useFacebookUser(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
   const {setLoggedIn, setProfile} = useContext(ProfileContext);
+
   if (props.authState !== 'signIn') {
     return null;
   }
@@ -71,10 +74,12 @@ export const ScrapBookSignIn: FunctionComponent<Props> = (
       if (form.email && form.password) {
         await Auth.signIn(form.email, form.password);
       }
-    } catch (error) {
-      console.log('error signing in', error);
+    } catch (e) {
+      console.log('error signing in', e);
+      setError('Invalid email or password!');
     }
   }
+
   return (
     <Wrapper>
       <ScrollView
@@ -101,6 +106,11 @@ export const ScrapBookSignIn: FunctionComponent<Props> = (
             secureTextEntry={true}
             required={true}
           />
+          {error && (
+            <View style={{marginBottom: 20}}>
+              <Text extendedStyle={{color: 'red'}}>{error}</Text>
+            </View>
+          )}
           <AmplifyButton
             text={I18n.get('Sign In').toUpperCase()}
             theme={props.theme}
@@ -111,9 +121,9 @@ export const ScrapBookSignIn: FunctionComponent<Props> = (
           />
           <LoginButton
             style={{width: '100%', height: 49, marginTop: 20}}
-            onLoginFinished={(error, result) => {
-              if (error) {
-                console.log('login has error: ' + error);
+            onLoginFinished={(e, result) => {
+              if (e) {
+                console.log('login has error: ' + e);
               } else if (result.isCancelled) {
                 console.log('login is cancelled.');
               } else {

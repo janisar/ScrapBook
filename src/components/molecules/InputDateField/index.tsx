@@ -27,6 +27,11 @@ export const InputDateField: FunctionComponent<SelectFieldProps> = (
           style={theme.input}
           autoCapitalize="none"
           editable={false}
+          onPressIn={() => {
+            if (!showModal) {
+              setShowModal(true);
+            }
+          }}
           value={props.value || value}
           autoCorrect={false}
           placeholderTextColor={placeholderColor}

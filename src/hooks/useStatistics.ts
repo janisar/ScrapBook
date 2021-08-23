@@ -107,7 +107,6 @@ export const useStatistics = (mode: Mode): [number, number] => {
     const lastYearPartners = mapPartnersForAsyncStorage(partners).filter(p => {
       return new Date(p.startDate!) > today;
     }).length;
-    console.log(lastYearPartners);
     const data =
       lastYear.data[
         `${getSex(profile?.sex)}_${getAgeGroupPastYear(
@@ -115,7 +114,6 @@ export const useStatistics = (mode: Mode): [number, number] => {
         )}`
       ];
     const result = calc(data, lastYearPartners + 1, data.length);
-    console.log(result);
     setPastYear(result);
   }, [mode]);
 

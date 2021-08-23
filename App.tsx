@@ -22,9 +22,7 @@ Amplify.configure({
 });
 
 const Authorized: FunctionComponent = ({children}) => {
-  const {loggedIn, profile, isLoading} = useContext(ProfileContext);
-
-  console.log(profile)
+  const {loggedIn, isLoading} = useContext(ProfileContext);
   return (
     <>
       {!loggedIn && !isLoading && <LoginModal visible={true} />}

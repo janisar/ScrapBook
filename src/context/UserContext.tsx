@@ -73,7 +73,6 @@ const UserContextProvider: FunctionComponent = ({children}) => {
   const fetchUserFromAsyncStorage = async () => {
     const data = await retrieveData<User>(userKey);
     if (data) {
-      console.log('here2?', data);
       setProfile({...data, birthDate: data.birthDate, sex: data.sex});
       setLoggedIn(true);
       setProfileLoading(false);

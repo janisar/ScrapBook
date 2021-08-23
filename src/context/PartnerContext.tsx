@@ -85,7 +85,6 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
   const syncPartner = (partner: Partner): Promise<Partner> => {
     if (!partner.synced && profile.id) {
       try {
-        console.log('syncing partner', partner);
         addPartnerFetch(partner, profile.id).then(result => {
           if (result.ok) {
             return Promise.resolve(Partner.create(partner).withSynced());

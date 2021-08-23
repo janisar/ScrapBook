@@ -10,6 +10,7 @@ import {
 import {Auth, I18n} from 'aws-amplify';
 import {InputSelect} from '../../molecules/InputSelect';
 import {InputDateField} from '../../molecules/InputDateField';
+import {Text} from '../../atoms/Text';
 
 type SignupProps = {
   signUpConfig: {};
@@ -34,22 +35,34 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
   props: PropsWithChildren<any>,
 ) => {
   const [form, setForm] = useState<Form>({});
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  function validateForm(currentForm: Form): boolean {
+    if (currentForm.password && currentForm.email) {
+      return true;
+    } else {
+      setError('Please fill all the required fields!');
+      return false;
+    }
+  }
 
   async function signUp() {
     try {
-      await Auth.signUp({
-        username: form.email,
-        password: form.password,
-        attributes: {
-          email: form.email,
-          gender: form.gender,
-          birthdate: form.birthdate,
-          name: form.name,
-        },
-      });
-      props.onStateChange('confirmSignUp');
-    } catch (error) {
-      console.log('error signing up:', error);
+      if (validateForm(form)) {
+        await Auth.signUp({
+          username: form.email,
+          password: form.password,
+          attributes: {
+            email: form.email,
+            gender: form.gender,
+            birthdate: form.birthdate,
+            name: form.name,
+          },
+        });
+        props.onStateChange('confirmSignUp');
+      }
+    } catch (e) {
+      setError('Something went wrong, please check the fields and try again!');
     }
   }
 
@@ -102,6 +115,11 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
                   );
               }
             })}
+            {error && (
+              <View style={{marginBottom: 20}}>
+                <Text extendedStyle={{color: 'red'}}>{error}</Text>
+              </View>
+            )}
             <AmplifyButton
               text={I18n.get('Sign Up').toUpperCase()}
               theme={props.theme}
