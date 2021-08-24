@@ -1,10 +1,9 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
-import { ScrollView, StyleSheet, View } from "react-native";
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from '../components/atoms/Text';
 import Button from '../components/molecules/Button';
 import {useNavigation} from '@react-navigation/native';
 import {useCountries} from '../hooks/useCountries';
-import {Select} from '../components/atoms/Select';
 import {Partner} from '../models/partner';
 import {PartnerContext} from '../context/PartnerContext';
 import {useTranslation} from 'react-i18next';
@@ -76,10 +75,27 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
   }, [route.params]);
 
   const deleteCurrentPartner = () => {
-    if (currentPartner) {
-      deletePartner(currentPartner);
-    }
-    navigation.goBack();
+    Alert.alert(
+      t('removeAlertTitle'),
+      t('removeAlertBody', {name: currentPartner?.name}),
+      [
+        {
+          style: 'cancel',
+          onPress: () => {},
+          text: 'Cancel',
+        },
+        {
+          style: 'default',
+          onPress: () => {
+            if (currentPartner) {
+              deletePartner(currentPartner);
+            }
+            navigation.goBack();
+          },
+          text: 'Ok',
+        },
+      ],
+    );
   };
 
   const save = (p?: Partner) => {
@@ -121,7 +137,7 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
           </Text>
         </View>
         <View style={styles.row}>
-          <Text>Lasted: </Text>
+          <Text>{t('lasted')}: </Text>
           <Text extendedStyle={styles.value}>
             {getPartnerDuration(currentPartner)}
           </Text>
@@ -137,7 +153,7 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
           />
         </View>
         <View style={{...styles.row, marginTop: 0}}>
-          <Text>From: </Text>
+          <Text>{t('from')}: </Text>
           <View style={styles.value}>
             <InputSelect
               onValueChange={value => {
@@ -155,14 +171,14 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
           secondary={true}
           extendedStyle={styles.actionButton}
           onPress={deleteCurrentPartner}
-          label={'Delete'}
+          label={t('delete')}
           inProgress={false}
           disabled={false}
         />
         <Button
           extendedStyle={styles.actionButton}
           onPress={() => save(currentPartner)}
-          label={'Save'}
+          label={t('save')}
           inProgress={false}
           disabled={false}
         />

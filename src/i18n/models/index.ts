@@ -11,6 +11,7 @@ type HistorySteps =
 
 export interface ScrollViewPage {
   title: string;
+  label?: string;
   action?: string;
   options?: SelectItem[];
   placeholder?: string;

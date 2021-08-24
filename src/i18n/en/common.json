@@ -1,5 +1,12 @@
 {
   "name": "Name",
+  "Type": "Type",
+  "removeAlertTitle": "Are you sure?",
+  "lasted": "Lasted",
+  "from": "From",
+  "delete": "Delete",
+  "save": "Save",
+  "removeAlertBody": "You're about to remove {{name}} from your partners list. Are you sure?",
   "types": {
     "1": "Relationship",
     "2": "Fling",

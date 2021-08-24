@@ -8,6 +8,7 @@ import {NoPartners} from '../components/molecules/NoPartners';
 import {AddButton} from '../components/molecules/AddButton';
 import {PartnerContext, partnersSortFunc} from '../context/PartnerContext';
 import {Text} from '../components/atoms/Text';
+import {Screens} from '../constants';
 
 const styles = StyleSheet.create({
   header: {
@@ -76,7 +77,7 @@ export const HistoryPage = () => {
           {partners.size > 0 && (
             <View style={styles.headerAdd}>
               <AddButton
-                onPress={() => navigation.navigate('AddPartner')}
+                onPress={() => navigation.navigate(Screens.AddNew)}
                 width={12}
               />
             </View>
@@ -113,7 +114,7 @@ export const HistoryPage = () => {
       {partners.size === 0 && (
         <View style={styles.actionButton}>
           <AddButton
-            onPress={() => navigation.navigate('AddPartner')}
+            onPress={() => navigation.navigate(Screens.AddNew)}
             width={14}
           />
         </View>

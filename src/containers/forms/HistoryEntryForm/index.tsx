@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Header2} from '../../../components/atoms/Header2';
 import {DateSelect} from '../../../components/atoms/Date';
@@ -118,7 +118,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
       extendedStyle={styles.safeArea}
       showBack={true}
       onBack={onBack}
-      backLabel={'Back'}>
+      backLabel={t('back')}>
       <View style={styles.wrapper}>
         <ScrollView pagesCount={pages.length} offset={offset}>
           {pages.map(page => {
@@ -134,8 +134,8 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     <Header2>{page.title}</Header2>
                     <FormInput
                       onChange={setFormValue('name')}
-                      label={'Name'}
-                      placeholder={'Enter name'}
+                      label={page.label}
+                      placeholder={page.placeholder}
                     />
                     <Button
                       inProgress={false}
@@ -151,7 +151,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     <Header2>{page.title}</Header2>
                     <InputSelect
                       theme={authTheme}
-                      label={'Type'}
+                      label={page.label}
                       required={true}
                       onValueChange={setFormValue('type')}
                       items={page.options!}
@@ -202,7 +202,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                           onChange={setFormValue('duration')}
                           keyboardType={'numeric'}
                           value={form.duration}
-                          label={'Duration'}
+                          label={page.label}
                           placeholder={'4'}
                           width={110}
                         />
@@ -211,7 +211,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                         <InputSelect
                           theme={authTheme}
                           required={true}
-                          label={'Unit'}
+                          label={t('unit')}
                           onValueChange={setFormValue('durationUnit')}
                           items={page.options!}
                           width={110}
@@ -220,7 +220,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     </View>
                     <View style={{flex: 5}}>
                       <CheckboxComponent
-                        title={'Still in progress'}
+                        title={t('inProgress')}
                         checked={!!form.inProgress}
                         onClick={() => {
                           setFormValue('inProgress')(!form.inProgress);
@@ -242,7 +242,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                     <InputSelect
                       theme={authTheme}
                       required={false}
-                      label={'Country'}
+                      label={page.label}
                       onValueChange={setFormValue('country')}
                       items={countries}
                       width={200}

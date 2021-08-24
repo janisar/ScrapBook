@@ -9,13 +9,15 @@ import {
 import {TabNavigator} from '../tab';
 import {AddPartnerPage} from '../../pages/AddPartnerPage';
 import {PartnerContext} from '../../context/PartnerContext';
+import {useTranslation} from 'react-i18next';
+import {Screens} from '../../constants';
 
 const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator = () => {
   const {logOut, loggedIn} = useContext(ProfileContext);
   const {clearAll} = useContext(PartnerContext);
-
+  const {t} = useTranslation();
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -32,21 +34,21 @@ export const DrawerNavigator = () => {
             <DrawerItemList {...props} />
             {loggedIn && (
               <DrawerItem
-                label="Log out"
+                label={t('log out')}
                 labelStyle={{fontWeight: '200'}}
                 onPress={async () => {
                   clearAll();
                   logOut();
                   // @ts-ignore
-                  props.navigation.navigate('ScrapBook');
+                  props.navigation.navigate(Screens.Home);
                 }}
               />
             )}
           </DrawerContentScrollView>
         );
       }}>
-      <Drawer.Screen name={'ScrapBook'} component={TabNavigator} />
-      <Drawer.Screen name={'Add new partner'} component={AddPartnerPage} />
+      <Drawer.Screen name={Screens.Home} component={TabNavigator} />
+      <Drawer.Screen name={Screens.AddNew} component={AddPartnerPage} />
     </Drawer.Navigator>
   );
 };

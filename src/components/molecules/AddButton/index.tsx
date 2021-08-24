@@ -26,7 +26,7 @@ type AddProps = {
 export const AddButton: FunctionComponent<AddProps> = ({onPress, width}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.add}>
-      <FontAwesomeIcon icon={faPlus} color={'#2f2f2f'} width={width} height={width} />
+      <FontAwesomeIcon icon={faPlus} color={'#2f2f2f'} size={width} />
     </TouchableOpacity>
   );
 };

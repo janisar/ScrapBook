@@ -5,6 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Partner, PartnerForm} from '../models/partner';
 import {ProfileContext} from '../context/UserContext';
 import {PartnerContext} from '../context/PartnerContext';
+import {useTranslation} from 'react-i18next';
 
 type Props = {};
 
@@ -15,6 +16,7 @@ export const AddPartnerPage: FunctionComponent<Props> = () => {
   const {profile} = useContext(ProfileContext);
   const {addPartner} = useContext(PartnerContext);
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   const setValue = (field: string) => (value: string | Date | boolean) => {
     setFormValue({...formValue, [`${field}`]: value} as Partner);
@@ -26,7 +28,7 @@ export const AddPartnerPage: FunctionComponent<Props> = () => {
       addPartner(partner, profile.id);
       navigation.goBack();
     } else {
-      Alert.alert('Error', 'Please fill all the fields');
+      Alert.alert('Error', t('addNewPartnerError'));
     }
   };
 

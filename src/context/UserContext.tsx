@@ -51,12 +51,12 @@ const UserContextProvider: FunctionComponent = ({children}) => {
               });
             }
           });
-        } else if (!profile) {
+        } else {
           setProfile({
             id: user.id,
             name: user.attributes.name,
-            birthDate: user.attributes.birthdate,
-            sex: user.attributes.sex,
+            birthDate: user.attributes.birthdate || profile.birthDate,
+            sex: user.attributes.sex || profile.sex,
             email: user.attributes.email,
           });
         }

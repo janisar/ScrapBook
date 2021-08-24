@@ -9,10 +9,19 @@ export const post = <T>(endpoint: string, data: T): Promise<Response> => {
   });
 };
 
-
 export const get = (endpoint: string): Promise<Response> => {
   return fetch(endpoint, {
     method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export const del = (endpoint: string): Promise<Response> => {
+  return fetch(endpoint, {
+    method: 'DELETE',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

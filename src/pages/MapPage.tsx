@@ -65,7 +65,7 @@ export const MapPage: FunctionComponent<Props> = () => {
             setModalVisible(false);
           }
         }}
-        maxZoomLevel={3}>
+        maxZoomLevel={1}>
         <Geojson
           geojson={unConquered}
           strokeColor="gray"

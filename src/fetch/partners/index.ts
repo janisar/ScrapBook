@@ -1,4 +1,4 @@
-import {get, post} from '../post';
+import {get, post, del} from '../post';
 import {Partner} from '../../models/partner';
 
 const AddPartnerEndpoint =
@@ -20,3 +20,8 @@ export const getAllPartnersFetch = async (id: string): Promise<any> => {
     return response.json();
   }
 };
+
+export const removePartner = async (id?: string): Promise<any> => {
+  const response = await del(AddPartnerEndpoint + '/' + id);
+  console.log(response);
+}

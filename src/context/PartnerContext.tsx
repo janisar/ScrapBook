@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import {Partner} from '../models/partner';
-import {addPartnerFetch, getAllPartnersFetch} from '../fetch/partners';
+import { addPartnerFetch, getAllPartnersFetch, removePartner } from "../fetch/partners";
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {partnersAsyncStorageKey} from './reducers/partnerReducer';
 import {ProfileContext} from './UserContext';
@@ -102,7 +102,11 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     if (year) {
       const newPartners = partners.get(year)?.filter(p => partner.id !== p.id);
       partners.set(year, newPartners || []);
-      setPartners(partners);
+      if (partners.get(year)?.length === 0) {
+        partners.delete(year);
+      }
+      setPartners(new Map(partners));
+      removePartner(partner.id);
       storeData(
         partnersAsyncStorageKey,
         Array.from(partners.entries()).flatMap(a => a.values()),

@@ -1,0 +1,8 @@
+{
+  "allTimeBtn": "All time",
+  "allTime": "{{val}}% of people in the world have had more partners than you",
+  "pastYearBtn": "Past year",
+  "pastYear": "Last year {{val}}% of people have had more partners than you",
+  "totalCountLabel": "Total number of partners: ",
+  "disclaimer": "Remember your sexuality is not something that makes you more or less valuable as a person."
+}

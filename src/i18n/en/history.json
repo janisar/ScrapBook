@@ -2,18 +2,23 @@
   "title": "Your relationship history",
   "noPartners": "Wow, such empty..",
   "add": "Add",
+  "back": "Back",
   "name": "Name...",
+  "inProgress": "Still in progress",
+  "unit": "Unit",
   "pages": [
     {
       "title": "Enter the name of the person",
       "action": "Next",
       "type": "name",
+      "label": "Name",
       "placeholder": "Enter name.."
     },
     {
       "title": "What type of relationship was that?",
       "type": "relationship",
       "field": "type",
+      "label": "Type",
       "options": [
         {
           "label": "Relationship",
@@ -44,6 +49,7 @@
       "title": "How long did it go on?",
       "type": "duration",
       "field": "duration",
+      "label": "Duration",
       "options": [
         {
           "label": "Days",
@@ -67,6 +73,7 @@
     {
       "title": "Where was the partner from? [optional]",
       "field": "country",
+      "label": "Country",
       "type": "country",
       "action": "Done"
     }

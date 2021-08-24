@@ -18,17 +18,11 @@ import {InputSelect} from '../../molecules/InputSelect';
 import {InputDateField} from '../../molecules/InputDateField';
 import {Text} from '../../atoms/Text';
 import {ProfileContext} from '../../../context/UserContext';
+import {useTranslation} from 'react-i18next';
 
 type SignupProps = {
   signUpConfig: {};
 };
-
-export const items = [
-  {label: 'Male', value: 'M'},
-  {label: 'Female', value: 'F'},
-  {label: 'Other', value: 'O'},
-  {label: 'Prefer not to say', value: '0'},
-];
 
 type Form = {
   email?: string;
@@ -42,6 +36,8 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
   props: PropsWithChildren<any>,
 ) => {
   const {setLoggedIn, setProfile} = useContext(ProfileContext);
+  const {t: values} = useTranslation('values');
+  const {t: registerT} = useTranslation('register');
 
   useEffect(() => {
     if (props.authState === 'signedUp') {
@@ -57,7 +53,7 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
     if (currentForm.password && currentForm.email) {
       return true;
     } else {
-      setError('Please fill all the required fields!');
+      setError(registerT('registerError'));
       return false;
     }
   }
@@ -78,7 +74,7 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
         props.onStateChange('confirmSignUp');
       }
     } catch (e) {
-      setError('Something went wrong, please check the fields and try again!');
+      setError(registerT('registerCommonErr'));
     }
   }
 
@@ -88,7 +84,7 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
         <ScrollView
           style={props.theme.sectionScroll}
           keyboardShouldPersistTaps="handled">
-          <Header>Sign up</Header>
+          <Header>{registerT('header')}</Header>
           <View style={props.theme.sectionBody}>
             {props.signUpConfig.signUpFields.map(field => {
               switch (field.type) {
@@ -110,7 +106,7 @@ export const ScrapBookSignUp: FunctionComponent<SignupProps> = (
                       onValueChange={value =>
                         setForm({...form, [field.key]: value})
                       }
-                      items={items}
+                      items={values('gender', {returnObjects: true})}
                     />
                   );
                 default:

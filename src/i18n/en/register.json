@@ -1,28 +1,5 @@
 {
-  "pages": [
-    {
-      "title": "Register",
-      "type": "login"
-    },
-    {
-      "title": "What is your age?",
-      "type": "age",
-      "action": "Next"
-    },
-    {
-      "title": "What is your sex?",
-      "type": "sex",
-      "field": "sex",
-      "options": [
-        {
-          "label": "Male",
-          "value": "M"
-        },
-        {
-          "label": "Female",
-          "value": "F"
-        }
-      ]
-    }
-  ]
+  "header": "Sign up",
+  "registerError": "Please fill all the required fields!",
+  "registerCommonErr": "Something went wrong, please check the fields and try again!"
 }

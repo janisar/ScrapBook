@@ -13,6 +13,7 @@ import Amplify from 'aws-amplify';
 import config from './src/aws-exports';
 import {LoginModal} from './src/components/organisms/LoginModal';
 import {DrawerNavigator} from './src/navigator/drawer';
+import { useTranslation } from "react-i18next";
 
 Amplify.configure({
   ...config,
@@ -22,7 +23,9 @@ Amplify.configure({
 });
 
 const Authorized: FunctionComponent = ({children}) => {
-  const {loggedIn, isLoading} = useContext(ProfileContext);
+  const {loggedIn, profile, isLoading} = useContext(ProfileContext);
+  console.log('ID: ', profile.id);
+  console.log(loggedIn)
   return (
     <>
       {!loggedIn && !isLoading && <LoginModal visible={true} />}
@@ -36,6 +39,7 @@ export const headerOptions = {
 };
 
 const App = () => {
+  const {t} = useTranslation();
   return (
     <AppStateProvider>
       <Authorized>
@@ -51,7 +55,7 @@ const App = () => {
               component={AddPartnerPage}
               options={{
                 ...headerOptions,
-                title: 'Add new partner',
+                title: t('addNewPartnerTitle'),
               }}
             />
             <Stack.Screen

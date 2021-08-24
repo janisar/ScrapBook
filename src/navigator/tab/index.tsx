@@ -5,6 +5,7 @@ import {ProfilePage} from '../../pages/ProfilePage';
 import {MapPage} from '../../pages/MapPage';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Screens} from '../../constants';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,9 +14,9 @@ export const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={({route}) => ({
         tabBarIcon: () => {
-          if (route.name === 'History') {
+          if (route.name === Screens.History) {
             return <FontAwesomeIcon icon={faHistory} />;
-          } else if (route.name === 'Stats') {
+          } else if (route.name === Screens.Stats) {
             return <FontAwesomeIcon icon={faChartBar} />;
           } else {
             return <FontAwesomeIcon icon={faMap} />;
@@ -23,17 +24,17 @@ export const TabNavigator = () => {
         },
       })}>
       <Tab.Screen
-        name="History"
+        name={Screens.History}
         component={HistoryPage}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Stats"
+        name={Screens.Stats}
         component={ProfilePage}
         options={{headerShown: false}}
       />
       <Tab.Screen
-        name="Map"
+        name={Screens.Map}
         component={MapPage}
         options={{headerShown: false}}
       />

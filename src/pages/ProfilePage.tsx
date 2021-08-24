@@ -16,10 +16,12 @@ import {ProfileInfoModal} from '../components/organisms/ProfileInfoModal';
 import {PartnerContext} from '../context/PartnerContext';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUsers} from '@fortawesome/free-solid-svg-icons';
+import {useTranslation} from 'react-i18next';
 
 type Props = {};
 
 export const ProfilePage: FunctionComponent<Props> = () => {
+  const {t} = useTranslation('profile');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [mode, setMode] = useState<Mode>(Mode.ALL_TIME);
   const {partners} = useContext(PartnerContext);
@@ -74,17 +76,13 @@ export const ProfilePage: FunctionComponent<Props> = () => {
             chartConfig={chartConfig}
           />
           <Text extendedStyle={styles.description}>
-            {mode === Mode.ALL_TIME &&
-              `${
-                100 - allTime
-              }% of people in the world have had more partners than you`}
-            {mode === Mode.LAST_YEAR &&
-              `Last year ${lastYear}% of people have had more partners than you`}
+            {mode === Mode.ALL_TIME && t('allTime', {val: 100 - allTime})}
+            {mode === Mode.LAST_YEAR && t('pastYear', {val: lastYear})}
           </Text>
           <View style={styles.actionButtons}>
             <TouchableOpacity onPress={() => setMode(Mode.ALL_TIME)}>
               <Text extendedStyle={mode === Mode.ALL_TIME ? styles.active : {}}>
-                All time
+                {t('allTimeBtn')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -93,7 +91,7 @@ export const ProfilePage: FunctionComponent<Props> = () => {
               }}>
               <Text
                 extendedStyle={mode === Mode.LAST_YEAR ? styles.active : {}}>
-                Past year
+                {t('pastYearBtn')}
               </Text>
             </TouchableOpacity>
           </View>
@@ -115,20 +113,24 @@ export const ProfilePage: FunctionComponent<Props> = () => {
             />
           </View>
           <View style={{flexDirection: 'row', marginTop: 30}}>
-            <FontAwesomeIcon icon={faUsers} style={{color: 'purple', marginTop: 'auto', marginBottom: 'auto', marginRight: 10, opacity: 0.8}} />
-            <Text>
-              Total number of partners:{' '}
-            </Text>
+            <FontAwesomeIcon
+              icon={faUsers}
+              style={{
+                color: 'purple',
+                marginTop: 'auto',
+                marginBottom: 'auto',
+                marginRight: 10,
+                opacity: 0.8,
+              }}
+            />
+            <Text>{t('totalCountLabel')}</Text>
             <Text extendedStyle={{color: 'purple', fontWeight: '500'}}>
               {Array.from(partners.values()).flatMap(a => a).length}
             </Text>
           </View>
           <View
             style={{marginTop: 40, paddingHorizontal: 30, paddingBottom: 40}}>
-            <Text>
-              Remember your sexuality is not something that makes you more or
-              valuable as a person.
-            </Text>
+            <Text>{t('disclaimer')}</Text>
           </View>
         </View>
       </RNScrollView>
