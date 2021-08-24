@@ -6,10 +6,10 @@ import {Header2} from '../../atoms/Header2';
 import {Text} from '../../atoms/Text';
 import {InputDateField} from '../../molecules/InputDateField';
 import {InputSelect} from '../../molecules/InputSelect';
-import {items} from '../ScrapBookSignUp';
 import {useScrollView} from '../../../hooks/useScrollView';
 import {ProfileContext} from '../../../context/UserContext';
 import {ModalContent} from '../../Modal/ModalContent';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
   visible: boolean;
@@ -18,6 +18,7 @@ type Props = {
 
 export const ProfileInfoModal: FunctionComponent<Props> = ({visible, hide}) => {
   const {profile, setProfile} = useContext(ProfileContext);
+  const {t: values} = useTranslation('values');
   const [birthDate, setBirthDate] = useState<string | undefined>(
     profile.birthDate,
   );
@@ -71,7 +72,7 @@ export const ProfileInfoModal: FunctionComponent<Props> = ({visible, hide}) => {
             <InputSelect
               onValueChange={value => setSex(value)}
               width={140}
-              items={items}
+              items={values('gender', {returnObjects: true})}
             />
             <Button
               title={'Done'}
