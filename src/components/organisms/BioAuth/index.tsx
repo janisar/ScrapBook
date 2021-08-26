@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {fontSize: 30},
-  code: {fontSize: 28, marginTop: 20, height: 28},
+  code: {fontSize: 28, marginTop: 20, height: 32},
   cell: {
-    height: 78,
+    height: 80,
   },
 });
