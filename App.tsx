@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
+import React, {FunctionComponent, useContext, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import './src/i18n/config';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -13,7 +13,8 @@ import Amplify from 'aws-amplify';
 import config from './src/aws-exports';
 import {LoginModal} from './src/components/organisms/LoginModal';
 import {DrawerNavigator} from './src/navigator/drawer';
-import { useTranslation } from "react-i18next";
+import {useTranslation} from 'react-i18next';
+import {BioAuth} from './src/components/organisms/BioAuth';
 
 Amplify.configure({
   ...config,
@@ -23,12 +24,13 @@ Amplify.configure({
 });
 
 const Authorized: FunctionComponent = ({children}) => {
-  const {loggedIn, profile, isLoading} = useContext(ProfileContext);
-  console.log('ID: ', profile.id);
-  console.log(loggedIn)
+  const {loggedIn, isLoading} = useContext(ProfileContext);
+  const [auth, setAuth] = useState(false);
+
   return (
     <>
       {!loggedIn && !isLoading && <LoginModal visible={true} />}
+      {!auth && loggedIn && !isLoading && <BioAuth setAuth={setAuth} />}
       {children}
     </>
   );
@@ -40,6 +42,7 @@ export const headerOptions = {
 
 const App = () => {
   const {t} = useTranslation();
+
   return (
     <AppStateProvider>
       <Authorized>

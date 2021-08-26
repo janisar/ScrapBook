@@ -1,5 +1,6 @@
 {
   "header": "Sign up",
   "registerError": "Please fill all the required fields!",
-  "registerCommonErr": "Something went wrong, please check the fields and try again!"
+  "registerCommonErr": "Something went wrong, please check the fields and try again!",
+
 }

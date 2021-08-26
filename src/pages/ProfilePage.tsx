@@ -28,6 +28,7 @@ export const ProfilePage: FunctionComponent<Props> = () => {
   const [allTime, lastYear] = useStatistics(mode);
   const {profile} = useContext(ProfileContext);
 
+  console.log(partners)
   useEffect(() => {
     if (!profile.birthDate || !profile.sex) {
       setModalVisible(true);

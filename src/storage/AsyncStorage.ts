@@ -14,6 +14,7 @@ export const storeData = async (key: string, value: Object) => {
 export const retrieveData = async <T>(key: string): Promise<T | null> => {
   try {
     const value = await AsyncStorage.getItem(`${storeKey}:${key}`);
+    console.log(value, key)
     if (value !== null) {
       return JSON.parse(value) as T;
     }

@@ -36,12 +36,12 @@ const styles = StyleSheet.create({
   buttonRow: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-around',
     width: '80%',
     flex: 1,
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: 100,
   },
   row: {
     flexDirection: 'row',
@@ -126,7 +126,7 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
             style={{opacity: 0.8}}
           />
         </View>
-        <View style={styles.row}>
+        <View style={{...styles.row, marginTop: 30}}>
           <Text>{t('name')}:</Text>
           <Text extendedStyle={styles.value}>{currentPartner?.name}</Text>
         </View>

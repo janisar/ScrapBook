@@ -2,6 +2,7 @@ import React, {FunctionComponent, useState} from 'react';
 import {View} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Input} from 'react-native-elements';
+import dateFormat from 'dateformat';
 
 type Props = {
   date: Date | string;
@@ -16,7 +17,6 @@ export const DateSelect: FunctionComponent<Props> = ({
   width = '80%',
   onDone,
 }) => {
-  const [value, setValue] = useState<Date>(new Date());
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -26,7 +26,7 @@ export const DateSelect: FunctionComponent<Props> = ({
           setShowModal(!showModal);
         }}
         editable={false}
-        value={value.toDateString()}
+        value={dateFormat(date, 'dd/mm/yyyy')}
         style={{
           width: width,
           textAlign: 'center',
@@ -43,7 +43,6 @@ export const DateSelect: FunctionComponent<Props> = ({
           setShowModal(false);
         }}
         onConfirm={val => {
-          setValue(val);
           setShowModal(false);
           if (onDone) {
             onDone();
