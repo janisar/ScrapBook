@@ -24,12 +24,13 @@ const styles = StyleSheet.create({
   page: {
     display: 'flex',
     alignItems: 'center',
+    minHeight: '100%',
   },
   info: {
     flexDirection: 'column',
     alignItems: 'flex-start',
     paddingHorizontal: 50,
-    marginTop: 80,
+    marginTop: 20,
     flex: 2,
   },
   actionButton: {
@@ -155,7 +156,7 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
               style={{opacity: 0.8}}
             />
           </View>
-          <View style={{...styles.row, marginTop: 30}}>
+          <View style={{...styles.row, marginTop: 40}}>
             <Text>{t('name')}:</Text>
             <Text extendedStyle={styles.value}>{currentPartner?.name}</Text>
           </View>
