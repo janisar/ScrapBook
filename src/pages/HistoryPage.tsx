@@ -14,10 +14,10 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 20,
     marginBottom: 20,
-    color: '#504350',
+    color: '#939393',
     fontSize: 20,
     flexDirection: 'row',
-    fontWeight: '600',
+    fontWeight: '500',
   },
   wrapper: {
     alignItems: 'center',

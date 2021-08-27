@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flex: 10,
     maxWidth: '100%',
-    backgroundColor: 'white',
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },

@@ -39,13 +39,10 @@ export const Modal: FunctionComponent<Props> = ({
             <View
               style={{
                 backgroundColor: '#fff',
-                paddingVertical: 20,
-                marginVertical: 20,
-                marginHorizontal: 50,
-                paddingHorizontal: 50,
               }}>
               {closable && (
                 <TouchableOpacity
+                  style={{paddingRight: 10, paddingTop: 10}}
                   onPress={() => {
                     hide && hide();
                   }}>
@@ -72,7 +69,7 @@ const getStyles = (height: string = '80%') =>
       alignItems: 'center',
       marginTop: 20,
       maxHeight: height,
-      width: 400,
+      width: '100%',
     },
     modalView: {
       margin: 20,

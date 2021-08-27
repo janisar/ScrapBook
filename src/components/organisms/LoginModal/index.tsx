@@ -9,7 +9,7 @@ type Props = {
 export const LoginModal: FunctionComponent<Props> = ({visible}) => {
   const [show, setShow] = useState<boolean>(visible);
   return (
-    <Modal visible={show} height={'100%'}>
+    <Modal visible={show} height={'100%'} width={'100%'}>
       <RegisterFlowScreen skip={() => setShow(false)} />
     </Modal>
   );

@@ -28,8 +28,8 @@ const styles = (width: string = '40%') =>
       justifyContent: 'center',
       textAlignVertical: 'center',
       shadowOffset: {
-        width: 1,
-        height: 1,
+        width: 2,
+        height: 2,
       },
       shadowRadius: 2,
       shadowColor: 'gray',
@@ -76,22 +76,6 @@ const styles = (width: string = '40%') =>
 const partnersSort = (p1: Partner, p2: Partner): number => {
   return p2.durationInDays! > p1.durationInDays! ? 1 : -1;
 };
-
-function getColour(type: string | undefined): string {
-  switch (type) {
-    case '0':
-      return 'purple';
-    case '1':
-      return 'purple';
-    case '2':
-      return 'purple';
-    case '3':
-      return 'teal';
-    case '4':
-    default:
-      return 'teal';
-  }
-}
 
 function getWidth(width: number, type?: string): number {
   if (type === '1' || type === '2') {
