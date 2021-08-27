@@ -21,6 +21,8 @@ PODS:
   - AppCenterReactNativeShared (4.2.0):
     - AppCenter/Core (= 4.2.0)
   - boost-for-react-native (1.63.0)
+  - BVLinearGradient (2.5.6):
+    - React
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.64.2)
   - FBReactNativeSpec (0.64.2):
@@ -391,6 +393,7 @@ DEPENDENCIES:
   - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
   - appcenter-core (from `../node_modules/appcenter/ios`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
@@ -462,6 +465,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter/ios"
   appcenter-crashes:
     :path: "../node_modules/appcenter-crashes/ios"
+  BVLinearGradient:
+    :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   FBLazyVector:
@@ -568,6 +573,7 @@ SPEC CHECKSUMS:
   appcenter-crashes: dcfc443bd9fe7094e4fe49b15fabe68389a80c70
   AppCenterReactNativeShared: ef370308277adf71ec1586798b196e4cc35335ea
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: 65c7f8092afcc86c67e262f7a2ce90e0ae062b76

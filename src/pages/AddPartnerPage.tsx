@@ -9,10 +9,11 @@ import {useTranslation} from 'react-i18next';
 
 type Props = {};
 
+const initialState = {
+  startDate: new Date().toDateString(),
+};
 export const AddPartnerPage: FunctionComponent<Props> = () => {
-  const [formValue, setFormValue] = useState<PartnerForm>({
-    startDate: new Date().toDateString(),
-  });
+  const [formValue, setFormValue] = useState<PartnerForm>(initialState);
   const {profile} = useContext(ProfileContext);
   const {addPartner} = useContext(PartnerContext);
   const navigation = useNavigation();
@@ -26,6 +27,7 @@ export const AddPartnerPage: FunctionComponent<Props> = () => {
     const partner = Partner.createFromPartnerForm(formValue);
     if (partner.isValid()) {
       addPartner(partner, profile.id);
+      setFormValue(initialState);
       navigation.goBack();
     } else {
       Alert.alert('Error', t('addNewPartnerError'));

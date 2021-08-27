@@ -16,5 +16,27 @@
       "label": "Prefer not to say",
       "value": "0"
     }
+  ],
+  "relationships": [
+    {
+      "label": "Relationship",
+      "value": "1"
+    },
+    {
+      "label": "Fling",
+      "value": "2"
+    },
+    {
+      "label": "One-night-stand",
+      "value": "3"
+    },
+    {
+      "label": "Friends with benefits",
+      "value": "4"
+    },
+    {
+      "label": "Marriage",
+      "value": "5"
+    }
   ]
 }

@@ -13,6 +13,7 @@ import {faUserFriends} from '@fortawesome/free-solid-svg-icons';
 import {DateSelect} from '../components/atoms/Date';
 import {InputSelect} from '../components/molecules/InputSelect';
 import {mapPartners, mapPartnersForAsyncStorage} from '../utils/partners';
+import {EndRelationshipModal} from '../components/organisms/EndRelationshipModal';
 
 type Props = {
   route: {params: {partner: Partner}};
@@ -31,24 +32,22 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   actionButton: {
-    width: 120,
+    width: '48%',
   },
   buttonRow: {
-    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '80%',
+    justifyContent: 'space-between',
     flex: 1,
+    display: 'flex',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: 100,
+    marginTop: 20,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 30,
     minWidth: '100%',
-    // backgroundColor: 'gray',
     justifyContent: 'space-evenly',
   },
   value: {
@@ -64,8 +63,9 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
   const [currentPartner, setUpdatedPartner] = useState<Partner | undefined>(
     undefined,
   );
+  const [showEnd, setShowEnd] = useState(false);
   const navigation = useNavigation();
-  const {partners, setPartners, deletePartner, syncPartner} =
+  const {partners, setPartners, deletePartner, syncPartner, end} =
     useContext(PartnerContext);
 
   useEffect(() => {
@@ -117,6 +117,25 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
 
   return (
     <ScrollView contentContainerStyle={styles.page}>
+      {currentPartner && (
+        <EndRelationshipModal
+          partner={currentPartner!}
+          visible={showEnd}
+          hide={() => {
+            setShowEnd(false);
+          }}
+          end={(endDate: Date) => {
+            if (endDate) {
+              end(currentPartner, endDate);
+              setShowEnd(false);
+              setUpdatedPartner({
+                ...currentPartner,
+                inProgress: false,
+              } as Partner);
+            }
+          }}
+        />
+      )}
       <View style={styles.info}>
         <View style={styles.row}>
           <FontAwesomeIcon
@@ -137,10 +156,14 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
           </Text>
         </View>
         <View style={styles.row}>
-          <Text>{t('lasted')}: </Text>
-          <Text extendedStyle={styles.value}>
-            {getPartnerDuration(currentPartner)}
-          </Text>
+          <>
+            <Text>
+              {!currentPartner?.inProgress ? t('lasted') : t('Has lasted')}:{' '}
+            </Text>
+            <Text extendedStyle={styles.value}>
+              {getPartnerDuration(currentPartner)}
+            </Text>
+          </>
         </View>
         <View style={styles.row}>
           <Text>{t('Started at')}:</Text>
@@ -166,22 +189,48 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
           </View>
         </View>
       </View>
-      <View style={styles.buttonRow}>
-        <Button
-          secondary={true}
-          extendedStyle={styles.actionButton}
-          onPress={deleteCurrentPartner}
-          label={t('delete')}
-          inProgress={false}
-          disabled={false}
-        />
-        <Button
-          extendedStyle={styles.actionButton}
-          onPress={() => save(currentPartner)}
-          label={t('save')}
-          inProgress={false}
-          disabled={false}
-        />
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'flex',
+          flex: 1,
+          width: '70%',
+          marginTop: 50,
+        }}>
+        {currentPartner?.inProgress && (
+          <Button
+            extendedStyle={{width: '100%'}}
+            onPress={() => {
+              setShowEnd(true);
+            }}
+            label={t('💔 End relationship')}
+          />
+        )}
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            width: '100%',
+            justifyContent: 'space-between',
+            marginTop: 20,
+          }}>
+          <Button
+            secondary={true}
+            extendedStyle={styles.actionButton}
+            onPress={deleteCurrentPartner}
+            label={t('delete')}
+            inProgress={false}
+            disabled={false}
+          />
+          <Button
+            extendedStyle={styles.actionButton}
+            onPress={() => save(currentPartner)}
+            label={t('save')}
+            inProgress={false}
+            disabled={false}
+          />
+        </View>
       </View>
     </ScrollView>
   );

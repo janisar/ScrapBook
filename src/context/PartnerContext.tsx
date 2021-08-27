@@ -6,13 +6,18 @@ import React, {
   useState,
 } from 'react';
 import {Partner} from '../models/partner';
-import { addPartnerFetch, getAllPartnersFetch, removePartner } from "../fetch/partners";
+import {
+  addPartnerFetch,
+  getAllPartnersFetch,
+  removePartner,
+} from '../fetch/partners';
 import {retrieveData, storeData} from '../storage/AsyncStorage';
 import {partnersAsyncStorageKey} from './reducers/partnerReducer';
 import {ProfileContext} from './UserContext';
 import {getYearFromDate} from '../utils/dateUtils';
 import {
   addPartnerToMap,
+  calculateInProgressPartnerDuration,
   mapPartners,
   mapPartnersForAsyncStorage,
 } from '../utils/partners';
@@ -25,6 +30,7 @@ const PartnerContext = createContext<{
   isLoading: boolean;
   clearAll: () => void;
   syncPartner: (partner: Partner) => void;
+  end: (partner: Partner, endDate: Date) => void;
 }>({
   partners: new Map(),
   addPartner: (_p: Partner, _?: string) => {},
@@ -33,10 +39,11 @@ const PartnerContext = createContext<{
   isLoading: true,
   clearAll: () => {},
   syncPartner: (_: Partner) => {},
+  end: () => {},
 });
 
 export function partnersSortFunc() {
-  return (p, p2) => {
+  return (p: Partner, p2: Partner) => {
     if (p.startDate && p2.startDate) {
       if (p.startDate < p2.startDate) {
         return -1;
@@ -140,13 +147,31 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     }
   };
 
+  const end = (partner: Partner, endDate: Date) => {
+    setPartners(
+      mapPartners(
+        mapPartnersForAsyncStorage(partners).map(p => {
+          if (p.id === partner.id) {
+            p.inProgress = false;
+            p.durationInDays = calculateInProgressPartnerDuration(p, endDate);
+          }
+          return p;
+        }),
+      ),
+    );
+  };
+
   const addPartner = (partner: Partner, _?: string) => {
-    syncPartner(partner)
-      .then(res => {
-        addPartnerToMap(res, partners);
-        setPartners(new Map(partners));
-      })
-      .catch(err => console.log(err));
+    if (partner.inProgress) {
+      partner.durationInDays = calculateInProgressPartnerDuration(
+        partner,
+        new Date(),
+      );
+    }
+    addPartnerToMap(partner, partners);
+    setPartners(new Map(partners));
+
+    syncPartner(partner).catch(err => console.log(err));
   };
 
   return (
@@ -159,6 +184,7 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
         deletePartner,
         clearAll,
         syncPartner,
+        end,
       }}>
       {children}
     </PartnerContext.Provider>

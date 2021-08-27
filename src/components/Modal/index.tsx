@@ -1,15 +1,28 @@
-import React, {FunctionComponent} from 'react';
-import {Modal as RNModal, StyleSheet, View} from 'react-native';
+import React, {FunctionComponent, useState} from 'react';
+import {
+  Modal as RNModal,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   visible: boolean;
   height?: string;
+  width?: string | number;
+  closable?: boolean;
+  hide?: () => void;
   ref?: any;
 };
 
 export const Modal: FunctionComponent<Props> = ({
   visible,
   height,
+  width,
+  hide,
+  closable,
   ref,
   children,
 }) => {
@@ -22,7 +35,30 @@ export const Modal: FunctionComponent<Props> = ({
       visible={visible}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style={styles.modalContent}>{children}</View>
+          <View style={styles.modalContent}>
+            <View
+              style={{
+                backgroundColor: '#fff',
+                paddingVertical: 20,
+                marginVertical: 20,
+                marginHorizontal: 50,
+                paddingHorizontal: 50,
+              }}>
+              {closable && (
+                <TouchableOpacity
+                  onPress={() => {
+                    hide && hide();
+                  }}>
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    size={20}
+                    style={{alignSelf: 'flex-end'}}
+                  />
+                </TouchableOpacity>
+              )}
+              {children}
+            </View>
+          </View>
         </View>
       </View>
     </RNModal>
@@ -36,6 +72,7 @@ const getStyles = (height: string = '80%') =>
       alignItems: 'center',
       marginTop: 20,
       maxHeight: height,
+      width: 400,
     },
     modalView: {
       margin: 20,

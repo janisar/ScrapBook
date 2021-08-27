@@ -36,10 +36,12 @@ export const useCountries = (): [SelectItem[], any, any, boolean] => {
 
   const canShow = partnersList.some(p => p.country);
   const selectItems: SelectItem[] = useMemo<SelectItem[]>(() => {
-    return countries.features.map(feature => ({
-      value: feature.id,
-      label: feature.properties.name,
-    }));
+    return countries.features
+      .map(feature => ({
+        value: feature.id,
+        label: feature.properties.name,
+      }))
+      .sort((c1, c2) => c1.label.localeCompare(c2.label));
   }, []);
 
   const conqueredCountries = useMemo(() => {

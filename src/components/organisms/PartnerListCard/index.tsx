@@ -1,15 +1,21 @@
 import React, {FunctionComponent} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Partner} from '../../../models/partner';
-import { getPartnerDuration } from "../../../utils/dateUtils";
+import {getPartnerDuration} from '../../../utils/dateUtils';
+import {Screens} from '../../../constants';
 
 type Props = {
   allPartners: Partner[];
   partner: Partner;
 };
 
-const styles = (width: string = '40%', colour: string) =>
+const styles = (width: string = '40%') =>
   StyleSheet.create({
     wrapper: {
       marginTop: 10,
@@ -21,6 +27,13 @@ const styles = (width: string = '40%', colour: string) =>
       textAlign: 'center',
       justifyContent: 'center',
       textAlignVertical: 'center',
+      shadowOffset: {
+        width: 1,
+        height: 1,
+      },
+      shadowRadius: 2,
+      shadowColor: 'gray',
+      shadowOpacity: 1,
     },
     partnerLabel: {
       position: 'absolute',
@@ -31,10 +44,22 @@ const styles = (width: string = '40%', colour: string) =>
       minWidth: 120,
     },
     progressBar: {
-      backgroundColor: colour,
+      backgroundColor: '#b665c1',
+      shadowOffset: {
+        width: 1,
+        height: 1,
+      },
+      shadowRadius: 1,
+      shadowOpacity: 1,
+      shadowColor: 'gray',
       width: width,
       height: 30,
       zIndex: -1,
+      borderRadius: 50,
+    },
+    hookup: {
+      justifyContent: 'center',
+      height: 30,
       borderRadius: 50,
     },
     rightLabel: {
@@ -55,11 +80,11 @@ const partnersSort = (p1: Partner, p2: Partner): number => {
 function getColour(type: string | undefined): string {
   switch (type) {
     case '0':
-      return 'teal';
+      return 'purple';
     case '1':
       return 'purple';
     case '2':
-      return 'teal';
+      return 'purple';
     case '3':
       return 'teal';
     case '4':
@@ -69,7 +94,7 @@ function getColour(type: string | undefined): string {
 }
 
 function getWidth(width: number, type?: string): number {
-  if (type === '1') {
+  if (type === '1' || type === '2') {
     return width;
   } else {
     return 100;
@@ -81,16 +106,23 @@ export const PartnerListCard: FunctionComponent<Props> = ({
   allPartners,
 }) => {
   const longest = [...allPartners].sort(partnersSort)[0].durationInDays;
-  const width = (partner.durationInDays! * 100) / longest!;
-  const colour = getColour(partner.type);
-  const style = styles(`${getWidth(width, partner.type)}%`, colour);
+
+  function getWidth1() {
+    if (partner.durationInDays! < 14) {
+      return 0;
+    }
+    return (partner.durationInDays! * 100) / longest!;
+  }
+
+  const width = getWidth1();
+  const style = styles(`${getWidth(width, partner.type)}%`);
   const nav = useNavigation();
   return (
     <TouchableOpacity
       style={style.wrapper}
-      onPress={() => nav.navigate('Partner', {partner: partner})}>
+      onPress={() => nav.navigate(Screens.Partner, {partner: partner})}>
       <Text style={style.partnerLabel}>{partner.name}</Text>
-      <View style={style.progressBar} />
+      <View style={partner.type === '3' ? style.hookup : style.progressBar} />
       <Text style={style.rightLabel}>{getPartnerDuration(partner)}</Text>
     </TouchableOpacity>
   );

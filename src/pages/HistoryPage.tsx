@@ -14,9 +14,10 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 20,
     marginBottom: 20,
-    color: '#535353',
+    color: '#504350',
     fontSize: 20,
     flexDirection: 'row',
+    fontWeight: '600',
   },
   wrapper: {
     alignItems: 'center',
