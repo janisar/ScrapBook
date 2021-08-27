@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '90%',
+    height: '100%',
     display: 'flex',
     flex: 1,
   },
@@ -31,15 +31,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 11,
     width: '100%',
+    height: '100%',
   },
   partnersList: {
     display: 'flex',
     flex: 11,
     flexDirection: 'column',
-    paddingVertical: 10,
+    paddingTop: 10,
+    paddingBottom: 0,
     paddingHorizontal: 30,
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   actionButton: {
     display: 'flex',
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   year: {
     fontWeight: '100',
     marginBottom: 8,
-    marginTop: 12,
+    marginTop: 2,
   },
   addButton: {
     alignSelf: 'flex-end',
@@ -91,7 +93,7 @@ export const HistoryPage = () => {
               .sort()
               .map(year => {
                 return (
-                  <View key={year}>
+                  <View key={year} style={{marginBottom: 10}}>
                     <Text extendedStyle={styles.year}>{year}</Text>
                     {partners
                       .get(year)

@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   safeArea: {
     paddingTop: 0,
     height: '100%',
-    backgroundColor: '#c583cb',
+    backgroundColor: '#f5f5f5',
   },
   scrollViewContent: {
     flexBasis: '100%',

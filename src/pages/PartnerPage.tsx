@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from 'react';
-import {Alert, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from '../components/atoms/Text';
 import Button from '../components/molecules/Button';
 import {useNavigation} from '@react-navigation/native';
@@ -14,6 +14,7 @@ import {DateSelect} from '../components/atoms/Date';
 import {InputSelect} from '../components/molecules/InputSelect';
 import {mapPartners, mapPartnersForAsyncStorage} from '../utils/partners';
 import {EndRelationshipModal} from '../components/organisms/EndRelationshipModal';
+import BackButton from '../components/molecules/BackButton';
 
 type Props = {
   route: {params: {partner: Partner}};
@@ -116,122 +117,132 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
   const types: {[key: string]: [string]} = t('types', {returnObjects: true});
 
   return (
-    <ScrollView contentContainerStyle={styles.page}>
-      {currentPartner && (
-        <EndRelationshipModal
-          partner={currentPartner!}
-          visible={showEnd}
-          hide={() => {
-            setShowEnd(false);
-          }}
-          end={(endDate: Date) => {
-            if (endDate) {
-              end(currentPartner, endDate);
-              setShowEnd(false);
-              setUpdatedPartner({
-                ...currentPartner,
-                inProgress: false,
-              } as Partner);
-            }
-          }}
-        />
-      )}
-      <View style={styles.info}>
-        <View style={styles.row}>
-          <FontAwesomeIcon
-            size={80}
-            icon={faUserFriends}
-            color={'purple'}
-            style={{opacity: 0.8}}
-          />
-        </View>
-        <View style={{...styles.row, marginTop: 30}}>
-          <Text>{t('name')}:</Text>
-          <Text extendedStyle={styles.value}>{currentPartner?.name}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text>{t('Type')}:</Text>
-          <Text extendedStyle={styles.value}>
-            {types[`${currentPartner?.type}`]}
-          </Text>
-        </View>
-        <View style={styles.row}>
-          <>
-            <Text>
-              {!currentPartner?.inProgress ? t('lasted') : t('Has lasted')}:{' '}
-            </Text>
-            <Text extendedStyle={styles.value}>
-              {getPartnerDuration(currentPartner)}
-            </Text>
-          </>
-        </View>
-        <View style={styles.row}>
-          <Text>{t('Started at')}:</Text>
-          <DateSelect
-            width={190}
-            date={currentPartner?.startDate!}
-            onChange={startDate => {
-              currentPartner?.withStartDate(startDate as string);
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.page}>
+        <View style={{position: 'absolute', top: 10, left: 10}}>
+          <BackButton
+            label={'Back'}
+            onPress={() => {
+              navigation.goBack();
             }}
           />
         </View>
-        <View style={{...styles.row, marginTop: 0}}>
-          <Text>{t('from')}: </Text>
-          <View style={styles.value}>
-            <InputSelect
-              onValueChange={value => {
-                currentPartner?.withCountry(value);
-              }}
-              items={countries}
+        {currentPartner && (
+          <EndRelationshipModal
+            partner={currentPartner!}
+            visible={showEnd}
+            hide={() => {
+              setShowEnd(false);
+            }}
+            end={(endDate: Date) => {
+              if (endDate) {
+                end(currentPartner, endDate);
+                setShowEnd(false);
+                setUpdatedPartner({
+                  ...currentPartner,
+                  inProgress: false,
+                } as Partner);
+              }
+            }}
+          />
+        )}
+        <View style={styles.info}>
+          <View style={styles.row}>
+            <FontAwesomeIcon
+              size={80}
+              icon={faUserFriends}
+              color={'purple'}
+              style={{opacity: 0.8}}
+            />
+          </View>
+          <View style={{...styles.row, marginTop: 30}}>
+            <Text>{t('name')}:</Text>
+            <Text extendedStyle={styles.value}>{currentPartner?.name}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text>{t('Type')}:</Text>
+            <Text extendedStyle={styles.value}>
+              {types[`${currentPartner?.type}`]}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <>
+              <Text>
+                {!currentPartner?.inProgress ? t('lasted') : t('Has lasted')}:{' '}
+              </Text>
+              <Text extendedStyle={styles.value}>
+                {getPartnerDuration(currentPartner)}
+              </Text>
+            </>
+          </View>
+          <View style={styles.row}>
+            <Text>{t('Started at')}:</Text>
+            <DateSelect
               width={190}
-              value={countries.find(c => c.value === country)}
+              date={currentPartner?.startDate!}
+              onChange={startDate => {
+                currentPartner?.withStartDate(startDate as string);
+              }}
+            />
+          </View>
+          <View style={{...styles.row, marginTop: 0}}>
+            <Text>{t('from')}: </Text>
+            <View style={styles.value}>
+              <InputSelect
+                onValueChange={value => {
+                  currentPartner?.withCountry(value);
+                }}
+                items={countries}
+                width={190}
+                value={countries.find(c => c.value === country)}
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+            flex: 1,
+            width: '70%',
+            marginTop: 50,
+          }}>
+          {currentPartner?.inProgress && (
+            <Button
+              extendedStyle={{width: '100%'}}
+              onPress={() => {
+                setShowEnd(true);
+              }}
+              label={t('💔 End relationship')}
+            />
+          )}
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              width: '100%',
+              justifyContent: 'space-between',
+              marginTop: 20,
+            }}>
+            <Button
+              secondary={true}
+              extendedStyle={styles.actionButton}
+              onPress={deleteCurrentPartner}
+              label={t('delete')}
+              inProgress={false}
+              disabled={false}
+            />
+            <Button
+              extendedStyle={styles.actionButton}
+              onPress={() => save(currentPartner)}
+              label={t('save')}
+              inProgress={false}
+              disabled={false}
             />
           </View>
         </View>
-      </View>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          display: 'flex',
-          flex: 1,
-          width: '70%',
-          marginTop: 50,
-        }}>
-        {currentPartner?.inProgress && (
-          <Button
-            extendedStyle={{width: '100%'}}
-            onPress={() => {
-              setShowEnd(true);
-            }}
-            label={t('💔 End relationship')}
-          />
-        )}
-        <View
-          style={{
-            flexDirection: 'row',
-            flex: 1,
-            width: '100%',
-            justifyContent: 'space-between',
-            marginTop: 20,
-          }}>
-          <Button
-            secondary={true}
-            extendedStyle={styles.actionButton}
-            onPress={deleteCurrentPartner}
-            label={t('delete')}
-            inProgress={false}
-            disabled={false}
-          />
-          <Button
-            extendedStyle={styles.actionButton}
-            onPress={() => save(currentPartner)}
-            label={t('save')}
-            inProgress={false}
-            disabled={false}
-          />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };

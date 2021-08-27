@@ -16,6 +16,7 @@ import {ProfileInfoModal} from '../components/organisms/ProfileInfoModal';
 import {PartnerContext} from '../context/PartnerContext';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faUsers} from '@fortawesome/free-solid-svg-icons';
+import {faHeart} from '@fortawesome/free-solid-svg-icons';
 import {useTranslation} from 'react-i18next';
 
 type Props = {};
@@ -126,6 +127,22 @@ export const ProfilePage: FunctionComponent<Props> = () => {
             <Text>{t('totalCountLabel')}</Text>
             <Text extendedStyle={{color: 'purple', fontWeight: '500'}}>
               {Array.from(partners.values()).flatMap(a => a).length}
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', marginTop: 10}}>
+            <FontAwesomeIcon
+              icon={faHeart}
+              style={{
+                color: 'purple',
+                marginTop: 'auto',
+                marginBottom: 'auto',
+                marginRight: 10,
+                opacity: 0.8,
+              }}
+            />
+            <Text>{t('Total relationships')}: </Text>
+            <Text extendedStyle={{color: 'purple', fontWeight: '500'}}>
+              {Array.from(partners.values()).flatMap(a => a).filter(p => p.type === '1').length}
             </Text>
           </View>
           <View

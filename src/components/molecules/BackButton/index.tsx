@@ -1,7 +1,8 @@
-import {TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import React, {FunctionComponent} from 'react';
 import {Text} from '../../atoms/Text';
-// const BackIcon = require('../../../../assets/icons/back-arrow.png');
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   label: string;
@@ -10,8 +11,16 @@ type Props = {
 
 export const BackButton: FunctionComponent<Props> = ({label, onPress}) => (
   <TouchableOpacity style={styles.wrapper} onPress={onPress}>
-    {/*<Image style={styles.backArrow} source={BackIcon} />*/}
-    <Text extendedStyle={{color: 'white'}}>{label}</Text>
+    <FontAwesomeIcon icon={faArrowLeft} size={10} />
+    <Text
+      extendedStyle={{
+        color: '#6a6a6a',
+        fontWeight: '400',
+        fontSize: 16,
+        marginLeft: 5,
+      }}>
+      {label}
+    </Text>
   </TouchableOpacity>
 );
 
@@ -20,6 +29,8 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     flexDirection: 'row',
     paddingRight: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backArrow: {
     alignSelf: 'center',
@@ -29,6 +40,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
 
 export default BackButton;
