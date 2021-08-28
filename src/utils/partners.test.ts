@@ -1,4 +1,4 @@
-import { mapPartners, mapPartnersForAsyncStorage } from "./partners";
+import { calculateInProgressPartnerDuration, mapPartners, mapPartnersForAsyncStorage } from "./partners";
 import {Partner} from '../models/partner';
 
 describe('partners util test', () => {
@@ -24,5 +24,13 @@ describe('partners util test', () => {
     p2.startDate = new Date('01-01-2011').toDateString();
     const res = mapPartners([p, p2]);
     console.log(res);
+  });
+
+  it("should calculate days diff", () => {
+    const p = new Partner();
+    p.startDate = '01-01-2021';
+    const result = calculateInProgressPartnerDuration(p, new Date());
+    console.log(result)
+    expect(result > 1);
   });
 });

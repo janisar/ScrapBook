@@ -11,6 +11,11 @@ export type PartnerForm = {
   inProgress?: boolean;
 };
 
+export type Happiness = {
+  value: number;
+  recordedAt: Date;
+};
+
 export class Partner extends Synchronise {
   name?: string;
   type?: string;
@@ -19,6 +24,7 @@ export class Partner extends Synchronise {
   inProgress?: boolean;
   country?: string;
   userId?: string;
+  happiness?: Happiness[] = [];
 
   constructor() {
     super(createPartnerUUID());
@@ -32,6 +38,8 @@ export class Partner extends Synchronise {
     partner.startDate = form.startDate;
     partner.inProgress = form.inProgress;
     partner.country = form.country;
+    partner.happiness = [];
+
     return partner;
   }
 
@@ -44,6 +52,7 @@ export class Partner extends Synchronise {
     result.startDate = partner.startDate;
     result.inProgress = partner.inProgress;
     result.country = partner.country;
+    result.happiness = partner.happiness || [];
     return result;
   }
 
@@ -59,6 +68,11 @@ export class Partner extends Synchronise {
 
   withSynced(): Partner {
     this.synced = true;
+    return this;
+  }
+
+  withHappiness(happiness: Happiness[]): Partner {
+    this.happiness = happiness;
     return this;
   }
 

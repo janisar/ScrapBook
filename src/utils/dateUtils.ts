@@ -1,4 +1,5 @@
 import {Partner} from '../models/partner';
+import moment from 'moment';
 
 const calculateTiming = (d: number) => {
   let months = 0,
@@ -48,6 +49,9 @@ export const getYearFromDate = (
 ): number | undefined => {
   if (!date) {
     return undefined;
+  }
+  if (typeof date === 'string') {
+    return moment(date, 'DD-MM-YYYY').get('year');
   }
   return new Date(date).getFullYear();
 };

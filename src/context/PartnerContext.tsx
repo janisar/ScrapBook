@@ -21,24 +21,27 @@ import {
   mapPartners,
   mapPartnersForAsyncStorage,
 } from '../utils/partners';
+import { syncPartner } from "../services/partnerService";
 
 const PartnerContext = createContext<{
   partners: Map<number, Partner[]>;
   setPartners: (partner: Map<number, Partner[]>) => void;
   addPartner: (partner: Partner, userId?: string) => void;
+  updatePartner: (partner: Partner) => void;
   deletePartner: (partner: Partner) => void;
   isLoading: boolean;
   clearAll: () => void;
-  syncPartner: (partner: Partner) => void;
+  syncPartner: (partner: Partner, userId: string) => void;
   end: (partner: Partner, endDate: Date) => void;
 }>({
   partners: new Map(),
   addPartner: (_p: Partner, _?: string) => {},
   deletePartner: (_: Partner) => {},
   setPartners: (_: Map<number, Partner[]>) => {},
+  updatePartner: () => {},
   isLoading: true,
   clearAll: () => {},
-  syncPartner: (_: Partner) => {},
+  syncPartner: (_: Partner, _id: string) => {},
   end: () => {},
 });
 
@@ -89,21 +92,6 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     fetchPartnersFromAsyncStorage();
   }, []);
 
-  const syncPartner = (partner: Partner): Promise<Partner> => {
-    if (!partner.synced && profile.id) {
-      try {
-        addPartnerFetch(partner, profile.id).then(result => {
-          if (result.ok) {
-            return Promise.resolve(Partner.create(partner).withSynced());
-          }
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    return Promise.resolve(partner);
-  };
-
   const deletePartner = (partner: Partner) => {
     const year = getYearFromDate(partner.startDate);
     if (year) {
@@ -133,7 +121,7 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
       setPartnersLoading(false);
       const updatedData = Promise.all(
         dataArray.map(partner => {
-          return syncPartner(partner);
+          return syncPartner(partner, profile.id!);
         }),
       );
       updatedData
@@ -145,6 +133,19 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
     } else {
       setPartnersLoading(false);
     }
+  };
+
+  const updatePartner = (partner: Partner) => {
+    setPartners(
+      mapPartners(
+        mapPartnersForAsyncStorage(partners).map(p => {
+          if (p.id === partner.id) {
+            return partner;
+          }
+          return p;
+        }),
+      ),
+    );
   };
 
   const end = (partner: Partner, endDate: Date) => {
@@ -162,16 +163,10 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
   };
 
   const addPartner = (partner: Partner, _?: string) => {
-    if (partner.inProgress) {
-      partner.durationInDays = calculateInProgressPartnerDuration(
-        partner,
-        new Date(),
-      );
-    }
     addPartnerToMap(partner, partners);
     setPartners(new Map(partners));
 
-    syncPartner(partner).catch(err => console.log(err));
+    syncPartner(partner, profile.id!).catch(err => console.log(err));
   };
 
   return (
@@ -185,6 +180,7 @@ const PartnerContextProvider: FunctionComponent = ({children}) => {
         clearAll,
         syncPartner,
         end,
+        updatePartner,
       }}>
       {children}
     </PartnerContext.Provider>

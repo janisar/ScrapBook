@@ -5,4 +5,5 @@ export enum Screens {
   Stats = 'Stats',
   Partner = 'Partner',
   Map = 'Map',
+  Current = 'Current',
 }

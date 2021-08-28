@@ -1,4 +1,5 @@
 import {PartnerForm} from '../models/partner';
+import moment from 'moment';
 
 export const createPartnerUUID = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -9,6 +10,11 @@ export const createPartnerUUID = () => {
 };
 
 export function getDurationInDays(form: PartnerForm): number {
+  if (form.inProgress) {
+    return Math.abs(
+      moment(form.startDate, 'DD-MM-YYYY').diff(new Date(), 'days'),
+    );
+  }
   switch (form.durationUnit + '') {
     case '1':
       return form.duration!;

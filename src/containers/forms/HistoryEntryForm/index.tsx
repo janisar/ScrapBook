@@ -16,6 +16,7 @@ import {AmplifyTheme} from 'aws-amplify-react-native';
 import {InputSelect} from '../../../components/molecules/InputSelect';
 import {FormInput} from '../../../components/molecules/FormInput';
 import {useCountries} from '../../../hooks/useCountries';
+import {InputDateField} from '../../../components/molecules/InputDateField';
 
 type Props = {
   setFormValue: (field: string) => (value: string | Date | boolean) => void;
@@ -123,7 +124,7 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
         <ScrollView pagesCount={pages.length} offset={offset}>
           {pages.map(page => {
             return (
-              <View style={styles.scrollViewContent}>
+              <View style={styles.scrollViewContent} key={page.title}>
                 {page.type === 'name' && (
                   <View
                     style={styles.startDate}
@@ -168,11 +169,13 @@ export const HistoryEntryForm: FunctionComponent<Props> = ({
                 {page.type === 'startDate' && (
                   <View style={styles.startDate}>
                     <Header2>{page.title}</Header2>
-                    <DateSelect
-                      date={form.startDate ?? new Date()}
-                      onChange={event => {
-                        if (event) {
-                          setFormValue('startDate')(event as string);
+                    <InputDateField
+                      width={200}
+                      value={form.startDate ?? new Date().toDateString()}
+                      onConfirm={() => {}}
+                      onValueChange={value => {
+                        if (value) {
+                          setFormValue('startDate')(value as string);
                         }
                       }}
                     />

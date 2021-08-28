@@ -19,7 +19,7 @@ export type SelectFieldProps = {
   required?: boolean;
   width?: number;
   theme?: any;
-  value?: SelectItem;
+  value?: SelectItem | string;
   onConfirm?: () => void;
 };
 

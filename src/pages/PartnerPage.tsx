@@ -106,7 +106,7 @@ export const PartnerPage: FunctionComponent<Props> = ({route}) => {
       const newList = partnersList.filter(p1 => p1.id !== p?.id);
       newList.push(currentPartner!);
       setPartners(mapPartners(newList));
-      syncPartner(p);
+      syncPartner(p, '');
     }
     navigation.goBack();
   };

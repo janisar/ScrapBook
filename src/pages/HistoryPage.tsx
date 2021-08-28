@@ -72,6 +72,8 @@ export const HistoryPage = () => {
   const navigation = useNavigation();
   const {t} = useTranslation('history');
 
+  console.log(partners);
+
   return (
     <SafeAreaView style={styles.wrapper}>
       <View style={styles.innerWrapper}>

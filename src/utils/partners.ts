@@ -1,5 +1,6 @@
 import {Partner} from '../models/partner';
 import {getYearFromDate} from './dateUtils';
+import moment from 'moment';
 
 export function mapPartnersForAsyncStorage(map: Map<number, Partner[]>) {
   return Array.from(map.values()).flatMap(a => a);
@@ -9,11 +10,9 @@ export const calculateInProgressPartnerDuration = (
   partner: Partner,
   endDate: Date,
 ): number => {
-  const diffTime = Math.abs(
-    new Date(endDate).getTime() - new Date(partner.startDate!).getTime(),
+  return Math.abs(
+    moment(partner.startDate, 'MM-DD-YYYY').diff(endDate, 'days'),
   );
-  console.log(diffTime)
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 };
 
 export const mapPartners = (
@@ -21,9 +20,6 @@ export const mapPartners = (
 ): Map<number, Partner[]> => {
   const result = new Map<number, Partner[]>();
   partnersList.forEach(p => {
-    if (p.inProgress) {
-      p.durationInDays = calculateInProgressPartnerDuration(p, new Date());
-    }
     addPartnerToMap(p, result);
   });
   return result;
@@ -35,6 +31,6 @@ export function addPartnerToMap(p: Partner, result: Map<number, Partner[]>) {
     if (!result.has(year)) {
       result.set(year, []);
     }
-    result.get(year)?.push(p);
+    result.get(year)?.push(Partner.create(p));
   }
 }

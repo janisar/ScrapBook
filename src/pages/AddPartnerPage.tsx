@@ -6,11 +6,12 @@ import {Partner, PartnerForm} from '../models/partner';
 import {ProfileContext} from '../context/UserContext';
 import {PartnerContext} from '../context/PartnerContext';
 import {useTranslation} from 'react-i18next';
+import dateFormat from 'dateformat';
 
 type Props = {};
 
 const initialState = {
-  startDate: new Date().toDateString(),
+  startDate: dateFormat(new Date(), 'dd-mm-yyyy'),
 };
 export const AddPartnerPage: FunctionComponent<Props> = () => {
   const [formValue, setFormValue] = useState<PartnerForm>(initialState);
